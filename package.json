@@ -4,7 +4,7 @@
   "description": "This is a node js based app , where a teacher can take exams of thair students",
   "main": "app.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
