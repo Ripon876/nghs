@@ -4,8 +4,22 @@
   "description": "This is a node js based app , where a teacher can take exams of thair students",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.11.13",
+    "passport": "^0.4.1",
+    "passport-local-mongoose": "^6.1.0"
+  },
+  "engines": {
+    "node": ">=14.15.4 <12.0.0"
+  }
 }
