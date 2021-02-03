@@ -66,7 +66,13 @@ app.post("/register",function(req,res){
       	}else{
       		console.log(user);
       		passport.authenticate("local")(req,res,function(){
-
+            
+            	fs.mkdir('public/uploads/' + req.user.username, (err) => {
+              if (err) {
+                  throw err;
+                }
+                console.log("Directory is created.");
+                     });
       			res.redirect("/");
       		})
       	}
@@ -145,13 +151,14 @@ transporter.sendMail(mailOptions, function(error, info){
 
 });
 
-app.get("/upload",function(req,res){
+app.get("/upload",isLoggedIn,function(req,res){
    var Utitle = "NGHS | Upload"
    res.render("upload",{title: Utitle,currenUser: req.user});
 
 });
 
 app.post("/upload", function(req, res){
+
     
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).send('No files were uploaded.');
@@ -167,7 +174,9 @@ app.post("/upload", function(req, res){
         return res.status(413).send("File is too Large");
     }
 
-    targetFile.mv(path.join(__dirname, 'uploads', targetFile.name), (err) => {
+
+
+    targetFile.mv(path.join(__dirname, 'public/uploads/' + req.user.username, targetFile.name), (err) => {
         if (err)
             return res.status(500).send(err);
         res.send('File uploaded!');
