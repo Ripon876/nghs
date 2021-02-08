@@ -6,6 +6,7 @@ var User   = require("./models/user.js");
 var localStrategy = require("passport-local");
 var nodemailer = require("nodemailer");
 
+
 // file-upload 
 var fileUpload = require('express-fileupload');
 var fs = require('fs');
@@ -22,6 +23,16 @@ app.set("view engine","ejs");
 // app.use('./routes', routes)
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+app.use(function(req,res,next){
+
+  res.locals.currenUser = req.user;
+  next();
+});
+
+
+
+
 // file upload
 app.use(fileUpload({
     useTempFiles : true,
@@ -42,7 +53,9 @@ passport.deserializeUser(User.deserializeUser());
 
 
 
-// initial routs
+// ====================
+// home rout
+// ====================
 
 app.get("/",function(req,res){
 	var title = "NGHS | Home"
@@ -52,13 +65,15 @@ app.get("/secret",isLoggedIn,function(req,res){
 	res.send("this is the secret page....");
 });
 
-// registation route
+// ====================
+// registration rout
+// ====================
 app.get("/register",isLoggedOut,function(req,res){
 	var Rtitle = "NGHS | Register"
 	res.render("register",{title: Rtitle,currenUser: req.user});
 })
 app.post("/register",function(req,res){
-	var newUser = new User({username: req.body.username});
+	var newUser = new User({username: req.body.username,name: req.body.name});
       User.register(newUser,req.body.password,function(err,user){
       	if(err){
       		console.log(err);
@@ -81,7 +96,10 @@ app.post("/register",function(req,res){
 
 })
 
+// ====================
 // login rout
+// ====================
+
 app.get("/login",isLoggedOut,function(req,res){
 
 
@@ -93,14 +111,18 @@ app.get("/login",isLoggedOut,function(req,res){
 app.post("/login",passport.authenticate("local",{successRedirect: "/",failureRedirect: "/login"}),function(req,res){
 });
 
+// ====================
 // logout rout
+// ====================
 app.get("/logout",function(req,res){
 
 	req.logout();
 	res.redirect("/");
 });
 
-// email route
+// ====================
+// email rout
+// ====================
 app.get("/sendmail",isLoggedIn,function(req,res){
 	    var Stitle = "NGHS | Send Email"
         res.render("email",{title: Stitle,currenUser: req.user});
@@ -151,6 +173,9 @@ transporter.sendMail(mailOptions, function(error, info){
 
 });
 
+// ====================
+// file upload rout
+// ====================
 app.get("/upload",isLoggedIn,function(req,res){
    var Utitle = "NGHS | Upload"
    res.render("upload",{title: Utitle,currenUser: req.user});
@@ -182,6 +207,74 @@ app.post("/upload", function(req, res){
         res.send('File uploaded!');
     });
   
+});
+// ====================
+// user dashboard rout
+// ====================
+
+app.get("/user/dashboard",isLoggedIn,function(req,res){
+  var  title = "NGHS | User Dashboard";
+    User.findById(req.user._id,function(err,user){
+      if (err) {
+        console.log(err)
+      }else{
+         res.render("user_dashborad",{user: user,title: title});
+      }
+    });
+
+ 
+});
+app.get("/user/profile",isLoggedIn,function(req,res){
+  var title = "NGHS | User Profile";
+  User.findById(req.user._id,function(err,user){
+    if (err) {
+      console.log(err)
+    }else{
+        res.render("user_profile",{title: title,user: user});
+    }
+  });
+
+});
+app.get("/user/profile/edit",isLoggedIn,function(req,res){
+  var title = "NGHS | Edit Profile";
+  User.findById(req.user._id,function(err,user){
+    if (err) {
+      console.log(err)
+    }else{
+        res.render("edit_profile",{title: title,user: user});
+    }
+  });
+
+});
+app.post("/user/profile",isLoggedIn,function(req,res){
+
+   var user = req.body.user;
+   User.findByIdAndUpdate(req.user._id,user,{new: true},function(err,user){
+     if (err) {
+      console.log(err)
+     }else{
+        console.log(user);
+        res.redirect("/user/dashboard");
+     };
+   });
+
+});
+// ====================
+// admin rout
+// ====================
+app.get("/admin",isLoggedIn,function(req,res){
+	if (req.user.isAdmin){
+
+  User.find({},function(err,users){
+    if (err) {
+      console.log(err)
+    }else{
+      res.render("admin",{title: "NGHS | Admin",currenUser: req.user,users: users});
+    }
+  });	
+	}else{
+		res.redirect("/");
+	};
 });
 
 function isLoggedIn(req,res,next){ // 
