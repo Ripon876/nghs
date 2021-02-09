@@ -145,13 +145,13 @@ var mes = req.body.mes;
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'islam876ripon@gmail.com',
-    pass: 'Ripon01765233876'
+    user: 'your email',
+    pass: 'your password'
   }
 });
 // mdforhadhossain297@gmail.com
 var mailOptions = {
-  from: 'islam876ripon@gmail.com',
+  from: 'your email',
   to: email,
   subject: sub,
   text: mes
@@ -209,7 +209,7 @@ app.post("/upload", function(req, res){
   
 });
 // ====================
-// user dashboard rout
+// users dashboard rout
 // ====================
 
 app.get("/user/dashboard",isLoggedIn,function(req,res){
@@ -259,6 +259,16 @@ app.post("/user/profile",isLoggedIn,function(req,res){
    });
 
 });
+
+// ====================
+// teachers rout
+// ====================
+
+app.get("/teacher/dashboard",function(req,res){
+  res.render("teacher")
+})
+
+
 // ====================
 // admin rout
 // ====================
