@@ -14,7 +14,9 @@ var path = require('path');
 
 
 // mongoose configuration
-mongoose.connect("mongodb://localhost:27017/nghs", {useUnifiedTopology: true, useNewUrlParser: true});
+// mongoose.connect("mongodb://localhost:27017/nghs", {useUnifiedTopology: true, useNewUrlParser: true});
+mongoose.connect("mongodb+srv://ripon:Ripon876@cluster0.9uds0.mongodb.net/nghs?retryWrites=true&w=majority", {useUnifiedTopology: true, useNewUrlParser: true});
+
 mongoose.set('useFindAndModify', false);
 
 
