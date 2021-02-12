@@ -1,0 +1,25 @@
+<%- include("../partials/header-admin") -%>
+<div class="main-panel">
+	<div class="content-wrapper">
+		
+		<div class="row">
+			<div class="col-md-12 stretch-card">
+				<div class="card">
+					<div class="card-body">
+						<p class="card-title text-center">Create A New Author</p>
+						<div class="table-responsive">
+							<form action="/admin" method="POST">
+								<div class="form-group">
+									<label for="etr-usnm"><h5>Enter a User Id</h5></label>
+									<input type="text" class="form-control border-top border-left" id="etr-usnm" name="id">
+								</div>
+								<button type="submit" class="btn btn-primary">Submit</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%- include("../partials/footer-admin") -%>

@@ -15,6 +15,7 @@ var path = require('path');
 
 // mongoose configuration
 mongoose.connect("mongodb://localhost:27017/nghs", {useUnifiedTopology: true, useNewUrlParser: true});
+mongoose.set('useFindAndModify', false);
 
 
 var app = express();
@@ -77,7 +78,7 @@ app.post("/register",function(req,res){
       User.register(newUser,req.body.password,function(err,user){
       	if(err){
       		console.log(err);
-      		res.render("register",{currenUser: req.user})
+      		res.render("register",{currenUser: req.user,title: Rtitle})
       	}else{
       		console.log(user);
       		passport.authenticate("local")(req,res,function(){
@@ -87,10 +88,25 @@ app.post("/register",function(req,res){
                   throw err;
                 }
                 console.log("Directory is created.");
+              
                      });
-      			res.redirect("/");
-      		})
-      	}
+             if (req.body.username == "ripon") {
+
+              var doAuthor = {isAdmin: true};
+            User.findByIdAndUpdate(req.user._id,doAuthor,{new: true},function(err,user){
+                   if (err) {
+                    console.log(err)
+                   }else{
+                      console.log(user);
+                      res.redirect("/admin");
+                   };
+                 });
+             }else{
+              res.redirect("/");
+             };
+             
+      		});
+      	};
       });
 
 
@@ -145,13 +161,13 @@ var mes = req.body.mes;
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'your email',
-    pass: 'your password'
+    user: process.env.GMAIL_ADDRESS,
+    pass: process.env.GMAIL_PASSWORD
   }
 });
 // mdforhadhossain297@gmail.com
 var mailOptions = {
-  from: 'your email',
+  from: process.env.GMAIL_ADDRESS,
   to: email,
   subject: sub,
   text: mes
@@ -254,7 +270,12 @@ app.post("/user/profile",isLoggedIn,function(req,res){
       console.log(err)
      }else{
         console.log(user);
-        res.redirect("/user/dashboard");
+        if (req.user.isAdmin) {
+           res.redirect("/admin");
+        }else{
+          res.redirect("/user/dashboard");
+        };
+       
      };
    });
 
@@ -264,7 +285,7 @@ app.post("/user/profile",isLoggedIn,function(req,res){
 // teachers rout
 // ====================
 
-app.get("/teacher/dashboard",function(req,res){
+app.get("/teacher/dashboard",isLoggedIn,function(req,res){
   res.render("teacher")
 })
 
@@ -285,6 +306,105 @@ app.get("/admin",isLoggedIn,function(req,res){
 	}else{
 		res.redirect("/");
 	};
+});
+app.get("/admin/create_author",isLoggedIn,function(req,res){
+  res.render("create_author");
+})
+app.post("/admin",isLoggedIn,function(req,res){
+  var id = req.body.id;
+
+User.findById(id,function(err,user){
+  if (user.isAuthor) {
+  var doAuthor = {isAuthor: false};
+
+   User.findByIdAndUpdate(id,doAuthor,{new: true},function(err,user){
+        if (err) {
+         console.log(err)
+        }else{
+           console.log(user);
+              res.redirect("/admin");
+        };
+      });
+
+  }else{
+    
+      var doAuthor = {isAuthor: true};
+User.findByIdAndUpdate(id,doAuthor,{new: true},function(err,user){
+     if (err) {
+      console.log(err)
+     }else{
+        console.log(user);
+        res.redirect("/admin");
+     };
+   });
+
+
+  }
+})
+
+});
+
+app.get("/user/edit/:id",isLoggedIn,function(req,res){
+   User.findById(req.params.id,function(err,user){
+    if (err) {
+      console.log(err)
+    }else{
+      res.render("edit",{user: user});
+    };
+   })
+});
+app.post("/admin/user/edit",isLoggedIn,function(req,res){
+   var user = req.body.user;
+   var id = req.body.id
+   User.findByIdAndUpdate(id,user,{new: true},function(err,user){
+     if (err) {
+      console.log(err)
+     }else{
+        console.log(user);
+        if (req.user.isAdmin) {
+           res.redirect("/admin");
+        }else{
+          res.redirect("/user/dashboard");
+        };
+       
+     };
+   });
+});
+
+app.get("/delete_user/:id",isLoggedIn,function(req,res){
+
+    User.findById(req.params.id,function(err,user){
+    if (err) {
+      console.log(err)
+      res.redirect("/admin")
+    }else{
+      res.render("delete_user",{user: user});
+    };
+  }); 
+});
+
+app.post("/admin/delete_user/:id",isLoggedIn,function(req,res){
+  User.findById(req.params.id,function(err,user){
+    if(err){
+      console.log(err);
+    }else{
+
+         fs.rmdir('public/uploads/' + user.username,function(){
+             console.log("Directory Deleted");
+         });
+      
+         };
+
+           User.findByIdAndRemove(user._id,function(err,user){
+              if (err) {
+                    console.log(err);
+              }else{
+                  console.log("successfully Deleted");
+                  res.redirect("/admin");
+              };
+            });
+  });
+
 });
 
 function isLoggedIn(req,res,next){ // 

@@ -9,7 +9,7 @@ var userSchema = new mongoose.Schema({
 	username: String,
 	password: String,
 	isAdmin: { type: Boolean, default: false },
-	isAouthor: { type: Boolean, default: false },
+	isAuthor: { type: Boolean, default: false },
 	isUser: { type: Boolean, default: true }
 });
 userSchema.plugin(passportLocalMongoose);

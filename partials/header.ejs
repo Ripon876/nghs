@@ -33,15 +33,27 @@
 
         <% if (currenUser.isAdmin) { %>
         <li class="nav-item">
-          <a class="nav-link" href="/admin">Dashbord</a>
+          <a class="nav-link" href="/admin">Dashboard</a>
         </li>
-        <% } %>
+
+          </li>
         <li class="nav-item">
           <a class="nav-link" href="/sendmail">Send a mail</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>
+        <% }else{ %>
+        <li class="nav-item">
+          <a class="nav-link" href="/user/dashboard">Dashboard</a>
+      
         </li>
+           <li class="nav-item">
+          <a class="nav-link" href="/sendmail">Send a mail</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        <% } %>
+        
          
          <% } %>
 

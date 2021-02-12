@@ -1,0 +1,16 @@
+<%- include("../partials/header-admin") -%>
+<div class="main-panel">
+        <div class="content-wrapper">
+         
+          <div class="row">
+            <div class="col-md-12 stretch-card">
+              <div class="card">
+                <div class="card-body">
+                	<h4>Do you want to delete the user with the name "<%= user.name %>"</h4>
+                	<form action="/admin/delete_user/<%= user._id %>" method="POST"><button class="btn btn-primary btn-sm">Delete</button></form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+<%- include("../partials/footer-admin") -%>
