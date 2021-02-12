@@ -88,7 +88,7 @@ app.post("/register",function(req,res){
             
             	fs.mkdir('public/uploads/' + req.user.username, (err) => {
               if (err) {
-                  throw err;
+                  console.log(err)
                 }
                 console.log("Directory is created.");
               
