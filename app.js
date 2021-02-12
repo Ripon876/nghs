@@ -76,6 +76,7 @@ app.get("/register",isLoggedOut,function(req,res){
 	res.render("register",{title: Rtitle,currenUser: req.user});
 })
 app.post("/register",function(req,res){
+  var Rtitle = "NGHS | Register"
 	var newUser = new User({username: req.body.username,name: req.body.name});
       User.register(newUser,req.body.password,function(err,user){
       	if(err){
