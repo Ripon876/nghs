@@ -1,0 +1,50 @@
+<%- include("../partials/header-user") -%>
+<!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/author/dashboard">
+              <i class="mdi mdi-home menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/author/exam/new">
+              <i class="mdi mdi-home menu-icon"></i>
+              <span class="menu-title">Create new Test</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+         
+          <div class="row">
+            <div class="col-md-12 stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-title">Exams That You Created</p>
+                  <div class="table-responsive">
+                    <table id="recent-purchases-listing" class="table">
+                      <thead>
+                        <tr>
+                            <th>You can take part to this exams</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                            <td>This is the first exam of you</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+<%- include("../partials/footer-user") -%>

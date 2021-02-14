@@ -1,10 +1,13 @@
+var dotenv = require('dotenv').config();
 var express = require("express");
 var bodyParser = require("body-parser");
 var passport = require("passport");
 var mongoose = require("mongoose");
 var User   = require("./models/user.js");
+var Exam   = require("./models/exam.js");
 var localStrategy = require("passport-local");
 var nodemailer = require("nodemailer");
+var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 
 
 // file-upload 
@@ -12,10 +15,10 @@ var fileUpload = require('express-fileupload');
 var fs = require('fs');
 var path = require('path');
 
-
+// https://afternoon-citadel-20931.herokuapp.com/
 // mongoose configuration
-// mongoose.connect("mongodb://localhost:27017/nghs", {useUnifiedTopology: true, useNewUrlParser: true});
-mongoose.connect("mongodb+srv://ripon:Ripon876@cluster0.9uds0.mongodb.net/nghs?retryWrites=true&w=majority", {useUnifiedTopology: true, useNewUrlParser: true});
+mongoose.connect("mongodb://localhost:27017/nghs", {useUnifiedTopology: true, useNewUrlParser: true});
+// mongoose.connect("mongodb+srv://ripon:Ripon876@cluster0.9uds0.mongodb.net/nghs?retryWrites=true&w=majority", {useUnifiedTopology: true, useNewUrlParser: true});
 
 mongoose.set('useFindAndModify', false);
 
@@ -51,8 +54,35 @@ passport.use(new localStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// passport-google-oauth2 setup
+
+passport.use(new GoogleStrategy({
+    clientID:    process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://yourdomain:3000/auth/google/callback",
+    passReqToCallback   : true
+  },
+  function(request, accessToken, refreshToken, profile, done) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return done(err, user);
+    });
+  }
+));
+ 
+app.get('/auth/google',
+  passport.authenticate('google', { scope:
+      [ 'email', 'profile' ] }
+));
+
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/error' }),
+  function(req, res) {
+    // Successful authentication, redirect success.
+    res.redirect('/');
+  });
+
 // port
- var port = process.env.PORT || 8080;
+ var port = process.env.PORT || 3000;
 
 
 
@@ -220,9 +250,12 @@ app.post("/upload", function(req, res){
 
 
 
-    targetFile.mv(path.join(__dirname, 'public/uploads/' + req.user.username, targetFile.name), (err) => {
-        if (err)
-            return res.status(500).send(err);
+    targetFile.mv(path.join(__dirname, 'public/uploads/' + req.user.username, targetFile.name), function(err){
+      var title = "NGHS | Something is wrong"
+        if (err){
+          return res.render("404",{title: title,currenUser: req.user});
+        }
+            
         res.send('File uploaded!');
     });
   
@@ -285,13 +318,28 @@ app.post("/user/profile",isLoggedIn,function(req,res){
 });
 
 // ====================
-// teachers rout
+// author rout
 // ====================
 
-app.get("/teacher/dashboard",isLoggedIn,function(req,res){
-  res.render("teacher")
-})
+app.get("/author/dashboard",isLoggedIn,function(req,res){
+      
+      if(req.user.isAuthor){
+          res.render("author_dashboard",{user: req.user});
+        }else{
+          res.redirect("/");
+        };
 
+
+});
+app.get("/author/exam/new",isLoggedIn,function(req,res){
+
+     if(req.user.isAuthor){
+          res.render("create_test",{user: req.user});
+        }else{
+          res.redirect("/");
+        };
+
+});
 
 // ====================
 // admin rout

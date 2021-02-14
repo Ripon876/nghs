@@ -1,0 +1,39 @@
+<%- include("../partials/header-user") -%>
+<div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/author/dashboard">
+              <i class="mdi mdi-home menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/author/exam/new">
+              <i class="mdi mdi-home menu-icon"></i>
+              <span class="menu-title">Create new Test</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-md-12 stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-title text-center">Create a New Test</p>
+                  <form action="#">
+                  	<div class="form-group">
+                  		<label for="subject">Subject</label>
+                  		<input type="text" class="form-control" id="subject">
+                  	</div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+<%- include("../partials/footer-user") -%>
