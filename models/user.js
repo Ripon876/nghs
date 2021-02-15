@@ -8,6 +8,8 @@ var userSchema = new mongoose.Schema({
 	roll: Number,
 	username: String,
 	password: String,
+	googleId: Number,
+	picture: String,
 	isAdmin: { type: Boolean, default: false },
 	isAuthor: { type: Boolean, default: false },
 	isUser: { type: Boolean, default: true }

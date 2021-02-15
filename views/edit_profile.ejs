@@ -3,7 +3,7 @@
 	<div class="row m-5">
 		<div class="content-wrapper">
 			<div class="col-md-6 m-auto">
-				<form action="/user/profile" method="POST">
+				<form action="/user/profile?_method=PUT" method="POST">
 					<div class="form-group">
 						<label for="exampleInputEmail1">Name</label>
 						<input type="text" class="form-control" id="exampleInputEmail1" name="user[name]" value="<%- user.name %>">

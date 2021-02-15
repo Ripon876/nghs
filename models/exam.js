@@ -11,6 +11,6 @@ var userSchema = new mongoose.Schema({
         },
         username: String
     }
-});
+}); 
 var Exam = mongoose.model("Exam",userSchema);
 module.exports = Exam;
