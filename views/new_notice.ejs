@@ -1,0 +1,23 @@
+<%- include("../partials/header-admin") -%> 
+
+<div class="main-panel">
+<div class="content-wrapper">
+		<div class="row">
+			<div class="col-md-12 stretch-card">
+				<div class="card">
+					<div class="card-body">
+                       <form action="/admin/notice" method="POST">
+                       	<div class="form-group">
+                       		<input type="text" class="form-control" placeholder="Enter new notice" name="notice">
+                       	</div>
+                       	<input type="submit" class="btn btn-primary">
+                       </form>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+<%- include("../partials/footer-admin") -%> 
+</div>

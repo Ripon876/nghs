@@ -1,0 +1,41 @@
+<%- include("../partials/header-admin") -%>
+<div class="main-panel">
+	<div class="content-wrapper">
+		<div class="row">
+			<div class="col-md-12 stretch-card">
+				<div class="card">
+					<div class="card-body">
+						<a  href="/admin/notice/new" class="card-title btn btn-primary text-white">Create New Notice</a>
+						<div class="table-responsive">
+							<table id="recent-purchases-listing" class="table">
+								<thead>
+									<tr>
+										<th><h4>All Notice's</h4></th>
+										<th> </th>
+									</tr>
+									
+								</thead>
+								<tbody>
+                                   
+                             <%  notices.forEach(function(notice){ %>
+                                      
+                                    <tr>
+										<td>
+											<%= notice.notice %>.-- <span class=" bold text-primary"><%= notice.user.name %></span>
+										</td>
+											
+									</tr>
+
+                               <% }); %>
+
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%- include("../partials/footer-admin") -%>
+</div>

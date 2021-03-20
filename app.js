@@ -5,6 +5,7 @@ var passport       = require("passport");
 var mongoose       = require("mongoose");
 var User           = require("./models/user");
 var Exam           = require("./models/exam");
+var Notice         = require("./models/notice");
 var localStrategy  = require("passport-local");
 var methodOverride = require("method-override");
 var nodemailer     = require("nodemailer");
@@ -14,12 +15,14 @@ var fs             = require('fs');
 var path           = require('path');
 var app            = express();
 var port           = process.env.PORT || 3000;
+// var socket = require("socket.io");
+
 
 
 // https://afternoon-citadel-20931.herokuapp.com/
 // mongoose configuration
-// mongoose.connect("mongodb://localhost:27017/nghs", {useUnifiedTopology: true, useNewUrlParser: true});
- mongoose.connect("mongodb+srv://ripon:Ripon876@cluster0.9uds0.mongodb.net/nghs?retryWrites=true&w=majority", {useUnifiedTopology: true, useNewUrlParser: true});
+mongoose.connect("mongodb://localhost:27017/nghs", {useUnifiedTopology: true, useNewUrlParser: true});
+//  mongoose.connect("mongodb+srv://ripon:Ripon876@cluster0.9uds0.mongodb.net/nghs?retryWrites=true&w=majority", {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set('useFindAndModify', false);
 
 
@@ -39,7 +42,13 @@ app.use(fileUpload({
 }));
 
 
+// ===================
+// send massage
+// ===================
 
+app.get("/message",function(req,res){
+  res.render("send_massage");
+})
 
 
 // =====================
@@ -66,7 +75,7 @@ passport.deserializeUser(function(obj, cb) {
 passport.use(new GoogleStrategy({
     clientID:    process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://afternoon-citadel-20931.herokuapp.com/auth/google/callback",
+    callbackURL: "http://localhost:3000/auth/google/callback",
     passReqToCallback   : true
   },
   function(request, accessToken, refreshToken, profile, done) {
@@ -476,6 +485,45 @@ app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
 
 });
 
+
+
+// =================
+// notice route 
+// =================
+
+
+app.get("/admin/notice",isLoggedIn,function(req,res){
+      
+      Notice.find({},function(err,notices){
+        if (err){
+          console.log(err);
+        }else{
+           res.render("notice",{notices: notices});
+        };
+      });
+});
+
+app.get("/admin/notice/new",function(req,res){
+  res.render("new_notice");
+});
+
+app.post("/admin/notice",function(req,res){
+  var notice = {
+    notice: req.body.notice,
+    user: {
+      name: req.user.name
+    }
+  }
+  Notice.create(notice,function(err,notice){
+    if (err) {
+      console.log(err);
+    }else{
+    console.log(notice);
+    res.redirect("/admin/notice");
+    }
+  })
+})
+
 function isLoggedIn(req,res,next){ // 
 	if(req.isAuthenticated()){      //   this function used for preventing   
 		return next();               //   a logged out user to visite   
@@ -496,3 +544,8 @@ function isLoggedOut(req,res,next){ //
 app.listen(port,function(){
 	console.log("Server started at port ..." + port);
 });
+
+
+
+
+
