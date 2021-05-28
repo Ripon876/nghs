@@ -17,6 +17,7 @@ var app            = express();
 var port           = process.env.PORT || 3000;
 // var socket = require("socket.io");
 
+var sl = require("./routs/signup-login");
 
 
 // https://afternoon-citadel-20931.herokuapp.com/
@@ -41,7 +42,6 @@ app.use(fileUpload({
     tempFileDir : path.join(__dirname,'tmp'),
 }));
 
-
 // ===================
 // send massage
 // ===================
@@ -49,6 +49,7 @@ app.use(fileUpload({
 app.get("/message",function(req,res){
   res.render("send_massage");
 })
+
 
 
 // =====================
@@ -59,8 +60,8 @@ app.use(require('express-session')({ secret: "My name is MD Ripon Islam", resave
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()));
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
+// // passport.serializeUser(User.serializeUser());
+// // passport.deserializeUser(User.deserializeUser());
 passport.serializeUser(function(user, cb) {
   cb(null, user);
 });
@@ -128,84 +129,12 @@ app.get("/",function(req,res){
 	res.render("index",{title: title,currenUser: req.user});
 });
 
-
-// ====================
-// registration rout
-// ====================
-
-app.get("/register",isLoggedOut,function(req,res){
-	var Rtitle = "NGHS | Register"
-	res.render("register",{title: Rtitle});
-})
-
-app.post("/register",function(req,res){
-  var Rtitle = "NGHS | Register"
-	var newUser = new User({username: req.body.username,name: req.body.name});
-      User.register(newUser,req.body.password,function(err,user){
-      	if(err){
-      		console.log(err);
-      		res.render("register",{title: Rtitle})
-      	}else{
-      		console.log(user);
-      		passport.authenticate("local")(req,res,function(){
-            
-            	fs.mkdir('public/uploads/' + req.user.username, function(err){
-              if (err) {
-                  console.log(err);
-                };
-                console.log("Directory is created.");
-              
-                     });
-             if (req.body.username == "ripon") {
-
-              var doAuthor = {isAdmin: true};
-            User.findByIdAndUpdate(req.user._id,doAuthor,{new: true},function(err,user){
-                   if (err) {
-                    console.log(err);
-                   }else{
-                      console.log(user);
-                      res.redirect("/admin");
-                   };
-                 });
-             }else{
-              res.redirect("/");
-             };
-             
-      		});
-      	};
-      });
-
-
-})
-
-// ====================
-// login rout
-// ====================
-
-app.get("/login",isLoggedOut,function(req,res){
-  var Ltitle = "NGHS | Login"
-	res.render("login",{title: Ltitle,currenUser: req.user});
-});
-
-
-app.post("/login",passport.authenticate("local",{successRedirect: "/",failureRedirect: "/login"}),function(req,res){
-});
-
-// ====================
-// logout rout
-// ====================
-app.get("/logout",function(req,res){
-
-	req.logout();
-	res.redirect("/");
-});
-
-
+app.use(sl);
 // ====================
 // email rout
 // ====================
 app.get("/sendmail",isLoggedIn,function(req,res){
-	    var Stitle = "NGHS | Send Email"
+	    var Stitle = "NGHS | Send Email";
         res.render("email",{title: Stitle,currenUser: req.user});
 });
 
@@ -297,7 +226,19 @@ app.get("/user/dashboard",isLoggedIn,function(req,res){
       if (err) {
         console.log(err)
       }else{
-         res.render("user_dashborad",{user: user,title: title});
+
+        
+        Notice.find({},function(err,notices){
+          if (err) {
+            console.log(err);
+          }
+          else{
+              res.render("user_dashborad",{user: user,title: title,notices: notices});
+          }
+
+        });
+
+       
       }
     });
 
@@ -520,9 +461,22 @@ app.post("/admin/notice",function(req,res){
     }else{
     console.log(notice);
     res.redirect("/admin/notice");
+    };
+  });
+});;
+
+
+app.get("/admin/notice/delete/:id",function(req,res){
+  var id = req.params.id;
+  Notice.findByIdAndRemove(id,function(err,notice){
+    if (err) {
+      console.log(err);
+    }else {
+      res.redirect("/admin/notice");
     }
   })
 })
+
 
 function isLoggedIn(req,res,next){ // 
 	if(req.isAuthenticated()){      //   this function used for preventing   

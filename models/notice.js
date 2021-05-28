@@ -14,3 +14,6 @@ var noticeSchema = new mongoose.Schema({
 var Notice = mongoose.model("Notice",noticeSchema);
 
 module.exports = Notice;
+
+
+
