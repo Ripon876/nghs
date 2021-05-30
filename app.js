@@ -18,6 +18,7 @@ var port           = process.env.PORT || 3000;
 // var socket = require("socket.io");
 
 var sl = require("./routs/signup-login");
+var ct = require("./routs/create-test");
 
 
 // https://afternoon-citadel-20931.herokuapp.com/
@@ -130,6 +131,7 @@ app.get("/",function(req,res){
 });
 
 app.use(sl);
+app.use(ct);
 // ====================
 // email rout
 // ====================
@@ -315,22 +317,22 @@ app.get("/author/dashboard",isLoggedIn,function(req,res){
 
 
 });
-app.get("/author/exam/new",isLoggedIn,function(req,res){
+// app.get("/author/exam/new",isLoggedIn,function(req,res){
 
-     if(req.user.isAuthor){
-      Notice.find({},function(err,notices){
-        if (err){
-          console.log(err);
-        }else{
-          res.render("create_test",{user: req.user,notices: notices});
-        };
-      });
+//      if(req.user.isAuthor){
+//       Notice.find({},function(err,notices){
+//         if (err){
+//           console.log(err);
+//         }else{
+//           res.render("create_test",{user: req.user,notices: notices});
+//         };
+//       });
           
-        }else{
-          res.redirect("/");
-        };
+//         }else{
+//           res.redirect("/");
+//         };
 
-});
+// });
 
 // ====================
 // admin rout

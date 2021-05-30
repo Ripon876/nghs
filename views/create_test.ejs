@@ -1,39 +1,94 @@
 <%- include("../partials/header-user") -%>
 <div class="container-fluid page-body-wrapper">
-      <!-- partial:partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/author/dashboard">
-              <i class="mdi mdi-home menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/author/exam/new">
-              <i class="mdi mdi-home menu-icon"></i>
-              <span class="menu-title">Create new Test</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <!-- partial -->
-      <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">
-            <div class="col-md-12 stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title text-center">Create a New Test</p>
-                  <form action="#">
-                  	<div class="form-group">
-                  		<label for="subject">Subject</label>
-                  		<input type="text" class="form-control" id="subject">
-                  	</div>
-                  </form>
-                </div>
-              </div>
+  <!-- partial:partials/_sidebar.html -->
+  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/author/dashboard">
+          <i class="mdi mdi-home menu-icon"></i>
+          <span class="menu-title">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/author/exam/new">
+          <i class="mdi mdi-home menu-icon"></i>
+          <span class="menu-title">Create new Test</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- partial -->
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-12 stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <p class="card-title text-center">Create a New Test</p>
+              <form action="/new-test" method="POST">
+                <div class="form-group">
+                  <label for="subject">Subject</label>
+                  <div class="input-group mb-3">
+                    <select class="custom-select" name="subject" id="inputGroupSelect01" onchange="sc();">
+                      <option selected>Choose...</option>
+                      <option value="1">Bangla</option>
+                      <option value="2">English</option>
+                      <option value="3">Math</option>
+                      <option value="4">Higher Math</option>
+                      <option value="5">Biology</option>
+                      <option value="6">Chemistry</option>
+                      <option value="7">Phisics</option>
+                      <option value="8">ICT</option>
+                    </select>
+                  </div>
+
+
+    <!-- <input type="text" class="form-control" id="Question"> -->
+ 
+<div class="upload-question">
+ <div class="input-group mb-3">
+  <div class="custom-file">
+    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="write-question">
+  <label for="Question">Question</label>
+<div class="form-group" >
+  <!-- <input type="text" class="form-control" placeholder="Message" name="mes"> -->
+  <textarea class="form-control" style="border: 1px solid #ced4da !important;" cols="30" rows="30" placeholder="Type your question here" ></textarea>
+</div>  
+</div>
+
+                <input type="submit" class="btn btn-primary" value="Submit">
+                </form>
             </div>
           </div>
         </div>
-<%- include("../partials/footer-user") -%>
+      </div>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script>
+
+$('.upload-question').hide()
+$('.write-question').hide()
+
+      function sc(){
+      var sel = document.getElementById("inputGroupSelect01").value;
+      
+if(sel == 3 || sel == 4){
+
+  $('.img-upload').show()
+    $('.write-question').hide()
+}else {
+  $('.img-upload').hide()
+  $('.write-question').show()
+}
+
+
+      }
+      </script>
+      <%- include("../partials/footer-user") -%>

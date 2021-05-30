@@ -10,12 +10,6 @@ var path           = require('path');
 
 
 
-
-
-
-router.get("/n",function(req,res){
-	res.send("this the separated route file");
-});
 // ====================
 // registration rout
 // ====================
