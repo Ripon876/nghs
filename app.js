@@ -261,7 +261,14 @@ app.get("/user/profile/edit",isLoggedIn,function(req,res){
     if (err) {
       console.log(err)
     }else{
-        res.render("edit_profile",{title: title,user: user});
+            Notice.find({},function(err,notices){
+        if (err){
+          console.log(err);
+        }else{
+         res.render("edit_profile",{title: title,user: user,notices: notices});          
+        };
+      });
+
     }
   });
 
@@ -291,8 +298,17 @@ app.put("/user/profile",isLoggedIn,function(req,res){
 
 app.get("/author/dashboard",isLoggedIn,function(req,res){
       
+
+
       if(req.user.isAuthor){
-          res.render("author_dashboard",{user: req.user});
+              Notice.find({},function(err,notices){
+        if (err){
+          console.log(err);
+        }else{
+          res.render("author_dashboard",{user: req.user,notices: notices});
+        };
+      });
+          
         }else{
           res.redirect("/");
         };
@@ -302,7 +318,14 @@ app.get("/author/dashboard",isLoggedIn,function(req,res){
 app.get("/author/exam/new",isLoggedIn,function(req,res){
 
      if(req.user.isAuthor){
-          res.render("create_test",{user: req.user});
+      Notice.find({},function(err,notices){
+        if (err){
+          console.log(err);
+        }else{
+          res.render("create_test",{user: req.user,notices: notices});
+        };
+      });
+          
         }else{
           res.redirect("/");
         };
