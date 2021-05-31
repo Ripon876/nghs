@@ -3,6 +3,7 @@ var router         = express.Router();
 var User           = require("../models/user");
 var Exam           = require("../models/exam");
 var Notice         = require("../models/notice");
+var formidable     = require('formidable');
 
 router.get("/author/exam/new",isLoggedIn,function(req,res){
 
@@ -21,10 +22,23 @@ router.get("/author/exam/new",isLoggedIn,function(req,res){
 
 });
 
-router.post("/new-test",function(req,res){
-  console.log(req.body.subject);
-})
+router.post("/new-test",isLoggedIn,function(req,res){
+  // console.log(req.body);
+  // console.log(req.files);
+    // var form = new formidable.IncomingForm();
 
+    // form.parse(req);
+
+    // form.on('fileBegin', function (name, file){
+    //     file.path = __dirname + '/uploads/' + file.name;
+    // });
+
+    // form.on('file', function (name, file){
+    //     console.log('Uploaded ' + file.name);
+    // });
+
+    // res.sendFile(__dirname + '/index.html');
+})
 
 function isLoggedIn(req,res,next){ // 
   if(req.isAuthenticated()){      //   this function used for preventing   

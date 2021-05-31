@@ -25,6 +25,9 @@
           <div class="card">
             <div class="card-body">
               <p class="card-title text-center">Create a New Test</p>
+
+
+
               <form action="/new-test" method="POST">
                 <div class="form-group">
                   <label for="subject">Subject</label>
@@ -41,54 +44,83 @@
                       <option value="8">ICT</option>
                     </select>
                   </div>
+                  <!-- <input type="text" class="form-control" id="Question"> -->
+                  
+                </div>
 
-
-    <!-- <input type="text" class="form-control" id="Question"> -->
- 
+                <!-- Question Uploading -->
 <div class="upload-question">
- <div class="input-group mb-3">
-  <div class="custom-file">
-    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+  <label for="Question">Upload Question (jpg, jpeg, png)</label><div id="uploadStatus"></div>
+  <div class="input-group mb-3">
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" name="question-img" id="inputGroupFile01" accept="image/*" aria-describedby="inputGroupFileAddon01"> 
+      <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+    </div>
   </div>
 </div>
-</div>
-</div>
+
 
 <div class="write-question">
   <label for="Question">Question</label>
-<div class="form-group" >
-  <!-- <input type="text" class="form-control" placeholder="Message" name="mes"> -->
-  <textarea class="form-control" style="border: 1px solid #ced4da !important;" cols="30" rows="30" placeholder="Type your question here" ></textarea>
-</div>  
+  <div class="form-group" >
+    <textarea class="form-control" style="border: 1px solid #ced4da !important;" cols="30" rows="30" placeholder="Type your question here" ></textarea>
+  </div>
 </div>
-
                 <input type="submit" class="btn btn-primary" value="Submit">
-                </form>
+              </form>
+
+
+
             </div>
           </div>
         </div>
       </div>
-
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
       <script>
-
-$('.upload-question').hide()
-$('.write-question').hide()
-
+      $('.upload-question').hide()
+      // $('.write-question').hide()
       function sc(){
       var sel = document.getElementById("inputGroupSelect01").value;
       
-if(sel == 3 || sel == 4){
-
-  $('.img-upload').show()
-    $('.write-question').hide()
-}else {
-  $('.img-upload').hide()
-  $('.write-question').show()
-}
-
-
+      if(sel == 3 || sel == 4){
+      $('.upload-question').show()
+      $('.write-question').hide()
+      console.log("Sdfasffffffffffffff")
+      }else {
+      $('.img-upload').hide()
+      $('.write-question').show()
+      }
       }
       </script>
-      <%- include("../partials/footer-user") -%>
+      <script>
+      $(document).ready(function(){
+      $('input[type="file"]').change(function(e){
+      var fileName = e.target.files[0].name;
+      $(".custom-file-label").text(fileName);
+      });
+      });
+      </script>
+      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+      <!-- <script>
+      $(document).ready(function(){
+      // File upload via Ajax
+      $(".upload-img-question").on('submit', function(e){
+      e.preventDefault();
+      $.ajax({
+      type: 'POST',
+      url: '/upload/question',
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData:false,
+      error:function(){
+      $('#uploadStatus').html('<span style="color:#EA4335;">Images upload failed, please try again.<span>');
+        },
+        success: function(data){
+        $('#uploadStatus').html('<span style="color:#28A74B;">Images uploaded successfully.<span>');
+          
+          }
+          });
+          });
+          </script> -->
+          <%- include("../partials/footer-user") -%>
