@@ -1,9 +1,14 @@
 var express        = require("express");
+var app            = express();
 var router         = express.Router();
 var User           = require("../models/user");
 var Exam           = require("../models/exam");
 var Notice         = require("../models/notice");
 var formidable     = require('formidable');
+var fileUpload     = require('express-fileupload');
+var fs             = require('fs');
+var path           = require('path');
+
 
 router.get("/author/exam/new",isLoggedIn,function(req,res){
 
@@ -20,24 +25,17 @@ router.get("/author/exam/new",isLoggedIn,function(req,res){
           res.redirect("/");
         };
 
-});
+}); 
 
 router.post("/new-test",isLoggedIn,function(req,res){
-  // console.log(req.body);
-  // console.log(req.files);
-    // var form = new formidable.IncomingForm();
+  var imgUrl = req.body.question_img;
+  var subName = req.body.subject;
+  var author  = req.user.username;
 
-    // form.parse(req);
+  console.log(imgUrl)
+  res.send(imgUrl)
 
-    // form.on('fileBegin', function (name, file){
-    //     file.path = __dirname + '/uploads/' + file.name;
-    // });
 
-    // form.on('file', function (name, file){
-    //     console.log('Uploaded ' + file.name);
-    // });
-
-    // res.sendFile(__dirname + '/index.html');
 })
 
 function isLoggedIn(req,res,next){ // 
@@ -56,4 +54,21 @@ function isLoggedOut(req,res,next){ //
     res.redirect("/");          //           
   }
 }
+
+
+function moveFile(img,user,p){
+  console.log(user);
+
+   img.mv(path.join('./public/uploads/' + user, p), function(err){
+
+        if (err){
+         console.log(err);
+        }        
+        console.log('File uploaded!');
+    });
+}
+
+
+
+
 module.exports = router;
