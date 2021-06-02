@@ -5,12 +5,11 @@ var userSchema = new mongoose.Schema({
 	class: String,
 	section: String,
 	author: {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        },
+        id: String,
         username: String
-    }
+    },
+    question_img_url: String,
+    question_description: String
 }); 
 var Exam = mongoose.model("Exam",userSchema);
 module.exports = Exam;

@@ -32,8 +32,28 @@ router.post("/new-test",isLoggedIn,function(req,res){
   var subName = req.body.subject;
   var author  = req.user.username;
 
-  console.log(imgUrl)
-  res.send(imgUrl)
+Exam.create({
+  subject: req.body.subject,
+  class: req.body.class,
+  section: req.body.section,
+  author: {
+    id: req.user._id,
+    username: req.user.username
+  },
+  question_img_url: req.body.question_img,
+  question_description: req.body.question_description
+},function(err,test){
+  if (err) {
+    console.log(err);
+  }
+console.log(test);
+res.redirect("/author/dashboard")
+
+})
+
+  // console.log(imgUrl)
+  // res.send(imgUrl)
+  // console.log(req.body)
 
 
 })
