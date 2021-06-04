@@ -28,9 +28,6 @@ router.get("/author/exam/new",isLoggedIn,function(req,res){
 }); 
 
 router.post("/new-test",isLoggedIn,function(req,res){
-  var imgUrl = req.body.question_img;
-  var subName = req.body.subject;
-  var author  = req.user.username;
 
 Exam.create({
   subject: req.body.subject,
@@ -40,6 +37,7 @@ Exam.create({
     id: req.user._id,
     username: req.user.username
   },
+  question_title: req.body.question_title,
   question_img_url: req.body.question_img,
   question_description: req.body.question_description
 },function(err,test){
@@ -51,12 +49,12 @@ res.redirect("/author/dashboard")
 
 })
 
-  // console.log(imgUrl)
-  // res.send(imgUrl)
-  // console.log(req.body)
+
+});
 
 
-})
+
+
 
 function isLoggedIn(req,res,next){ // 
   if(req.isAuthenticated()){      //   this function used for preventing   

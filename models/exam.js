@@ -8,6 +8,7 @@ var userSchema = new mongoose.Schema({
         id: String,
         username: String
     },
+    question_title: String,
     question_img_url: String,
     question_description: String
 }); 

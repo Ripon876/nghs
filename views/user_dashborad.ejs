@@ -25,13 +25,17 @@
                     <table id="recent-purchases-listing" class="table">
                       <thead>
                         <tr>
-                            <th>You can take part to this exams</th>
+                            <th>You can take part to this tests</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                            <td>This is the first exam of you</td>
-                        </tr>
+                    <% tests.forEach(function(test){ %>
+                    <tr>
+                      <td><%= test.question_title %></td>
+                      <td><a href="/user/edit/<%- user._id %>" class="btn btn-primary btn-sm">Take Test</a>
+                      <a href="/delete_user/<%= user._id %>" class="btn btn-danger btn-sm">See Result</a></td>
+                    </tr>
+                    <%  }) %>
                       </tbody>
                     </table>
                   </div>

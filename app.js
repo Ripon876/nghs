@@ -218,33 +218,39 @@ app.post("/upload", function(req, res){
     });
   
 });
-// ====================
-// users dashboard rout
+  // ====================
+ // users dashboard rout
 // ====================
 
 app.get("/user/dashboard",isLoggedIn,function(req,res){
   var  title = "NGHS | User Dashboard";
+  var obj = {
+  class: req.user.class,
+  section: req.user.section
+}
+
+
+
     User.findById(req.user._id,function(err,user){
       if (err) {
         console.log(err)
       }else{
 
-        
         Notice.find({},function(err,notices){
           if (err) {
             console.log(err);
           }
           else{
-              res.render("user_dashborad",{user: user,title: title,notices: notices});
+Exam.find(obj,function(err,tests){
+  if(err){
+    console.log(err)
+  }
+ res.render("user_dashborad",{user: user,title: title,notices: notices,tests: tests});
+}) 
           }
-
         });
-
-       
       }
     });
-
- 
 });
 app.get("/user/profile",isLoggedIn,function(req,res){
   var title = "NGHS | User Profile";
@@ -300,14 +306,27 @@ app.put("/user/profile",isLoggedIn,function(req,res){
 
 app.get("/author/dashboard",isLoggedIn,function(req,res){
       
-
+var obj = {
+  author: {
+    id: req.user._id,
+    username: req.user.username
+  }
+}
 
       if(req.user.isAuthor){
               Notice.find({},function(err,notices){
         if (err){
           console.log(err);
         }else{
-          res.render("author_dashboard",{user: req.user,notices: notices});
+
+Exam.find(obj,function(err,tests){
+  if(err){
+    console.log(err)
+  }
+
+  res.render("author_dashboard",{user: req.user,notices: notices,tests: tests});
+})
+
         };
       });
           
@@ -317,22 +336,6 @@ app.get("/author/dashboard",isLoggedIn,function(req,res){
 
 
 });
-// app.get("/author/exam/new",isLoggedIn,function(req,res){
-
-//      if(req.user.isAuthor){
-//       Notice.find({},function(err,notices){
-//         if (err){
-//           console.log(err);
-//         }else{
-//           res.render("create_test",{user: req.user,notices: notices});
-//         };
-//       });
-          
-//         }else{
-//           res.redirect("/");
-//         };
-
-// });
 
 // ====================
 // admin rout

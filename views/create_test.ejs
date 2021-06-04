@@ -27,6 +27,10 @@
         <p class="card-title text-center">Create a New Test</p>
         <form action="/new-test" method="POST" enctype="multipart/form-data">
           <div class="form-group">
+            <label for="question-title">Title</label>
+            <input type="text" name="question_title" id="question-title" class="form-control"  style="border: 1px solid #ced4da !important;">
+          </div>
+          <div class="form-group">
             <label for="subject">Class</label>
             <div class="input-group mb-3">
               <select class="custom-select" name="class" id="dsfafds234214" onchange="hideSub()">
