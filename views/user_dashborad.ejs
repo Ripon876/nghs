@@ -1,7 +1,6 @@
 <%- include("../partials/header-user") -%>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-      <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
@@ -32,7 +31,7 @@
                     <% tests.forEach(function(test){ %>
                     <tr>
                       <td><%= test.question_title %></td>
-                      <td><a href="/user/edit/<%- user._id %>" class="btn btn-primary btn-sm">Take Test</a>
+                      <td><a href="/test/submit/<%= test._id %>" class="btn btn-primary btn-sm">Take Test</a>
                       <a href="/delete_user/<%= user._id %>" class="btn btn-danger btn-sm">See Result</a></td>
                     </tr>
                     <%  }) %>

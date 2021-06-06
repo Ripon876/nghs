@@ -19,6 +19,7 @@ var port           = process.env.PORT || 3000;
 
 var sl = require("./routs/signup-login");
 var ct = require("./routs/create-test");
+var submit_test = require("./routs/submit-test");
 
 
 // https://afternoon-citadel-20931.herokuapp.com/
@@ -132,6 +133,7 @@ app.get("/",function(req,res){
 
 app.use(sl);
 app.use(ct);
+app.use(submit_test);
 // ====================
 // email rout
 // ====================
