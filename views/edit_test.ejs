@@ -28,7 +28,7 @@
         <form action="/new-test" method="POST" enctype="multipart/form-data">
           <div class="form-group">
             <label for="question-title">Title</label>
-            <input type="text" name="question_title" id="question-title" class="form-control"  style="border: 1px solid #ced4da !important;">
+            <input type="text" name="question_title" value="<%= test.question_title %>" id="question-title" class="form-control"  style="border: 1px solid #ced4da !important;">
           </div>
           <div class="form-group">
             <label for="subject">Class</label>
@@ -85,7 +85,7 @@
           <div class="write-question">
             <label for="Question">Question</label>
             <div class="form-group" >
-              <textarea class="form-control" name="question_description" style="border: 1px solid #ced4da !important;" cols="30" rows="30" placeholder="Type your question here" ></textarea>
+              <textarea class="form-control" name="question_description" style="border: 1px solid #ced4da !important;" cols="30" rows="30" placeholder="Type your question here" >value="<%= test.question_description %>" </textarea>
             </div>
           </div>
           <input type="submit" class="btn btn-primary" value="Submit">

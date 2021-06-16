@@ -18,7 +18,7 @@ var port           = process.env.PORT || 3000;
 // var socket = require("socket.io");
 
 var sl = require("./routs/signup-login");
-var ct = require("./routs/create-test");
+var ct = require("./routs/test");
 var submit_test = require("./routs/submit-test");
 
 
@@ -245,8 +245,11 @@ app.get("/user/dashboard",isLoggedIn,function(req,res){
           else{
 Exam.find(obj,function(err,tests){
   if(err){
-    console.log(err)
+    console.log(err);
   }
+
+console.log(tests)
+
  res.render("user_dashborad",{user: user,title: title,notices: notices,tests: tests});
 }) 
           }

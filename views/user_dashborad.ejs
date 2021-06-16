@@ -14,7 +14,7 @@
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-         
+    
           <div class="row">
             <div class="col-md-12 stretch-card">
               <div class="card">
@@ -25,9 +25,11 @@
                       <thead>
                         <tr>
                             <th>You can take part to this tests</th>
+
                         </tr>
                       </thead>
                       <tbody>
+  
                     <% tests.forEach(function(test){ %>
                     <tr>
                       <td><%= test.question_title %></td>
@@ -35,6 +37,7 @@
                       <a href="/delete_user/<%= user._id %>" class="btn btn-danger btn-sm">See Result</a></td>
                     </tr>
                     <%  }) %>
+
                       </tbody>
                     </table>
                   </div>

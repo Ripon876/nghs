@@ -38,7 +38,7 @@
                     <% tests.forEach(function(test){ %>
                     <tr>
                       <td><%= test.question_title %></td>
-                      <td><a href="/user/edit/<%- user._id %>" class="btn btn-primary btn-sm">Edit</a></td>
+                      <td><a href="/edit/test/<%- test._id %>" class="btn btn-primary btn-sm">Edit</a></td>
                       <td><a href="/delete_user/<%= user._id %>" class="btn btn-danger btn-sm">Delete</a></td>
                     </tr>
                     <%  }) %>

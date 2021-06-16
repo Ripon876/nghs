@@ -52,7 +52,25 @@ res.redirect("/author/dashboard")
 
 });
 
+router.get("/edit/test/:id",isLoggedIn,function(req,res){
+ Exam.findById(req.params.id,function(err,test){
+  if(err){
+    console.log(err);
+    res.send("something went wrong");
+  }
 
+
+  Notice.find({},function(err,notices){
+    if(err){
+      console.log(err)
+    }
+    res.render("edit_test",{test:test,notices:notices,user: req.user})
+  })
+
+
+
+ })
+})
 
 
 

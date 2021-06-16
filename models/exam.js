@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-var userSchema = new mongoose.Schema({
+var testSchema = new mongoose.Schema({
 	subject: String,
 	class: String,
 	section: String,
@@ -12,5 +12,5 @@ var userSchema = new mongoose.Schema({
     question_img_url: String,
     question_description: String
 }); 
-var Exam = mongoose.model("Exam",userSchema);
+var Exam = mongoose.model("Exam",testSchema);
 module.exports = Exam;
