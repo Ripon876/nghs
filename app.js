@@ -11,6 +11,7 @@ var methodOverride = require("method-override");
 var nodemailer     = require("nodemailer");
 var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 var fileUpload     = require('express-fileupload');
+var flash          = require('connect-flash');
 var fs             = require('fs');
 var path           = require('path');
 var app            = express();
@@ -34,11 +35,7 @@ app.set("view engine","ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(methodOverride("_method"));
-app.use(function(req,res,next){
 
-  res.locals.currenUser = req.user;
-  next();
-});
 app.use(fileUpload({
     useTempFiles : true,
     tempFileDir : path.join(__dirname,'tmp'),
@@ -59,6 +56,14 @@ app.get("/message",function(req,res){
 // =====================
 
 app.use(require('express-session')({ secret: "My name is MD Ripon Islam", resave: false, saveUninitialized: false }));
+app.use(flash());
+app.use(function(req,res,next){
+
+  res.locals.currenUser = req.user;
+  res.locals.error      = req.flash("error");
+  res.locals.success      = req.flash("success");
+  next();
+});
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()));
@@ -329,7 +334,7 @@ Exam.find(obj,function(err,tests){
     console.log(err)
   }
 
-  res.render("author_dashboard",{user: req.user,notices: notices,tests: tests});
+  res.render("author_dashboard",{user: req.user,notices: notices,tests: tests,success: req.flash('info'),error: req.flash('wrong')});
 })
 
         };
@@ -514,8 +519,10 @@ app.get("/admin/notice/delete/:id",function(req,res){
 function isLoggedIn(req,res,next){ // 
 	if(req.isAuthenticated()){      //   this function used for preventing   
 		return next();               //   a logged out user to visite   
-	}else{                        //   the secreat pages      
-		res.redirect("/login");    //          
+	}else{                        //   the secreat pages
+                               //
+    req.flash('loginFirst', 'Please Login First');        
+		res.redirect("/login");             
 	}
 }
 

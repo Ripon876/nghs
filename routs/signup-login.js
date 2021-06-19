@@ -65,7 +65,7 @@ router.post("/register",function(req,res){
 
 router.get("/login",isLoggedOut,function(req,res){
   var Ltitle = "NGHS | Login"
-	res.render("login",{title: Ltitle,currenUser: req.user});
+	res.render("login",{title: Ltitle,currenUser: req.user,error: req.flash('loginFirst')});
 });
 
 
@@ -87,8 +87,11 @@ router.get("/logout",function(req,res){
 function isLoggedIn(req,res,next){ // 
 	if(req.isAuthenticated()){      //   this function used for preventing   
 		return next();               //   a logged out user to visite   
-	}else{                        //   the secreat pages      
-		res.redirect("/login");    //          
+                                //   the secreat pages
+                               //  
+	}else{             
+    req.flash('loginFirst', 'Please Login First');                     
+		res.redirect("/login");          
 	}
 }
 

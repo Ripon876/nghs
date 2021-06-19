@@ -1,4 +1,16 @@
 <%- include("../partials/header") -%>
+
+<div class="container mt-3">
+               <% if(error && error.length !== 0){ %>
+                <div class="alert alert-danger" role="alert" >
+                  <%= error  %>
+                </div>
+              <% } %>	
+</div>
+
+
+
+
 <h1 style="text-align: center;">Login</h1>
 
 <form action="/login" method="POST" >

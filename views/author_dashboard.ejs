@@ -21,12 +21,23 @@
   <!-- partial -->
   <div class="main-panel">
     <div class="content-wrapper">
-      
       <div class="row">
         <div class="col-md-12 stretch-card">
           <div class="card">
             <div class="card-body">
               <p class="card-title">Exams That You Created</p>
+              
+            <% if(success && success.length !== 0){ %>
+                <div class="alert alert-success" role="alert" >
+                  <%= success  %>
+                </div>
+              <% } %>  
+               <% if(error && error.length !== 0){ %>
+                <div class="alert alert-danger" role="alert" >
+                  <%= error  %>
+                </div>
+              <% } %>
+              
               <div class="table-responsive">
                 <table id="recent-purchases-listing" class="table">
                   <thead>
@@ -50,5 +61,6 @@
         </div>
       </div>
     </div>
+
     <!-- content-wrapper ends -->
     <%- include("../partials/footer-user") -%>
