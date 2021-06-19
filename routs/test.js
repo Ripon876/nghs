@@ -65,11 +65,39 @@ router.get("/edit/test/:id",isLoggedIn,function(req,res){
       console.log(err)
     }
     res.render("edit_test",{test:test,notices:notices,user: req.user})
+    console.log(test)
   })
 
 
 
  })
+})
+
+router.post("/edit-test/:testId",function(req,res){
+   
+   var newTest = {
+  subject: req.body.subject,
+  class: req.body.class,
+  section: req.body.section,
+  author: {
+    id: req.user._id,
+    username: req.user.username
+  },
+  question_title: req.body.question_title,
+  question_img_url: req.body.question_img,
+  question_description: req.body.question_description
+};
+
+   Exam.findByIdAndUpdate(req.params.testId,newTest,{new:true},function(err,test){
+    if(err){
+      console.log(err);
+      res.send("something went wrong");
+    }
+
+res.redirect('/author/dashboard');
+
+   })
+
 })
 
 

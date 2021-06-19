@@ -24,8 +24,8 @@
   <div class="col-md-12 stretch-card">
     <div class="card">
       <div class="card-body">
-        <p class="card-title text-center">Create a New Test</p>
-        <form action="/new-test" method="POST" enctype="multipart/form-data">
+        <p class="card-title text-center">Edit Test</p>
+        <form action="/edit-test/<%= test._id %>" method="POST" enctype="multipart/form-data">
           <div class="form-group">
             <label for="question-title">Title</label>
             <input type="text" name="question_title" value="<%= test.question_title %>" id="question-title" class="form-control"  style="border: 1px solid #ced4da !important;">
@@ -34,12 +34,35 @@
             <label for="subject">Class</label>
             <div class="input-group mb-3">
               <select class="custom-select" name="class" id="dsfafds234214" onchange="hideSub()">
-                <option selected>Choose...</option>
-                <option value="6">Six</option>
-                <option value="7">Seven</option>
-                <option value="8">Eight</option>
-                <option value="9">Nine</option>
-                <option value="10">Ten</option>
+                <option <% if (test.class === '') { %>
+                  selected
+                <% } %>
+                 >Choose...</option>
+                <option 
+                <% if (test.class === '6') { %>
+                  selected
+                <% } %>
+                 value="6">Six</option>
+                <option 
+                <% if (test.class === '7') { %>
+                  selected
+                <% } %>
+                 value="7">Seven</option>
+                <option 
+                <% if (test.class === '8') { %>
+                  selected
+                <% } %>
+                 value="8">Eight</option>
+                <option 
+                <% if (test.class === '9') { %>
+                  selected
+                <% } %>
+                 value="9">Nine</option>
+                <option 
+                <% if (test.class === '10') { %>
+                  selected
+                <% } %>
+                 value="10">Ten</option>
               </select>
             </div>
           </div>
@@ -47,12 +70,35 @@
             <label for="subject">Section</label>
             <div class="input-group mb-3">
               <select class="custom-select" name="section">
-                <option selected>Choose...</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-                <option value="ALL">ALL</option>
+                <option 
+                <% if (test.section === '') { %>
+                  selected
+                <% } %> >Choose...</option>
+                <option 
+                <% if (test.section === 'A') { %>
+                  selected
+                <% } %>
+                 value="A">A</option>
+                <option 
+                <% if (test.section === 'B') { %>
+                  selected
+                <% } %>
+                 value="B">B</option>
+                <option 
+                <% if (test.section === 'C') { %>
+                  selected
+                <% } %>
+                 value="C">C</option>
+                <option 
+                <% if (test.section === 'D') { %>
+                  selected
+                <% } %>
+                 value="D">D</option>
+                <option 
+                <% if (test.section === 'ALL') { %>
+                  selected
+                <% } %>
+                 value="ALL">ALL</option>
               </select>
             </div>
           </div>
@@ -60,15 +106,51 @@
             <label for="subject">Subject</label>
             <div class="input-group mb-3">
               <select class="custom-select" name="subject" id="inputGroupSelect01" onchange="sc();">
-                <option selected>Choose...</option>
-                <option value="1">Bangla</option>
-                <option value="2">English</option>
-                <option value="3">Math</option>
-                <option value="4">Higher Math</option>
-                <option value="5">Biology</option>
-                <option value="6">Chemistry</option>
-                <option value="7">Phisics</option>
-                <option value="8">ICT</option>
+                <option 
+                <% if (test.subject === '') { %>
+                  selected
+                <% } %>
+                 >Choose...</option>
+                <option 
+                <% if (test.subject === '1') { %>
+                  selected
+                <% } %>
+                 value="1">Bangla</option>
+                <option 
+                <% if (test.subject === '2') { %>
+                  selected
+                <% } %>
+                 value="2">English</option>
+                <option 
+                <% if (test.subject === '3') { %>
+                  selected
+                <% } %>
+                 value="3">Math</option>
+                <option 
+                <% if (test.subject === '4') { %>
+                  selected
+                <% } %>
+                 value="4">Higher Math</option>
+                <option 
+                <% if (test.section === '5') { %>
+                  selected
+                <% } %>
+                 value="5">Biology</option>
+                <option 
+                <% if (test.subject === '6') { %>
+                  selected
+                <% } %>
+                 value="6">Chemistry</option>
+                <option 
+                <% if (test.subject === '7') { %>
+                  selected
+                <% } %>
+                 value="7">Phisics</option>
+                <option 
+                <% if (test.subject === '8') { %>
+                  selected
+                <% } %>
+                 value="8">ICT</option>
               </select>
             </div>
           </div>
@@ -85,7 +167,7 @@
           <div class="write-question">
             <label for="Question">Question</label>
             <div class="form-group" >
-              <textarea class="form-control" name="question_description" style="border: 1px solid #ced4da !important;" cols="30" rows="30" placeholder="Type your question here" >value="<%= test.question_description %>" </textarea>
+              <textarea class="form-control" name="question_description" style="border: 1px solid #ced4da !important;" cols="30" rows="30" placeholder="Type your question here" ><%= test.question_description %></textarea>
             </div>
           </div>
           <input type="submit" class="btn btn-primary" value="Submit">

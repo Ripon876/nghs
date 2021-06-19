@@ -9,10 +9,10 @@ var fs             = require('fs');
 var path           = require('path');
 
 
-router.get("/test/submit/:test_id",isLoggedIn,function(req,res) {
+router.get("/test/submit/:testId",isLoggedIn,function(req,res) {
 	var title = "NGHS | Submit Test";
 
-	Exam.findById(test_id,function(err,test){
+	Exam.findById(req.params.testId,function(err,test){
 		if (err){
 			console.log(err);
 			res.send("something went wrong");
@@ -31,7 +31,7 @@ router.get("/test/submit/:test_id",isLoggedIn,function(req,res) {
 
 		
 	})
-	res.send("this is the test submission route");
+
 })
 
 module.exports = router;
