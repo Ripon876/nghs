@@ -1,11 +1,53 @@
 <%- include("../partials/header-user") -%>
-<%= user.username %>
-<br>
-<br>
-<%= notices %>
-<br>
-<br>
-<%= test %>
-<br>
-<br>
-<%- include("../partials/footer-user") -%>
+<div class="container-fluid page-body-wrapper">
+	<!-- partial:partials/_sidebar.html -->
+	<nav class="sidebar sidebar-offcanvas" id="sidebar">
+		<ul class="nav">
+			<li class="nav-item">
+				<a class="nav-link" href="/user/dashboard">
+					<i class="mdi mdi-home menu-icon"></i>
+					<span class="menu-title">Dashboard</span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+	<!-- partial -->
+	<div class="main-panel">
+		<div class="content-wrapper">
+			<div class="row">
+				<div class="col-md-12 stretch-card">
+					<div class="card">
+						<div class="card-body">
+							<p class="card-title text-center">Submit Test</p>
+							<div class="form-group">
+								<label for="question-title">Question Title</label>
+								<input type="text" name="question_title" id="question-title" value="<%= test.question_title %>" readonly class="form-control"  style="border: 1px solid #ced4da !important;">
+							</div>
+							<div class="write-question">
+								<label for="Question">Question Desicription</label>
+								<div class="form-group" >
+									<textarea class="form-control" name="question_description" style="border: 1px solid #ced4da !important;" cols="30" rows="30" placeholder="Type your answer here" readonly><%= test.question_description %></textarea>
+								</div>
+							</div>
+							<!-- write answer -->
+							<p class="card-title text-center mt-5">Write Down Your Answer</p>
+							<form action="/submit-test/<%= test._id %>" method="POST">
+								<div class="form-group" >
+									<textarea class="form-control" name="answer" style="border: 1px solid #ced4da !important;" cols="30" rows="30" placeholder="Type your question here" ></textarea>
+								</div>
+								<input type="submit" value="Submit" class="btn btn-primary">
+							</form>
+						</div>
+					</div>
+				</div>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+				<script type="text/javascript">
+				$('#autoresizing').on('input', function () {
+				this.style.height = 'auto';
+				
+				this.style.height =
+				(this.scrollHeight) + 'px';
+				});
+				</script>
+				
+				<%- include("../partials/footer-user") -%>

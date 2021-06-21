@@ -108,8 +108,8 @@ function isLoggedIn(req,res,next){ //
   if(req.isAuthenticated()){      //   this function used for preventing   
     return next();               //   a logged out user to visite   
   }else{  
-    req.flash('loginFirst', 'Please Login First');                      //   the secreat pages      
-    res.redirect("/login");    //          
+    req.flash('loginFirst', 'Please Login First');  
+    res.redirect("/login");             
   }
 }
 

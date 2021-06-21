@@ -159,7 +159,7 @@
             <div class="input-group mb-3">
               <div class="custom-file">
                 <input type="file" class="custom-file-input"  id="upload-img-question" accept="image/*" aria-describedby="inputGroupFileAddon01">
-                <input type="text" id="base64String" name="question_img" style="display: none;">
+                <input type="text" id="base64String" name="question_img" value="<%= test.question_img_url %>" style="display: none;">
                 <label class="custom-file-label" for="upload-img-question">Choose file</label>
               </div>
             </div>
@@ -167,7 +167,7 @@
           <div class="write-question">
             <label for="Question">Question</label>
             <div class="form-group" >
-              <textarea class="form-control" name="question_description" style="border: 1px solid #ced4da !important;" cols="30" rows="30" placeholder="Type your question here" ><%= test.question_description %></textarea>
+              <textarea class="form-control" name="question_description" style="border: 1px solid #ced4da !important;" cols="30" rows="30" placeholder="Type your question here"><%= test.question_description %></textarea>
             </div>
           </div>
           <input type="submit" class="btn btn-primary" value="Submit">

@@ -21891,3 +21891,9 @@ dl li {
 }
 
 /*# sourceMappingURL=maps/style.css.map */
+       #autoresizing {
+            display: block;
+            overflow: hidden;
+            resize: none;
+          
+        }
