@@ -56,9 +56,12 @@ router.post("/test/submit-test/:id",function(req,res){
 		req.flash('submissionDone', 'Answer successfully submited');      
 		res.redirect("/user/dashboard")
 
-	})
-})
+	});
+});
 
+router.get("/test/:user_id/:test_id/result",function(req,res){
+	res.send("result not published yet");
+});
 
 
 module.exports = router;

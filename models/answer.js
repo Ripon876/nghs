@@ -6,7 +6,9 @@ var answerSchema = new mongoose.Schema({
         username: String
     },
     test_id: String,
-    answer: String
+    answer: String,
+    marks: Number,
+    passed: { type: Boolean, default: false }
 }); 
 var Answer = mongoose.model("Answer",answerSchema);
 module.exports = Answer;
