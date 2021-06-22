@@ -3,6 +3,7 @@ var app            = express();
 var router         = express.Router();
 var User           = require("../models/user");
 var Exam           = require("../models/exam");
+var Answer         = require("../models/answer");
 var Notice         = require("../models/notice");
 var fileUpload     = require('express-fileupload');
 var fs             = require('fs');
@@ -22,17 +23,43 @@ router.get("/test/submit/:testId",isLoggedIn,function(req,res) {
      			if (err){
 			console.log(err);
 			res.send("something went wrong");
-		}
+		};
 		
 		res.render("submit_test",{user: req.user,title: title,notices: notices,test: test})
 
-     })
+     });
 
 
 		
-	})
+	});
 
+});
+
+router.post("/test/submit-test/:id",function(req,res){
+	var answer = req.body.answer;
+	var testAnswer = {
+	user: {
+        id: req.user._id,
+        username: req.user.username
+    },
+    test_id: req.params.id,
+    answer: answer
+	}
+	Answer.create(testAnswer,function(err,answer){
+		if(err)
+			{
+				console.log(err);
+				req.flash('submissionFailed', 'Answer not submited properly');      
+				res.redirect("/user/dashboard")
+			}
+
+		req.flash('submissionDone', 'Answer successfully submited');      
+		res.redirect("/user/dashboard")
+
+	})
 })
+
+
 
 module.exports = router;
 

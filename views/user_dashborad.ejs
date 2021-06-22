@@ -20,6 +20,21 @@
               <div class="card">
                 <div class="card-body">
                   <p class="card-title">Exams For You</p>
+
+<div class="container mt-3">
+               <% if(error && error.length !== 0){ %>
+                <div class="alert alert-danger" role="alert" >
+                  <%= error  %>
+                </div>
+              <% } %>       
+               <% if(success && success.length !== 0){ %>
+                <div class="alert alert-success" role="alert" >
+                  <%= success  %>
+                </div>
+              <% } %> 
+</div>
+
+
                   <div class="table-responsive">
                     <table id="recent-purchases-listing" class="table">
                       <thead>
@@ -29,11 +44,19 @@
                         </tr>
                       </thead>
                       <tbody>
+
   
                     <% tests.forEach(function(test){ %>
                     <tr>
                       <td><%= test.question_title %></td>
-                      <td><a href="/test/submit/<%= test._id %>" class="btn btn-primary btn-sm">Take Test</a>
+                      <td><a href="/test/submit/<%= test._id %>"  class="btn btn-primary                      
+                       <% answers.forEach(function(answer){ %>
+                       <% if (answer.test_id == test._id) { %>
+                          disabled
+                       <% } %>
+                       
+                       <%  }) %> 
+                       btn-sm">Take Test</a>
                       <a href="/delete_user/<%= user._id %>" class="btn btn-danger btn-sm">See Result</a></td>
                     </tr>
                     <%  }) %>

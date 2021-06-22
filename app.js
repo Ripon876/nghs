@@ -5,6 +5,7 @@ var passport       = require("passport");
 var mongoose       = require("mongoose");
 var User           = require("./models/user");
 var Exam           = require("./models/exam");
+var Answer         = require("./models/answer");
 var Notice         = require("./models/notice");
 var localStrategy  = require("passport-local");
 var methodOverride = require("method-override");
@@ -235,7 +236,12 @@ app.get("/user/dashboard",isLoggedIn,function(req,res){
   class: req.user.class,
   section: req.user.section
 }
-
+var usreAnswers = {
+  user: {
+      id: req.user._id,
+      username: req.user.username
+  }
+}
 
 
     User.findById(req.user._id,function(err,user){
@@ -253,9 +259,15 @@ Exam.find(obj,function(err,tests){
     console.log(err);
   }
 
-console.log(tests)
+Answer.find(usreAnswers,function(err,answers){
+  if(err){
+    console.log(err);
+  }
+   res.render("user_dashborad",{answers: answers,user: user,title: title,notices: notices,tests: tests,error: req.flash("submissionFailed"),success: req.flash("submissionDone")});
+})
 
- res.render("user_dashborad",{user: user,title: title,notices: notices,tests: tests});
+
+
 }) 
           }
         });
