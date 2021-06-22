@@ -22,6 +22,11 @@
                   <p class="card-title">Exams For You</p>
 
 <div class="container mt-3">
+              <% if(notification && notification.length !== 0){ %>
+                <div class="alert alert-primary" role="alert" >
+                  <%= notification  %>
+                </div>
+              <% } %>
                <% if(error && error.length !== 0){ %>
                 <div class="alert alert-danger" role="alert" >
                   <%= error  %>

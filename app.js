@@ -231,7 +231,7 @@ app.post("/upload", function(req, res){
 // ====================
 
 app.get("/user/dashboard",isLoggedIn,function(req,res){
-  var  title = "NGHS | User Dashboard";
+  var title = "NGHS | User Dashboard";
   var obj = {
   class: req.user.class,
   section: req.user.section
@@ -263,7 +263,7 @@ Answer.find(usreAnswers,function(err,answers){
   if(err){
     console.log(err);
   }
-   res.render("user_dashborad",{answers: answers,user: user,title: title,notices: notices,tests: tests,error: req.flash("submissionFailed"),success: req.flash("submissionDone")});
+   res.render("user_dashborad",{answers: answers,user: user,title: title,notices: notices,tests: tests,error: req.flash("submissionFailed"),success: req.flash("submissionDone"),notification: req.flash("notification")});
 })
 
 
@@ -346,7 +346,7 @@ Exam.find(obj,function(err,tests){
     console.log(err)
   }
 
-  res.render("author_dashboard",{user: req.user,notices: notices,tests: tests,success: req.flash('info'),error: req.flash('wrong')});
+  res.render("author_dashboard",{user: req.user,notices: notices,tests: tests,success: req.flash('info'),error: req.flash('wrong'),notification: req.flash("notification")});
 })
 
         };
@@ -441,6 +441,10 @@ app.put("/admin/user/edit",isLoggedIn,function(req,res){
 });
 
 app.get("/delete_user/:id",isLoggedIn,function(req,res){
+     
+     if (req.user.isAdmin === true) {
+
+
 
     User.findById(req.params.id,function(err,user){
     if (err) {
@@ -450,6 +454,18 @@ app.get("/delete_user/:id",isLoggedIn,function(req,res){
       res.render("delete_user",{user: user});
     };
   }); 
+
+  }
+else if (req.user.isAuthor == true) {
+  req.flash('notification', 'You Do Not Have The Permission To Do That');  
+  res.redirect("/author/dashboard");             
+}
+else if(req.user.isUser == true){
+  req.flash('notification', 'You Do Not Have The Permission To Do That');  
+  res.redirect("/user/dashboard");             
+}
+
+
 });
 
 app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
