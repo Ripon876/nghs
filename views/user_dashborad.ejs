@@ -1,78 +1,72 @@
 <%- include("../partials/header-user") -%>
-    <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/user/dashboard">
-              <i class="mdi mdi-home menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <!-- partial -->
-      <div class="main-panel">
-        <div class="content-wrapper">
-    
-          <div class="row">
-            <div class="col-md-12 stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Exams For You</p>
-
-<div class="container mt-3">
-              <% if(notification && notification.length !== 0){ %>
+<!-- partial -->
+<div class="container-fluid page-body-wrapper">
+  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/user/dashboard">
+          <i class="mdi mdi-home menu-icon"></i>
+          <span class="menu-title">Dashboard</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- partial -->
+  <div class="main-panel">
+    <div class="content-wrapper">
+      
+      <div class="row">
+        <div class="col-md-12 stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <p class="card-title">Exams For You</p>
+              <div class="container mt-3">
+                <% if(notification && notification.length !== 0){ %>
                 <div class="alert alert-primary" role="alert" >
                   <%= notification  %>
                 </div>
-              <% } %>
-               <% if(error && error.length !== 0){ %>
+                <% } %>
+                <% if(error && error.length !== 0){ %>
                 <div class="alert alert-danger" role="alert" >
                   <%= error  %>
                 </div>
-              <% } %>       
-               <% if(success && success.length !== 0){ %>
+                <% } %>
+                <% if(success && success.length !== 0){ %>
                 <div class="alert alert-success" role="alert" >
                   <%= success  %>
                 </div>
-              <% } %> 
-</div>
-
-
-                  <div class="table-responsive">
-                    <table id="recent-purchases-listing" class="table">
-                      <thead>
-                        <tr>
-                            <th>You can take part to this tests</th>
-
-                        </tr>
-                      </thead>
-                      <tbody>
-
-  
+                <% } %>
+              </div>
+              <div class="table-responsive">
+                <table id="recent-purchases-listing" class="table">
+                  <thead>
+                    <tr>
+                      <th>You can take part to this tests</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
                     <% tests.forEach(function(test){ %>
                     <tr>
                       <td><%= test.question_title %></td>
-                      <td><a href="/test/submit/<%= test._id %>"  class="btn btn-primary                      
-                       <% answers.forEach(function(answer){ %>
-                       <% if (answer.test_id == test._id) { %>
-                          disabled
-                       <% } %>
-                       
-                       <%  }) %> 
-                       btn-sm">Take Test</a>
+                      <td><a href="/test/submit/<%= test._id %>"  class="btn btn-primary
+                        <% answers.forEach(function(answer){ %>
+                        <% if (answer.test_id == test._id) { %>
+                        disabled
+                        <% } %>
+                        
+                        <%  }) %>
+                      btn-sm">Take Test</a>
                       <a href="/test/<%= user._id %>/<%= test._id %>/result" class="btn btn-danger btn-sm">See Result</a></td>
                     </tr>
                     <%  }) %>
-
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
-        <!-- content-wrapper ends -->
-<%- include("../partials/footer-user") -%>
+      </div>
+    </div>
+    <!-- content-wrapper ends -->
+    <%- include("../partials/footer-user") -%>

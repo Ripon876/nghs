@@ -35,12 +35,13 @@ router.get("/test/submit/:testId",isLoggedIn,function(req,res) {
 
 });
 
-router.post("/test/submit-test/:id",function(req,res){
+router.post("/test/submit-test/:id",isLoggedIn,function(req,res){
 	var answer = req.body.answer;
 	var testAnswer = {
 	user: {
         id: req.user._id,
-        username: req.user.username
+        username: req.user.username,
+        name: req.user.name
     },
     test_id: req.params.id,
     answer: answer

@@ -3,6 +3,7 @@ var app            = express();
 var router         = express.Router();
 var User           = require("../models/user");
 var Exam           = require("../models/exam");
+var Answer         = require("../models/answer");
 var Notice         = require("../models/notice");
 var formidable     = require('formidable');
 var fileUpload     = require('express-fileupload');
@@ -98,10 +99,39 @@ router.post("/edit-test/:testId",isLoggedIn,function(req,res){
     req.flash('info', 'Successfully Edited');
     res.redirect('/author/dashboard');
 
-   })
+   });
 
-})
+});
 
+router.get("/test/status/:test_id",isLoggedIn,function(req,res){
+var answersOfTheTest = {
+  test_id: req.params.test_id
+}
+
+Answer.find(answersOfTheTest,function(err,answers){
+  if(err)
+  {
+    console.log(err);
+    res.redirect("/author/dashboard");
+  }
+
+ Notice.find({},function(err,notices){
+    if(err){
+      console.log(err)
+    }
+    res.render("test_status",{notices:notices,user: req.user,answers:answers});
+    console.log("==============")
+    console.log(answers) 
+  });
+
+
+
+});
+});
+
+router.get("/test/kl",function(req,res){
+  res.json({user:"ripon"});
+});
 
 
 function isLoggedIn(req,res,next){ // 

@@ -3,7 +3,8 @@ var mongoose = require("mongoose");
 var answerSchema = new mongoose.Schema({
 	user: {
         id: String,
-        username: String
+        username: String,
+        name: String
     },
     test_id: String,
     answer: String,

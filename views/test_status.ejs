@@ -17,7 +17,7 @@
         </a>
       </li>
     </ul>
-  </nav> 
+  </nav>
   <!-- partial -->
   <div class="main-panel">
     <div class="content-wrapper">
@@ -25,48 +25,64 @@
         <div class="col-md-12 stretch-card">
           <div class="card">
             <div class="card-body">
-              <p class="card-title">Exams That You Created</p>
+              <p class="card-title">Students answered your question</p>
               
-            <% if(notification && notification.length !== 0){ %>
-                <div class="alert alert-primary" role="alert" >
-                  <%= notification  %>
-                </div>
-              <% } %>
-              <% if(success && success.length !== 0){ %>
-                <div class="alert alert-success" role="alert" >
-                  <%= success  %>
-                </div>
-              <% } %>  
-               <% if(error && error.length !== 0){ %>
-                <div class="alert alert-danger" role="alert" >
-                  <%= error  %>
-                </div>
-              <% } %>
               
               <div class="table-responsive">
                 <table id="recent-purchases-listing" class="table">
                   <thead>
                     <tr>
-                      <th>You can delete tests from the below list</th>
+                      <th>Click on a student name to view his/her answer</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <% tests.forEach(function(test){ %>
+                    <% answers.forEach(function(answer){ %>
                     <tr>
-                      <td><%= test.question_title %></td>
-                      <td><a href="/edit/test/<%- test._id %>" class="btn btn-primary btn-sm">Edit</a></td>
-                      <td><a href="/test/status/<%- test._id %>" class="btn btn-success btn-sm">Status</a></td>
-                      <td><a href="/delete_user/<%= user._id %>" class="btn btn-danger btn-sm">Delete</a></td>
+                      <td><%- answer.user.name %></td>
+                      <td> <input type="text" value="/test/kl" style="display: none;" id="getLinkHolder">
+                       <button id="seeAnswer" class="btn btn-primary btn-sm" onclick="showResult()">View Answer</button></td>
                     </tr>
                     <%  }) %>
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div> 
           </div>
         </div>
       </div>
     </div>
-
     <!-- content-wrapper ends -->
+
+
+<script>
+
+function showResult(){
+
+
+var get = $("#getLinkHolder").val();
+console.log(get);
+
+
+
+  
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET',get, true);
+    xhr.getResponseHeader('Content-type', 'application/json');
+
+    xhr.onload = function () {
+        if(this.status === 200){
+
+            console.log("done");
+            console.log(this.responseText);
+        }
+        else{
+            console.log("Some error occured");
+        }
+    }
+    xhr.send();
+
+};
+</script>
+
+
     <%- include("../partials/footer-user") -%>

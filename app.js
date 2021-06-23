@@ -239,7 +239,8 @@ app.get("/user/dashboard",isLoggedIn,function(req,res){
 var usreAnswers = {
   user: {
       id: req.user._id,
-      username: req.user.username
+      username: req.user.username,
+      name: req.user.name
   }
 }
 
@@ -263,6 +264,8 @@ Answer.find(usreAnswers,function(err,answers){
   if(err){
     console.log(err);
   }
+   console.log("*****************");
+   console.log(answers);
    res.render("user_dashborad",{answers: answers,user: user,title: title,notices: notices,tests: tests,error: req.flash("submissionFailed"),success: req.flash("submissionDone"),notification: req.flash("notification")});
 })
 
