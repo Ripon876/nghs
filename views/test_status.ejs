@@ -33,14 +33,14 @@
                   <thead>
                     <tr>
                       <th>Click on a student name to view his/her answer</th>
-                    </tr>
+                    </tr> 
                   </thead>
                   <tbody>
                     <% answers.forEach(function(answer){ %>
                     <tr>
                       <td><%- answer.user.name %></td>
-                      <td> <input type="text" value="/test/kl" style="display: none;" id="getLinkHolder">
-                       <button id="seeAnswer" class="btn btn-primary btn-sm" onclick="showResult()">View Answer</button></td>
+                      <td> <input type="text" value="/test/status/answer/<%- answer._id %>" style="display: none;" id="getLinkHolder">
+                       <button id="seeAnswer" class="btn btn-primary btn-sm" onclick="showResult(this)">View Answer</button></td>
                     </tr>
                     <%  }) %>
                   </tbody>
@@ -50,20 +50,25 @@
           </div>
         </div>
       </div>
-    </div>
+
+
+
+<div class="jumbotron showResult m-auto text-center">
+  
+  <p></p>
+  <a class="btn btn-danger btn-sm" href="#" onclick="hideViewer()" role="button">close</a>
+</div>
+
+        </div>
     <!-- content-wrapper ends -->
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
+  $(".showResult").hide();
 
-function showResult(){
+function showResult(e){
 
-
-var get = $("#getLinkHolder").val();
-console.log(get);
-
-
-
+var get = e.previousSibling.previousElementSibling.attributes.value.value;
   
     const xhr = new XMLHttpRequest();
     xhr.open('GET',get, true);
@@ -71,9 +76,12 @@ console.log(get);
 
     xhr.onload = function () {
         if(this.status === 200){
+          var answer = JSON.parse(this.responseText)
 
-            console.log("done");
-            console.log(this.responseText);
+            
+            console.log(answer.answer.answer);
+            showAnswer(answer.answer.answer)
+              $(".showResult").show(500);
         }
         else{
             console.log("Some error occured");
@@ -82,7 +90,16 @@ console.log(get);
     xhr.send();
 
 };
+
+function showAnswer(answer){
+$(".showResult p").text(answer);
+}
+
+function hideViewer(){
+   $(".showResult").hide(500);
+}
+
 </script>
 
-
+ 
     <%- include("../partials/footer-user") -%>

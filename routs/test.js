@@ -129,8 +129,21 @@ Answer.find(answersOfTheTest,function(err,answers){
 });
 });
 
-router.get("/test/kl",function(req,res){
-  res.json({user:"ripon"});
+router.get("/test/status/answer/:answer_id",function(req,res){
+
+  Answer.findById(req.params.answer_id,function(err,answer){
+    if(err){
+      console.log(err);
+    }
+    
+    var ansObj ={
+      answer: answer
+    }
+
+    res.json(ansObj);
+
+
+  })
 });
 
 
