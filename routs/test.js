@@ -146,6 +146,14 @@ router.get("/test/status/answer/:answer_id",function(req,res){
   })
 });
 
+router.get("/test/result/answer/:answer_id/:number",function(req,res){
+  var result = {
+    answer_id: req.params.answer_id,
+    number: req.params.number
+  }
+  res.json(result)
+})
+
 
 function isLoggedIn(req,res,next){ // 
   if(req.isAuthenticated()){      //   this function used for preventing   

@@ -39,8 +39,12 @@
                     <% answers.forEach(function(answer){ %>
                     <tr>
                       <td><%- answer.user.name %></td>
-                      <td> <input type="text" value="/test/status/answer/<%- answer._id %>" style="display: none;" id="getLinkHolder">
+                      <td><input type="text" value="/test/status/answer/<%- answer._id %>" style="display: none;" id="getLinkHolder">
                        <button id="seeAnswer" class="btn btn-primary btn-sm" onclick="showResult(this)">View Answer</button></td>
+                       <td>
+                        <input type="text" value="<%- answer._id %>" style="display: none;">
+                        <button class="btn btn-primary btn-sm" id="gt"   onclick="giveNumber(this)">Give Number</button>
+                      </td>
                     </tr>
                     <%  }) %>
                   </tbody>
@@ -50,7 +54,7 @@
           </div>
         </div>
       </div>
-
+ 
 
 
 <div class="jumbotron showResult m-auto text-center">
@@ -59,16 +63,30 @@
   <a class="btn btn-danger btn-sm" href="#" onclick="hideViewer()" role="button">close</a>
 </div>
 
+
+<div class="jumbotron give_number m-auto text-center">
+  <form>
+  <div class="form-group">
+    <label for="result_number">Give Number</label>
+    <input type="number" max="100" id="result_number" class="form-control border w-75 m-auto">
+  </div>
+  <button class="btn btn-primary btn-xm">Submit</button>
+  </form>
+  <a class="btn btn-danger btn-sm mt-3" href="#" onclick="hideViewer()" role="button">close</a>
+</div>
+
         </div>
     <!-- content-wrapper ends -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
   $(".showResult").hide();
+  $(".give_number").hide();
+  var answer_id = "";
 
 function showResult(e){
 
-var get = e.previousSibling.previousElementSibling.attributes.value.value;
+var get = e.parentElement.firstChild.value;
   
     const xhr = new XMLHttpRequest();
     xhr.open('GET',get, true);
@@ -79,7 +97,7 @@ var get = e.previousSibling.previousElementSibling.attributes.value.value;
           var answer = JSON.parse(this.responseText)
 
             
-            console.log(answer.answer.answer);
+        
             showAnswer(answer.answer.answer)
               $(".showResult").show(500);
         }
@@ -91,13 +109,64 @@ var get = e.previousSibling.previousElementSibling.attributes.value.value;
 
 };
 
+
+function giveNumber(e){
+ answer_id =  e.previousElementSibling.value;
+  $(".give_number").show(500);
+
+}
+ 
+
+
 function showAnswer(answer){
 $(".showResult p").text(answer);
 }
 
 function hideViewer(){
    $(".showResult").hide(500);
+   $(".give_number").hide(500);
 }
+
+
+$("form").submit(function(e){
+  e.preventDefault();
+var result = $("#result_number").val();
+
+var aaui = "/test/result/answer/" + answer_id + "/" + result;
+console.log(aaui)
+
+
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET',aaui, true);
+    xhr.getResponseHeader('Content-type', 'application/json');
+
+    xhr.onload = function () {
+        if(this.status === 200){
+         console.log(this.responseText);
+
+            
+        
+              $(".showResult").show(500);
+        }
+        else{
+            console.log("Some error occured");
+        }
+    }
+    xhr.send();
+
+
+
+
+
+
+
+
+
+ 
+   $(".give_number").hide(500);
+   $("#result_number").val(0);
+})
 
 </script>
 

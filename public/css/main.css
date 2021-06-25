@@ -22,9 +22,17 @@ li.show .notifications .show{
   display: flex !important;
   flex-direction: column-reverse !important;
 }
-.showResult {
+.showResult,.give_number {
     width: 93%;
-    height: auto;
+    height: auto; 
+    top: 30%;
+    transform: translateY(-220px);
+    box-shadow: 1px 1px 44px 11px #0202029e;
+    background-color: white;
+}
+.give_number {
+    width: 53%;
+    height: auto; 
     top: 30%;
     transform: translateY(-220px);
     box-shadow: 1px 1px 44px 11px #0202029e;
