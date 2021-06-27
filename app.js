@@ -14,7 +14,7 @@ var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 var fileUpload     = require('express-fileupload');
 var flash          = require('connect-flash');
 var fs             = require('fs');
-var path           = require('path');
+var path           = require('path'); 
 var app            = express();
 var port           = process.env.PORT || 3000; 
 // var socket = require("socket.io");
@@ -264,8 +264,6 @@ Answer.find(usreAnswers,function(err,answers){
   if(err){
     console.log(err);
   }
-   console.log("*****************");
-   console.log(answers);
    res.render("user_dashborad",{answers: answers,user: user,title: title,notices: notices,tests: tests,error: req.flash("submissionFailed"),success: req.flash("submissionDone"),notification: req.flash("notification")});
 })
 

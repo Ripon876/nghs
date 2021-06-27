@@ -60,9 +60,7 @@ router.post("/test/submit-test/:id",isLoggedIn,function(req,res){
 	});
 });
 
-router.get("/test/:user_id/:test_id/result",function(req,res){
-	res.send("result not published yet");
-});
+
 
 
 module.exports = router;

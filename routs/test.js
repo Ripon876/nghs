@@ -20,7 +20,7 @@ router.get("/author/exam/new",isLoggedIn,function(req,res){
         }else{
           res.render("create_test",{user: req.user,notices: notices});
         };
-      });
+      }); 
           
         }else{
           res.redirect("/");
@@ -45,7 +45,7 @@ Exam.create({
   if (err) {
     console.log(err);
   }
-console.log(test);
+
 res.redirect("/author/dashboard")
 
 })
@@ -66,7 +66,7 @@ router.get("/edit/test/:id",isLoggedIn,function(req,res){
       console.log(err)
     }
     res.render("edit_test",{test:test,notices:notices,user: req.user})
-    console.log(test)
+  
   })
 
 
@@ -121,7 +121,6 @@ Answer.find(answersOfTheTest,function(err,answers){
     }
     res.render("test_status",{notices:notices,user: req.user,answers:answers});
     console.log("==============")
-    console.log(answers) 
   });
 
 
@@ -147,13 +146,57 @@ router.get("/test/status/answer/:answer_id",function(req,res){
 });
 
 router.get("/test/result/answer/:answer_id/:number",function(req,res){
+
+var status = false;
+if(req.params.number >= 33){
+  status = true;
+}
+
   var result = {
-    answer_id: req.params.answer_id,
-    number: req.params.number
+    marks: req.params.number,
+    passed: status
   }
-  res.json(result)
+  var error = {
+    message: "error"
+  }
+  var success = {
+    message: "success"
+  }
+  // res.json(result)
+ Answer.findByIdAndUpdate(req.params.answer_id,result,{new: true},function(err,answer){
+  if(err){
+    console.log(err);
+    res.json(error);
+  }
+
+console.log(answer);
+res.json(success)
+
+ });
 })
 
+router.get("/test/:answer_id/:test_id/result",function(req,res){
+
+var obj={
+    _id: req.params.answer_id,
+    test_id: req.params.test_id,
+  }
+
+
+ Answer.find(obj,function(err,answer){
+  if(err){
+    console.log(err);
+    res.send("something went wrong");
+  }
+  console.log(answer)
+  res.send(answer)
+
+ })
+ 
+
+});
+
+// 31/08/2021
 
 function isLoggedIn(req,res,next){ // 
   if(req.isAuthenticated()){      //   this function used for preventing   

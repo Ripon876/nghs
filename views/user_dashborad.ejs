@@ -57,7 +57,15 @@
                         
                         <%  }) %>
                       btn-sm">Take Test</a>
-                      <a href="/test/<%= user._id %>/<%= test._id %>/result" class="btn btn-danger btn-sm">See Result</a></td>
+
+   <% answers.forEach(function(answer){ %>
+                        <% if (answer.test_id == test._id) { %>
+                          <a href="/test/<%= answer._id %>/<%= test._id %>/result" class="btn btn-danger btn-sm">See Result</a>
+                        <% } %>
+                       
+                        <%  }) %>
+
+                     </td>
                     </tr>
                     <%  }) %>
                   </tbody>
