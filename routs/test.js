@@ -82,9 +82,6 @@ router.get("/delete_test/:test_id",function(req,res){
       res.redirect("/author/dashboard");
     }
 
-
-
-
   req.flash("info","Test Successfully Deleted");
   res.redirect("/author/dashboard");
   console.log(req.params.test_id,test)
