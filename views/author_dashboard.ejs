@@ -16,7 +16,7 @@
           <span class="menu-title">Create new Test</span>
         </a>
       </li>
-    </ul>
+    </ul> 
   </nav> 
   <!-- partial -->
   <div class="main-panel">
@@ -47,7 +47,7 @@
                 <table id="recent-purchases-listing" class="table">
                   <thead>
                     <tr>
-                      <th>You can delete tests from the below list</th>
+                      <th>You can edit / delete tests from the below list</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -56,7 +56,7 @@
                       <td><%= test.question_title %></td>
                       <td><a href="/edit/test/<%- test._id %>" class="btn btn-primary btn-sm">Edit</a></td>
                       <td><a href="/test/status/<%- test._id %>" class="btn btn-success btn-sm">Status</a></td>
-                      <td><a href="/delete_user/<%= user._id %>" class="btn btn-danger btn-sm">Delete</a></td>
+                      <td><a href="/delete_test/<%- test._id %>" class="btn btn-danger btn-sm">Delete</a></td>
                     </tr>
                     <%  }) %>
                   </tbody>

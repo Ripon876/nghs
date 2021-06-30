@@ -74,6 +74,25 @@ router.get("/edit/test/:id",isLoggedIn,function(req,res){
  })
 })
 
+router.get("/delete_test/:test_id",function(req,res){
+  Exam.findByIdAndRemove(req.params.test_id,function(err,test){
+    if(err){
+      console.log(err);
+      req.flash("wrong","Something Went Wrong");
+      res.redirect("/author/dashboard");
+    }
+
+
+
+
+  req.flash("info","Test Successfully Deleted");
+  res.redirect("/author/dashboard");
+  console.log(req.params.test_id,test)
+   
+
+  });
+})
+
 router.post("/edit-test/:testId",isLoggedIn,function(req,res){
    
    var newTest = {

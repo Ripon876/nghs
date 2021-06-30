@@ -224,8 +224,9 @@ app.post("/upload", function(req, res){
             
         res.send('File uploaded!');
     });
-  
 });
+
+ 
   // ====================
  // users dashboard rout
 // ====================
@@ -302,7 +303,7 @@ app.get("/user/profile/edit",isLoggedIn,function(req,res){
 
     }
   });
-
+ 
 });
 app.put("/user/profile",isLoggedIn,function(req,res){
 
