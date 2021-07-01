@@ -4,7 +4,8 @@
   "description": "this is a node js based app ,where a teacher can take exams of thire studens",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js",
+    "devStart": "nodemon app.js"
   },
   "keywords": [
     "exam",
