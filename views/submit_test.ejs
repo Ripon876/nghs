@@ -23,12 +23,17 @@
 								<label for="question-title">Question Title</label>
 								<input type="text" name="question_title" id="question-title" value="<%= test.question_title %>" readonly class="form-control"  style="border: 1px solid #ced4da !important;">
 							</div>
+							<div class="showQuestion">
+								<img  class="img-fluid" id="showQuestion" alt="Question image">
+							</div>
+							
 							<div class="write-question">
 								<label for="Question">Question Desicription</label>
 								<div class="form-group" >
 									<textarea class="form-control" name="question_description" style="border: 1px solid #ced4da !important;" cols="30" rows="30" placeholder="Type your answer here" readonly><%= test.question_description %></textarea>
 								</div>
 							</div>
+							
 							<!-- write answer -->
 							<p class="card-title text-center mt-5">Write Down Your Answer</p>
 							<form action="/test/submit-test/<%= test._id %>" method="POST">
@@ -40,14 +45,21 @@
 						</div>
 					</div>
 				</div>
-				<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-				<script type="text/javascript">
-				$('#autoresizing').on('input', function () {
-				this.style.height = 'auto';
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 				
-				this.style.height =
-				(this.scrollHeight) + 'px';
-				});
-				</script>
+<script type="text/javascript">
+$('#autoresizing').on('input', function () {
+this.style.height = 'auto';
 				
-				<%- include("../partials/footer-user") -%>
+this.style.height =
+(this.scrollHeight) + 'px';
+});
+</script>
+<script>
+if( <%= test.subject %> == '3' || <%= test.subject %> == '4'){
+$('.write-question').hide();
+document.querySelector("#showQuestion").src = '<%= test. question_img_url %>';
+$('.showQuestion').show()
+}
+</script>
+<%- include("../partials/footer-user") -%>
