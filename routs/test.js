@@ -136,7 +136,7 @@ Answer.find(answersOfTheTest,function(err,answers){
       console.log(err)
     }
     res.render("test_status",{notices:notices,user: req.user,answers:answers});
-    console.log("==============")
+    // console.log("==============")
   });
 
 
@@ -162,7 +162,7 @@ router.get("/test/status/answer/:answer_id",function(req,res){
 });
 
 router.get("/test/result/answer/:answer_id/:number",function(req,res){
-
+var id = req.params.answer_id;
 var status = false;
 if(req.params.number >= 33){
   status = true;
@@ -178,17 +178,40 @@ if(req.params.number >= 33){
   var success = {
     message: "success"
   }
-  // res.json(result)
- Answer.findByIdAndUpdate(req.params.answer_id,result,{new: true},function(err,answer){
+
+Answer.find({},function(err,anss){
+  if (err) {
+    console.log(err)
+  }
+  anss.forEach( function(ans) {
+    if(ans._id == id){
+      // console.log("id is correct");
+      updateResult(id,result);
+    }else {
+      // console.log("id is invalid");
+          res.json(error);
+    }
+  
+    
+  });
+  
+  
+})
+
+ 
+function updateResult(id,result){
+   Answer.findByIdAndUpdate(id,result,{new: true},function(err,answer){
   if(err){
     console.log(err);
     res.json(error);
   }
 
-console.log(answer);
-res.json(success)
+    // console.log(answer);
+    res.json(success)
 
- });
+  });
+}
+
 })
 
 router.get("/test/:answer_id/:test_id/result",function(req,res){

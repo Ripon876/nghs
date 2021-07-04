@@ -17,7 +17,8 @@ var fs             = require('fs');
 var path           = require('path'); 
 var app            = express();
 var port           = process.env.PORT || 3000; 
-// var socket = require("socket.io");
+var mongoDbStr;
+// var socket = require("socket.io"); 
 
 var sl = require("./routs/signup-login");
 var ct = require("./routs/test");
@@ -26,8 +27,15 @@ var submit_test = require("./routs/submit-test");
 
 // https://afternoon-citadel-20931.herokuapp.com/
 // mongoose configuration
-mongoose.connect("mongodb://localhost:27017/nghs", {useUnifiedTopology: true, useNewUrlParser: true});
-// mongoose.connect("mongodb+srv://ripon:Ripon876@cluster0.9uds0.mongodb.net/nghs?retryWrites=true&w=majority", {useUnifiedTopology: true, useNewUrlParser: true});
+//mongoose.connect("mongodb://localhost:27017/nghs", {useUnifiedTopology: true, useNewUrlParser: true});
+
+if(port === 3000){
+mongoDbStr = "mongodb://localhost:27017/nghs";
+}else {
+  mongoDbStr = process.env.MONGO_CON_STR;
+}
+console.log(mongoDbStr)
+mongoose.connect(mongoDbStr,{useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set('useFindAndModify', false);
 
 
@@ -371,7 +379,7 @@ app.get("/admin",isLoggedIn,function(req,res){
     if (err) {
       console.log(err)
     }else{
-      res.render("admin",{title: "NGHS | Admin",currenUser: req.user,users: users});
+      res.render("admin",{title: "NGHS | Admin",currenUser: req.user,users: users,notification: req.flash("notification")});
     }
   });	
 	}else{
@@ -487,6 +495,7 @@ app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
                     console.log(err);
               }else{
                   console.log("successfully Deleted");
+                  req.flash('notification', 'User Deleted Successfully'); 
                   res.redirect("/admin");
               };
             });
@@ -496,8 +505,8 @@ app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
 
 
 
-// =================
-// notice route 
+  // =================
+ // notice route 
 // =================
 
 

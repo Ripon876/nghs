@@ -26,7 +26,16 @@
           <div class="card">
             <div class="card-body">
               <p class="card-title">Students answered your question</p>
+                          
+                <div class="alert alert-success" id="suc_mes" role="alert" >
+               Marks submission completed
+                </div>
+           
               
+                <div class="alert alert-danger" id="err_mes" role="alert" >
+               Marks submission failed
+                </div>
+            
               
               <div class="table-responsive">
                 <table id="recent-purchases-listing" class="table">
@@ -82,6 +91,9 @@
 <script>
   $(".showResult").hide();
   $(".give_number").hide();
+  $("#suc_mes").hide();
+  $("#err_mes").hide();
+
   var answer_id = "";
 
 function showResult(e){
@@ -129,6 +141,7 @@ function hideViewer(){
 
 
 $("form").submit(function(e){
+  var res ;
   e.preventDefault();
 var result = $("#result_number").val();
 
@@ -144,10 +157,24 @@ console.log(aaui)
     xhr.onload = function () {
         if(this.status === 200){
          console.log(this.responseText);
-
+       res = JSON.parse(this.responseText);
+       if(res.message === "success"){
+          $("#suc_mes").show();
+    
+          setTimeout(function(){
+          $("#suc_mes").hide(300);
+          }, 2000);
+        
+       }else {
+           $("#err_mes").show();
+    
+          setTimeout(function(){
+          $("#err_mes").hide(300);
+          }, 2000);
+       }
             
         
-              // $(".showResult").show(500);
+              
         }
         else{
             console.log("Some error occured");

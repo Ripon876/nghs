@@ -8,6 +8,23 @@
               <div class="card">
                 <div class="card-body">
                   <p class="card-title">Users</p>
+              <% if(notification && notification.length !== 0){ %>
+                <div class="alert alert-primary" role="alert" >
+                  <%= notification  %>
+                </div>
+              <% } %>
+              <% if(success && success.length !== 0){ %>
+                <div class="alert alert-success" role="alert" >
+                  <%= success  %>
+                </div>
+              <% } %>  
+               <% if(error && error.length !== 0){ %>
+                <div class="alert alert-danger" role="alert" >
+              <%= error  %>
+                </div>
+              <% } %>  
+
+
                   <div class="table-responsive">
                     <table id="recent-purchases-listing" class="table">
                       <thead>
@@ -18,7 +35,7 @@
                             <th>Class</th>
                             <th>Section</th>
                             <th>Roll</th>
-                            <th>Edit Profile</th>
+                            <th>Edit Profile</th> 
                             <th>Delete User</th>
                         </tr>
                       </thead>
