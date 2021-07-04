@@ -189,7 +189,7 @@ Answer.find({},function(err,anss){
       updateResult(id,result);
     }else {
       // console.log("id is invalid");
-          res.json(error);
+        return  res.json(error);
     }
   
     
@@ -207,7 +207,7 @@ function updateResult(id,result){
   }
 
     // console.log(answer);
-    res.json(success)
+    res.status(200).json(success)
 
   });
 }
