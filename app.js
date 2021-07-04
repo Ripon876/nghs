@@ -32,7 +32,7 @@ var submit_test = require("./routs/submit-test");
 if(port === 3000){
 mongoDbStr = "mongodb://localhost:27017/nghs";
 }else {
-  mongoDbStr = process.env.MONGO_CON_STR;
+  mongoDbStr = String(process.env.MONGO_CON_STR);
 }
 console.log(mongoDbStr)
 mongoose.connect(mongoDbStr,{useUnifiedTopology: true, useNewUrlParser: true});
