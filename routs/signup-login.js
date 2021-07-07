@@ -29,15 +29,10 @@ router.post("/register",function(req,res){
       	}else{
       		console.log(user);
       		passport.authenticate("local")(req,res,function(){
-            
-            	fs.mkdir('public/uploads/' + req.user.username, function(err){
-              if (err) {
-                  console.log(err);
-                };
-                console.log("Directory is created.");
-              
-                     });
-             if (req.body.username == "ripon") {
+               
+             
+
+             if (req.body.username === process.env.ADMIN_USER_NAME) {
 
               var doAuthor = {isAdmin: true};
             User.findByIdAndUpdate(req.user._id,doAuthor,{new: true},function(err,user){
