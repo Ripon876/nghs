@@ -146,8 +146,8 @@ $("form").submit(function(e){
 var result = $("#result_number").val();
 
 var aaui = "/test/result/answer/" + answer_id + "/" + result;
-console.log(aaui)
 
+console.log(aaui)
 
 
     const xhr = new XMLHttpRequest();
@@ -159,14 +159,14 @@ console.log(aaui)
          console.log(this.responseText);
        res = JSON.parse(this.responseText);
        if(res.message === "success"){
-          $("#suc_mes").show();
+          $("#suc_mes").show(200);
     
           setTimeout(function(){
           $("#suc_mes").hide(300);
           }, 2000);
         
        }else {
-           $("#err_mes").show();
+           $("#err_mes").show(200);
     
           setTimeout(function(){
           $("#err_mes").hide(300);

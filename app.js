@@ -35,6 +35,7 @@ mongoDbStr = "mongodb://localhost:27017/nghs";
   mongoDbStr = process.env.MONGODB_CON_STR;
 }
 
+console.log(mongoDbStr)
 mongoose.connect(mongoDbStr,{useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set('useFindAndModify', false);
 

@@ -161,12 +161,14 @@ router.get("/test/status/answer/:answer_id",function(req,res){
   })
 });
 
-router.get("/test/result/answer/:answer_id/:number",function(req,res){
+router.get("/test/result/answer/:answer_id/:number",isLoggedIn,function(req,res){
 var id = req.params.answer_id;
 var status = false;
 if(req.params.number >= 33){
   status = true;
 }
+
+var e = true;
 
   var result = {
     marks: req.params.number,
@@ -181,33 +183,34 @@ if(req.params.number >= 33){
 
 Answer.find({},function(err,anss){
   if (err) {
-    console.log(err)
+    console.log(err);
+    res.send(error);
   }
-  anss.forEach( function(ans) {
-    if(ans._id == id){
-      // console.log("id is correct");
+  
+  anss.forEach(function(ans) {
+    if(String(ans._id) === id){
+      e = false;
       updateResult(id,result);
-    }else {
-      // console.log("id is invalid");
-        return  res.json(error);
-    }
   
-    
-  });
-  
-  
-})
+    };    
+  }); 
+ 
+
+if (e === true) {
+   res.send(error);
+}
+   
+});
 
  
 function updateResult(id,result){
    Answer.findByIdAndUpdate(id,result,{new: true},function(err,answer){
   if(err){
     console.log(err);
-    res.json(error);
   }
+   e = false;
+   res.json(success)
 
-    // console.log(answer);
-    res.status(200).json(success)
 
   });
 }
