@@ -10,8 +10,8 @@ var path           = require('path');
 
 
 
-// ====================
-// registration rout
+  // ====================
+ // registration rout
 // ====================
 
 router.get("/register",isLoggedOut,function(req,res){
@@ -28,34 +28,40 @@ router.post("/register",function(req,res){
       		res.render("index",{title: Rtitle})
       	}else{
       		console.log(user);
-      		passport.authenticate("local")(req,res,function(){
-               
-             
 
-             if (req.body.username === process.env.ADMIN_USER_NAME) {
+
+           if (req.body.username === process.env.ADMIN_USER_NAME) {
 
               var doAuthor = {isAdmin: true};
-            User.findByIdAndUpdate(req.user._id,doAuthor,{new: true},function(err,user){
+            User.findByIdAndUpdate(user._id,doAuthor,{new: true},function(err,user){
                    if (err) {
                     console.log(err);
                    }else{
                       console.log(user);
-                      res.redirect("/admin");
+
+
+          passport.authenticate("local")(req,res,function(){
+             res.redirect("/admin");
+          });
+
+
+                     
                    };
                  });
              }else{
+          passport.authenticate("local")(req,res,function(){
               res.redirect("/");
-             };
+          });
              
-      		});
+             };
+
       	};
       });
 
-
 })
-
-// ====================
-// login rout
+ 
+  // ====================
+ // login rout
 // ====================
 
 router.get("/login",isLoggedOut,function(req,res){
@@ -67,8 +73,8 @@ router.get("/login",isLoggedOut,function(req,res){
 router.post("/login",passport.authenticate("local",{successRedirect: "/",failureRedirect: "/login"}),function(req,res){
 });
 
-// ====================
-// logout rout
+  // ====================
+ // logout rout
 // ====================
 router.get("/logout",function(req,res){
 

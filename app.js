@@ -55,6 +55,15 @@ app.use(fileUpload({
 // send massage
 // ===================
 
+User.findByIdAndRemove("60e7239ae6eae80eb07e789e",function(err,user){
+  if(err){
+    console.log(err)
+  }
+
+ console.log("admin deleted successfully" + " : " + user);
+
+})
+
 app.get("/message",function(req,res){
   res.render("send_massage");
 })
