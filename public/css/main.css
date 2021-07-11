@@ -45,3 +45,12 @@ li.show .notifications .show{
     padding: 2px;
 }
 
+.searchResult{
+    position: absolute;
+    top: 8%;
+    left: 18.2%;
+    z-index: 2222;
+}
+.main-panel{
+      background: #f3f3f3;
+}

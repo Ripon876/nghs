@@ -55,14 +55,14 @@ app.use(fileUpload({
 // send massage
 // ===================
 
-User.findByIdAndRemove("60e7239ae6eae80eb07e789e",function(err,user){
-  if(err){
-    console.log(err)
-  }
+// User.findByIdAndRemove("60e7239ae6eae80eb07e789e",function(err,user){
+//   if(err){
+//     console.log(err)
+//   }
 
- console.log("admin deleted successfully" + " : " + user);
+//  console.log("admin deleted successfully" + " : " + user);
 
-})
+// })
 
 app.get("/message",function(req,res){
   res.render("send_massage");
@@ -379,8 +379,8 @@ Exam.find(obj,function(err,tests){
 
 });
 
-// ====================
-// admin rout
+  // ====================
+ // admin rout
 // ====================
 app.get("/admin",isLoggedIn,function(req,res){
 	if (req.user.isAdmin){
@@ -396,9 +396,11 @@ app.get("/admin",isLoggedIn,function(req,res){
 		res.redirect("/");
 	};
 });
+
 app.get("/admin/create_author",isLoggedIn,function(req,res){
   res.render("create_author");
 })
+
 app.post("/admin",isLoggedIn,function(req,res){
   var id = req.body.id;
 
@@ -512,6 +514,39 @@ app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
   });
 
 });
+
+
+app.get("/admin/searchuser/:name",function(req,res){
+  var name = req.params.name;
+  var userDatas = [];
+  console.log(name)
+
+
+  User.find({},function(err,users){
+    if(err)
+    {
+      console.log(err)
+    }
+
+   users.forEach( function(user) {
+
+        if(user.name.includes(name) || user.username.includes(name)){
+          userDatas.push(user)
+        }else {
+          console.log("not found")
+        }
+
+   });
+
+  
+  function r(){
+    res.json(userDatas)
+  }
+  r();
+
+// res.json(users);
+  })
+})
 
 
 

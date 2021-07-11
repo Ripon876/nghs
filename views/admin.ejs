@@ -1,6 +1,10 @@
 <%- include("../partials/header-admin") -%>
       <!-- partial -->
       <div class="main-panel">
+
+
+
+
         <div class="content-wrapper">
          
           <div class="row">
@@ -70,5 +74,55 @@
           </div>
         </div>
         <!-- content-wrapper ends -->
+
+<script>
+$(".searchResult").hide();
+ var sw = $('#searchFildeHolder').width() + 10;
+ console.log(sw)
+$(".searchResult").width(sw);
+$("#searchTerm").on("change",function(){
+   console.log(this.value);
+
+
+var url = "http://localhost:3000/admin/searchuser/" + this.value;
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET',url, true);
+    xhr.getResponseHeader('Content-type', 'application/json');
+
+    xhr.onload = function () {
+        if(this.status === 200){
+         console.log(this.responseText);
+       res = JSON.parse(this.responseText);
+       $(".searchResult").show(400);
+
+       res.forEach( function(user) {
+
+       $( "<li></li>",{"class": "list-group-item",text: user.name}).appendTo(".searchResult .list-group");
+         // $(".searchResult").
+       });
+
+            
+        
+              
+        }
+        else{
+            console.log("Some error occured");
+        }
+    }
+    xhr.send();
+if(this.value === ''){
+   $(".searchResult").hide(400);
+   console.log("empty")
+}
+
+ })
+
+
+// $("#searchTerm").bind("input propertychange",function(event){
+//        console.log($("#searchTerm").val())
+// });
+
+</script>
+
         
 <%- include("../partials/footer-admin") -%>
