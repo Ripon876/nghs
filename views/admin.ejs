@@ -84,7 +84,7 @@ $("#searchTerm").on("change",function(){
    console.log(this.value);
 
 
-var url = "http://localhost:3000/admin/searchuser/" + this.value;
+var url = "/admin/searchuser/" + this.value;
     const xhr = new XMLHttpRequest();
     xhr.open('GET',url, true);
     xhr.getResponseHeader('Content-type', 'application/json');
