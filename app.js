@@ -31,11 +31,11 @@ var submit_test = require("./routs/submit-test");
 
 if(port === 3000){
 mongoDbStr = "mongodb://localhost:27017/nghs";
+console.log(mongoDbStr)
 }else {
   mongoDbStr = process.env.MONGODB_CON_STR;
 }
 
-console.log(mongoDbStr)
 mongoose.connect(mongoDbStr,{useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set('useFindAndModify', false);
 
@@ -51,18 +51,11 @@ app.use(fileUpload({
     tempFileDir : path.join(__dirname,'tmp'),
 })); 
 
+  // ===================
+ // send massage
 // ===================
-// send massage
-// ===================
 
-// User.findByIdAndRemove("60e7239ae6eae80eb07e789e",function(err,user){
-//   if(err){
-//     console.log(err)
-//   }
 
-//  console.log("admin deleted successfully" + " : " + user);
-
-// })
 
 app.get("/message",function(req,res){
   res.render("send_massage");
@@ -196,7 +189,7 @@ transporter.sendMail(mailOptions, function(error, info){
     console.log(error);
     res.render("404",{title: title,currenUser: req.user});
   } else {
-    console.log('Email sent: ' + info.response);
+    // console.log('Email sent: ' + info.response);
     res.send("email successfully sent..");
   }
 });
@@ -330,7 +323,7 @@ app.put("/user/profile",isLoggedIn,function(req,res){
      if (err) {
       console.log(err)
      }else{
-        console.log(user);
+        // console.log(user);
         if (req.user.isAdmin) {
            res.redirect("/admin");
         }else{
@@ -412,7 +405,7 @@ User.findById(id,function(err,user){
         if (err) {
          console.log(err)
         }else{
-           console.log(user);
+           // console.log(user);
               res.redirect("/admin");
         };
       });
@@ -424,7 +417,7 @@ User.findByIdAndUpdate(id,doAuthor,{new: true},function(err,user){
      if (err) {
       console.log(err)
      }else{
-        console.log(user);
+        // console.log(user);
         res.redirect("/admin");
      };
    });
@@ -451,7 +444,7 @@ app.put("/admin/user/edit",isLoggedIn,function(req,res){
      if (err) {
       console.log(err)
      }else{
-        console.log(user);
+        // console.log(user);
         if (req.user.isAdmin) {
            res.redirect("/admin");
         }else{
@@ -494,19 +487,13 @@ app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
   User.findById(req.params.id,function(err,user){
     if(err){
       console.log(err);
-    }else{
-
-         fs.rmdir('public/uploads/' + user.username,function(){
-             console.log("Directory Deleted");
-         });
-      
-         };
+    }
 
            User.findByIdAndRemove(user._id,function(err,user){
               if (err) {
                     console.log(err);
               }else{
-                  console.log("successfully Deleted");
+                  // console.log("successfully Deleted");
                   req.flash('notification', 'User Deleted Successfully'); 
                   res.redirect("/admin");
               };
@@ -519,7 +506,7 @@ app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
 app.get("/admin/searchuser/:name",function(req,res){
   var name = req.params.name;
   var userDatas = [];
-  console.log(name)
+  // console.log(name)
 
 
   User.find({},function(err,users){
@@ -533,7 +520,7 @@ app.get("/admin/searchuser/:name",function(req,res){
         if(user.name.includes(name) || user.username.includes(name)){
           userDatas.push(user)
         }else {
-          console.log("not found")
+          // console.log("not found")
         }
 
    });
@@ -544,7 +531,6 @@ app.get("/admin/searchuser/:name",function(req,res){
   }
   r();
 
-// res.json(users);
   })
 })
 
@@ -581,7 +567,7 @@ app.post("/admin/notice",function(req,res){
     if (err) {
       console.log(err);
     }else{
-    console.log(notice);
+    // console.log(notice);
     res.redirect("/admin/notice");
     };
   });

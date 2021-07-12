@@ -84,7 +84,7 @@ router.get("/delete_test/:test_id",function(req,res){
 
   req.flash("info","Test Successfully Deleted");
   res.redirect("/author/dashboard");
-  console.log(req.params.test_id,test)
+  // console.log(req.params.test_id,test)
    
 
   });
@@ -230,7 +230,7 @@ var obj={
     console.log(err);
     res.send("something went wrong");
   }
-  console.log(answer)
+  // console.log(answer)
   res.send(answer)
 
  })
@@ -260,14 +260,14 @@ function isLoggedOut(req,res,next){ //
 
 
 function moveFile(img,user,p){
-  console.log(user);
+  // console.log(user);
 
    img.mv(path.join('./public/uploads/' + user, p), function(err){
 
         if (err){
          console.log(err);
         }        
-        console.log('File uploaded!');
+        // console.log('File uploaded!');
     });
 }
 

@@ -76,12 +76,22 @@
         <!-- content-wrapper ends -->
 
 <script>
-$(".searchResult").hide();
- var sw = $('#searchFildeHolder').width() + 10;
- console.log(sw)
-$(".searchResult").width(sw);
+  $(".searchResult").hide();
+
+  function changeWidthOfsearchResultViwer(){
+  var sw = $('#searchFildeHolder').width();
+  $(".searchResult").width(sw);
+  }
+  
+   changeWidthOfsearchResultViwer();
+   window.onresize = function(){
+   changeWidthOfsearchResultViwer();
+   }
+
+
+
 $("#searchTerm").on("change",function(){
-   console.log(this.value);
+ 
 
 
 var url = "/admin/searchuser/" + this.value;
@@ -91,36 +101,71 @@ var url = "/admin/searchuser/" + this.value;
 
     xhr.onload = function () {
         if(this.status === 200){
-         console.log(this.responseText);
-       res = JSON.parse(this.responseText);
-       $(".searchResult").show(400);
+           // console.log(this.responseText);
+         res = JSON.parse(this.responseText);
+         $(".searchResult").fadeIn(500);
 
-       res.forEach( function(user) {
-
-       $( "<li></li>",{"class": "list-group-item",text: user.name}).appendTo(".searchResult .list-group");
-         // $(".searchResult").
-       });
-
-            
-        
+            res.forEach( function(user) {
+         
+                if($(".searchResult ul li").text().includes(user.name)){
               
-        }
-        else{
-            console.log("Some error occured");
+                }else {
+                  $( "<li></li>",{"class": "list-group-item",text: user.name}).appendTo(".searchResult .list-group");
+                }
+
+            });
+        }else{
+              console.log("Some error occured");
         }
     }
-    xhr.send();
-if(this.value === ''){
-   $(".searchResult").hide(400);
-   console.log("empty")
-}
+
+        if($(".searchResult ul li").text().includes(this.value)){
+          // console.log("founded")
+          $(".searchResult").fadeIn(500);
+        }else {
+          $(".searchResult ul").empty();
+          // console.log("list cleared");
+              xhr.send();
+
+        }
+
+    if(this.value === ''){
+       $(".searchResult").hide(400);
+       // console.log("empty")
+    }
 
  })
 
 
-// $("#searchTerm").bind("input propertychange",function(event){
-//        console.log($("#searchTerm").val())
-// });
+$("#searchTerm").bind("input propertychange",function(event){
+    
+  if($("#searchTerm").val() === ""){
+    // console.log("search bar is emty");
+   
+   $(".searchResult").hide(400);   
+  if($("#searchTerm").trigger(jQuery.Event('keypress',{ keyCode: 13 }))){
+    // console.log("typed")
+
+if(this.value === ''){
+   $(".searchResult").hide(400);
+   // console.log("empty")
+}
+  }
+
+     
+
+      
+  }else if ($(".searchResult ul li").text().includes(this.value)) {
+     $(".searchResult").fadeIn(500);
+     // console.log("founded")
+  }else {
+     $(".searchResult").fadeOut(500);
+     // console.log("not founded")
+  }
+
+
+
+});
 
 </script>
 

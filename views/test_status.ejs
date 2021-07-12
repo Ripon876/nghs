@@ -147,7 +147,7 @@ var result = $("#result_number").val();
 
 var aaui = "/test/result/answer/" + answer_id + "/" + result;
 
-console.log(aaui)
+// console.log(aaui)
 
 
     const xhr = new XMLHttpRequest();
@@ -156,7 +156,7 @@ console.log(aaui)
 
     xhr.onload = function () {
         if(this.status === 200){
-         console.log(this.responseText);
+         // console.log(this.responseText);
        res = JSON.parse(this.responseText);
        if(res.message === "success"){
           $("#suc_mes").show(200);

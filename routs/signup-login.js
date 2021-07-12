@@ -27,7 +27,7 @@ router.post("/register",function(req,res){
       		console.log(err);
       		res.render("index",{title: Rtitle})
       	}else{
-      		console.log(user);
+      		// console.log(user);
 
 
            if (req.body.username === process.env.ADMIN_USER_NAME) {
@@ -37,7 +37,7 @@ router.post("/register",function(req,res){
                    if (err) {
                     console.log(err);
                    }else{
-                      console.log(user);
+                      // console.log(user);
 
 
           passport.authenticate("local")(req,res,function(){
