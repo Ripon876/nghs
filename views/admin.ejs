@@ -101,9 +101,14 @@ var url = "/admin/searchuser/" + this.value;
 
     xhr.onload = function () {
         if(this.status === 200){
-           // console.log(this.responseText);
+           console.log(this.responseText);
          res = JSON.parse(this.responseText);
          $(".searchResult").fadeIn(500);
+
+
+           if(JSON.parse(this.responseText).length === 0){
+             $( "<li></li>",{"class": "list-group-item",text: "No user found with the name"}).appendTo(".searchResult .list-group");
+           }
 
             res.forEach( function(user) {
          
@@ -115,7 +120,7 @@ var url = "/admin/searchuser/" + this.value;
 
             });
         }else{
-              console.log("Some error occured");
+            console.log("Some error occured");
         }
     }
 
