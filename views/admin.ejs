@@ -58,8 +58,8 @@
                             <td><%- user.class %></td>
                             <td><%- user.section %></td>
                             <td><%- user.roll %></td>
-                            <td><a href="/user/edit/<%- user._id %>" class="btn btn-primary">Edit</a></td>
-                            <td><a href="/delete_user/<%= user._id %>" class="btn btn-danger">Delete</a></td>
+                            <td><a href="/user/edit/<%- user._id %>" class="btn btn-primary" style="padding-top: 5px;padding-bottom: 5px;">Edit</a></td>
+                            <td><a href="/delete_user/<%= user._id %>" class="btn btn-danger" style="padding-top: 5px;padding-bottom: 5px;">Delete</a></td>
                             
                           </tr>
                        <% }); %>
@@ -77,7 +77,6 @@
 
 <script>
   $(".searchResult").hide();
-
   function changeWidthOfsearchResultViwer(){
   var sw = $('#searchFildeHolder').width();
   $(".searchResult").width(sw);
@@ -87,43 +86,41 @@
    window.onresize = function(){
    changeWidthOfsearchResultViwer();
    }
-
-
-
 $("#searchTerm").on("change",function(){
  
-
-
 var url = "/admin/searchuser/" + this.value;
     const xhr = new XMLHttpRequest();
     xhr.open('GET',url, true);
     xhr.getResponseHeader('Content-type', 'application/json');
-
     xhr.onload = function () {
         if(this.status === 200){
            console.log(this.responseText);
          res = JSON.parse(this.responseText);
          $(".searchResult").fadeIn(500);
-
-
            if(JSON.parse(this.responseText).length === 0){
              $( "<li></li>",{"class": "list-group-item",text: "No user found with the name"}).appendTo(".searchResult .list-group");
            }
-
             res.forEach( function(user) {
          
                 if($(".searchResult ul li").text().includes(user.name)){
               
                 }else {
-                  $( "<li></li>",{"class": "list-group-item",text: user.name}).appendTo(".searchResult .list-group");
+                console.log("one time")   
+                var u = user;
+
+var li = `<li class="list-group-item">${u.name} <div class=" float-right"> <a class="btn btn-primary btn-sm" href="/user/edit/${u._id}">Edit</a> <a class="btn btn-danger btn-sm" href="/delete_user/${u._id}">Delete</a></div></li>`;                                                                                           
+  $(".searchResult .list-group").append(li);
+  console.log(li);
+         
+
                 }
+                
 
             });
         }else{
             console.log("Some error occured");
         }
     }
-
         if($(".searchResult ul li").text().includes(this.value)){
           // console.log("founded")
           $(".searchResult").fadeIn(500);
@@ -131,17 +128,12 @@ var url = "/admin/searchuser/" + this.value;
           $(".searchResult ul").empty();
           // console.log("list cleared");
               xhr.send();
-
         }
-
     if(this.value === ''){
        $(".searchResult").hide(400);
        // console.log("empty")
     }
-
  })
-
-
 $("#searchTerm").bind("input propertychange",function(event){
     
   if($("#searchTerm").val() === ""){
@@ -150,15 +142,12 @@ $("#searchTerm").bind("input propertychange",function(event){
    $(".searchResult").hide(400);   
   if($("#searchTerm").trigger(jQuery.Event('keypress',{ keyCode: 13 }))){
     // console.log("typed")
-
 if(this.value === ''){
    $(".searchResult").hide(400);
    // console.log("empty")
 }
   }
-
      
-
       
   }else if ($(".searchResult ul li").text().includes(this.value)) {
      $(".searchResult").fadeIn(500);
@@ -167,11 +156,7 @@ if(this.value === ''){
      $(".searchResult").fadeOut(500);
      // console.log("not founded")
   }
-
-
-
 });
-
 </script>
 
         

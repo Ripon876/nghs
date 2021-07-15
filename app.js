@@ -484,12 +484,13 @@ else if(req.user.isUser == true){
 });
 
 app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
+
   User.findById(req.params.id,function(err,user){
     if(err){
       console.log(err);
     }
-
-           User.findByIdAndRemove(user._id,function(err,user){
+         if(!user.isAdmin){
+              User.findByIdAndRemove(user._id,function(err,user){
               if (err) {
                     console.log(err);
               }else{
@@ -498,6 +499,11 @@ app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
                   res.redirect("/admin");
               };
             });
+            }else {
+              req.flash('notification', 'Admin Cannot be deleted'); 
+                  res.redirect("/admin");
+            }
+       
   });
 
 });
