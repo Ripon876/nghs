@@ -503,7 +503,7 @@ app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
               req.flash('notification', 'Admin Cannot be deleted'); 
                   res.redirect("/admin");
             }
-       
+        
   });
 
 });

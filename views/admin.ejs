@@ -94,7 +94,7 @@ var url = "/admin/searchuser/" + this.value;
     xhr.getResponseHeader('Content-type', 'application/json');
     xhr.onload = function () {
         if(this.status === 200){
-           console.log(this.responseText);
+           // console.log(this.responseText);
          res = JSON.parse(this.responseText);
          $(".searchResult").fadeIn(500);
            if(JSON.parse(this.responseText).length === 0){
@@ -105,17 +105,17 @@ var url = "/admin/searchuser/" + this.value;
                 if($(".searchResult ul li").text().includes(user.name)){
               
                 }else {
-                console.log("one time")   
+                // console.log("one time")   
                 var u = user;
 
 var li = `<li class="list-group-item">${u.name} <div class=" float-right"> <a class="btn btn-primary btn-sm" href="/user/edit/${u._id}">Edit</a> <a class="btn btn-danger btn-sm" href="/delete_user/${u._id}">Delete</a></div></li>`;                                                                                           
   $(".searchResult .list-group").append(li);
-  console.log(li);
+  // console.log(li);
          
 
                 }
                 
-
+ 
             });
         }else{
             console.log("Some error occured");
