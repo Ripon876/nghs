@@ -48,6 +48,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 				
 <script type="text/javascript">
+	$('.showQuestion').hide();
+
+	
 $('#autoresizing').on('input', function () {
 this.style.height = 'auto';
 				
@@ -56,6 +59,7 @@ this.style.height =
 });
 </script>
 <script>
+
 if( <%= test.subject %> == '3' || <%= test.subject %> == '4'){
 $('.write-question').hide();
 document.querySelector("#showQuestion").src = '<%= test. question_img_url %>';

@@ -217,7 +217,7 @@ function updateResult(id,result){
 
 })
 
-router.get("/test/:answer_id/:test_id/result",function(req,res){
+router.get("/test/:answer_id/:test_id/result",isLoggedIn,function(req,res){
 
 var obj={
     _id: req.params.answer_id,
@@ -231,7 +231,8 @@ var obj={
     res.send("something went wrong");
   }
   // console.log(answer)
-  res.send(answer)
+  // res.send(answer)
+  res.render("see_result",{answer: answer,user: req.user});
 
  })
  

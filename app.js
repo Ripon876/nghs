@@ -72,8 +72,17 @@ app.use(flash());
 app.use(function(req,res,next){
 
   res.locals.currenUser = req.user;
+
   res.locals.error      = req.flash("error");
-  res.locals.success      = req.flash("success");
+  res.locals.success    = req.flash("success");
+  res.locals.notices;
+ Notice.find({},function(err,notices){
+  if(err)console.log(err);
+   res.locals.notices = notices;
+ })
+
+
+
   next();
 });
 app.use(passport.initialize());
@@ -137,10 +146,22 @@ app.get('/auth/google/callback',
 
 
 
+  // =================================
+ // cleaning database after restating |
+//====================================
 
 
-// ====================
-// home rout
+// Answer.deleteMany({}, function(){
+//   console.log("done")
+// });
+
+// Exam.deleteMany({}, function(){
+//   console.log("done")
+// });
+
+
+  // ====================
+ // home rout
 // ====================
 
 app.get("/",function(req,res){
