@@ -24,9 +24,7 @@ var mongoDbStr;
 var sl = require("./routs/signup-login");
 var ct = require("./routs/test");
 var submit_test = require("./routs/submit-test");
-cron.schedule('*/1 * * * *', function(){
-  console.log('running a task every two minutes');
-});
+
 
 // https://afternoon-citadel-20931.herokuapp.com/
 // mongoose configuration
@@ -508,7 +506,7 @@ else if(req.user.isUser == true){
 });
 
 app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
-var itemsProcessed = 0;
+
   User.findById(req.params.id,function(err,user){
     if(err){
       console.log(err);
@@ -529,7 +527,7 @@ var itemsProcessed = 0;
 
  Answer.deleteMany(ans,function(err,done){
   if(err)console.log(err);
-console.log(done)
+// console.log(done)
        
 })
 
@@ -545,10 +543,6 @@ console.log(done)
               };
         });
 
-
-
-
-           
             }else {
               req.flash('notification', 'Admin Cannot be deleted'); 
                   res.redirect("/admin");
@@ -558,25 +552,7 @@ console.log(done)
 
 });
 
-// function callback(){
-//   console.log("done");
-// }
- 
-//  var itemsProcessed = 0;
 
-// var arr = [2,34,3,4,4,3];
-// arr.forEach( function(elem) {
-//   console.log(elem);
-  
-
-// itemsProcessed++;
-//     if(itemsProcessed === arr.length) {
-//       // callback();
-
-//       console.log("loop end")
-//     }
-
-// });
 
 app.get("/admin/searchuser/:name",function(req,res){
   var name = req.params.name;
