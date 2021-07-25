@@ -1,0 +1,117 @@
+<%- include("../partials/header-user") -%>
+<!-- partial -->
+<div class="container-fluid page-body-wrapper">
+	<!-- partial:partials/_sidebar.html -->
+	<nav class="sidebar sidebar-offcanvas" id="sidebar">
+		<ul class="nav">
+			<li class="nav-item">
+				<a class="nav-link" href="/author/dashboard">
+					<i class="mdi mdi-home menu-icon"></i>
+					<span class="menu-title">Dashboard</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/author/exam/new">
+					<i class="mdi mdi-home menu-icon"></i>
+					<span class="menu-title">Create new Test</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/author/hostLiveClass">
+					<i class="mdi mdi-calendar-blank menu-icon"></i>
+					<span class="menu-title">Host a live class</span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+	<!-- partial -->
+	<div class="main-panel">
+		<div class="content-wrapper">
+			<div class="row">
+				<div class="col-md-12 stretch-card">
+					<div class="card">
+						<div class="card-body">
+							<p class="card-title">Host a zoom live class</p>
+							
+							<% if(notification && notification.length !== 0){ %>
+							<div class="alert alert-primary" role="alert" >
+								<%= notification  %>
+							</div>
+							<% } %>
+							<% if(success && success.length !== 0){ %>
+							<div class="alert alert-success" role="alert" >
+								<%= success  %>
+							</div>
+							<% } %>
+							<% if(error && error.length !== 0){ %>
+							<div class="alert alert-danger" role="alert" >
+								<%= error  %>
+							</div>
+							<% } %>
+							<button class="btn btn-primary" id="show_class_create_form">Create a class</button>
+							<form class="border p-5" id="create_class" >
+								<div class="form-group">
+									<label for="result_number">Date</label>
+									<input type="date" max="100" id="class_date" class="form-control border">
+								</div>
+								<div class="form-group">
+									<label for="result_number">Time</label>
+									<input type="time" max="100" id="class_time" class="form-control border">
+								</div>
+								<button class="btn btn-primary btn-xm" type="submit">Submit</button>
+							</form>
+							<div class="table-responsive">
+								<table id="recent-purchases-listing" class="table">
+									<thead>
+										<tr>
+											<th>You can edit / delete Classes from the below list</th>
+										</tr>
+									</thead>
+									<tr>
+										<td>
+											dsfsdf
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+// $("form#create_class").preventDefault();
+$("#create_class").hide();
+
+$("#show_class_create_form").click(function(){
+	$("#create_class").show(400);
+	$("#show_class_create_form").hide()
+})
+
+	$("#create_class").submit(function(e){
+ e.preventDefault();
+if($("#class_date").val() !== "" || $("#class_time").val() !== ""){
+			$.ajax({
+       url : '/author/hostLiveClass', 
+       type : 'POST', 
+       data : {class_date : $("#class_date").val(),class_time: $("#class_time").val()}, 
+       success : function(result){ 
+           console.log(result);
+       },
+
+       error : function(result, status, error){ 
+console.log("something went wrong");
+       }
+
+	});
+		}else {
+			alert("Pleas fill up the form");
+		}
+
+	});
+
+</script>
+
+	<%- include("../partials/footer-user") -%>

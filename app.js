@@ -24,6 +24,7 @@ var mongoDbStr;
 var sl = require("./routs/signup-login");
 var ct = require("./routs/test");
 var submit_test = require("./routs/submit-test");
+var author = require("./routs/author");
 
 
 // https://afternoon-citadel-20931.herokuapp.com/
@@ -71,16 +72,13 @@ app.get("/message",function(req,res){
 app.use(require('express-session')({ secret: "My name is MD Ripon Islam", resave: false, saveUninitialized: false }));
 app.use(flash());
 app.use(function(req,res,next){
-
+// console.log(req.user);
   res.locals.currenUser = req.user;
 
-  res.locals.error      = req.flash("error");
-  res.locals.success    = req.flash("success");
-  res.locals.notices;
- Notice.find({},function(err,notices){
-  if(err)console.log(err);
-   res.locals.notices = notices;
- })
+  res.locals.error         = req.flash("error");
+  res.locals.success       = req.flash("success");
+  res.locals.notification  = req.flash("notification");
+
 
 
 
@@ -168,11 +166,16 @@ app.get('/auth/google/callback',
 app.get("/",function(req,res){
 	var title = "NGHS | Home"
 	res.render("index",{title: title,currenUser: req.user});
+  // console.log(req.ip);
+  // console.log(req.connection.remoteAddress);
+  // console.log(req.headers['x-forwarded-for']);
+  // console.log(req.socket?.remoteAddress);
 });
 
 app.use(sl);
 app.use(ct);
 app.use(submit_test);
+app.use(author);
 // ====================
 // email rout
 // ====================
