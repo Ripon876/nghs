@@ -1,7 +1,6 @@
 <%- include("../partials/header-user") -%>
 <!-- partial -->
 <div class="container-fluid page-body-wrapper">
-	<!-- partial:partials/_sidebar.html -->
 	<nav class="sidebar sidebar-offcanvas" id="sidebar">
 		<ul class="nav">
 			<li class="nav-item">
@@ -33,6 +32,7 @@
 						<div class="card-body">
 							<p class="card-title">Host a zoom live class</p>
 							
+<!-- <p id="demo"  class="card-title"></p> -->
 							<% if(notification && notification.length !== 0){ %>
 							<div class="alert alert-primary" role="alert" >
 								<%= notification  %>
@@ -52,13 +52,14 @@
 							<form class="border p-5" id="create_class" >
 								<div class="form-group">
 									<label for="result_number">Date</label>
-									<input type="date" max="100" id="class_date" class="form-control border">
+									<input type="date" max="100" id="class_date" class="form-control border border-bl">
 								</div>
 								<div class="form-group">
 									<label for="result_number">Time</label>
-									<input type="time" max="100" id="class_time" class="form-control border">
+									<input type="time" max="100" id="class_time" class="form-control border border-bl">
 								</div>
 								<button class="btn btn-primary btn-xm" type="submit">Submit</button>
+								<span  class="btn btn-danger btn-xm float-right" id="hide_class_create_form">Close</span>
 							</form>
 							<div class="table-responsive">
 								<table id="recent-purchases-listing" class="table">
@@ -67,11 +68,7 @@
 											<th>You can edit / delete Classes from the below list</th>
 										</tr>
 									</thead>
-									<tr>
-										<td>
-											dsfsdf
-										</td>
-									</tr>
+									
 								</tbody>
 							</table>
 						</div>
@@ -80,37 +77,93 @@
 			</div>
 		</div>
 	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-// $("form#create_class").preventDefault();
-$("#create_class").hide();
 
-$("#show_class_create_form").click(function(){
-	$("#create_class").show(400);
-	$("#show_class_create_form").hide()
-})
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script>
+	$("#create_class").hide();
+
+	$("#show_class_create_form").click(function(){
+		$("#create_class").show(400);
+		$("#show_class_create_form").hide()
+
+
+	})
+	$("#hide_class_create_form").click(function(){
+		$("#create_class").hide(400);
+		$("#show_class_create_form").show(400);
+	});
+
+
 
 	$("#create_class").submit(function(e){
- e.preventDefault();
-if($("#class_date").val() !== "" || $("#class_time").val() !== ""){
-			$.ajax({
-       url : '/author/hostLiveClass', 
-       type : 'POST', 
-       data : {class_date : $("#class_date").val(),class_time: $("#class_time").val()}, 
-       success : function(result){ 
-           console.log(result);
-       },
 
-       error : function(result, status, error){ 
-console.log("something went wrong");
-       }
+var s = moment($("#class_date").val()).format('MMM D, YYYY') + " " + moment(`${$("#class_date").val()}T${$("#class_time").val()}`).format("H:mm:ss");
+var elem_id = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5);
 
-	});
-		}else {
-			alert("Pleas fill up the form");
-		}
 
-	});
+console.log(s)
+	mksdfasfsd(s,elem_id)
+	e.preventDefault();
+
+	if($("#class_date").val() !== "" || $("#class_time").val() !== ""){
+				$.ajax({
+	url : '/author/hostLiveClass',
+	type : 'POST',
+	data : {class_date : $("#class_date").val(),class_time: $("#class_time").val()},
+	success : function(result){
+	$("tr.odd").remove();
+
+	$(".table").append(`<tr><td>${moment(result.mes.class_date).format('dddd Do MMMM')} At  ${moment(`${result.mes.class_date}T${result.mes.class_time}`).format("hh:mm a")}</td><td id="${elem_id}"  class="card-title"></td><td><button class="btn btn-danger p-2">Cancel</button></td></tr>`)
+
+
+
+
+	},
+	error : function(result, status, error){
+	console.log("something went wrong");
+	}
+		});
+$("#class_date").val("");
+$("#class_time").val("");
+
+			}else {
+				alert("Pleas fill up the form");
+			}
+
+		});
+	</script>
+
+
+<script>
+
+
+
+function mksdfasfsd(s,id){
+
+var deadline = new Date(s).getTime();
+
+
+var x = setInterval(function() {
+var now = new Date().getTime();
+var t = deadline - now;
+
+var days = Math.floor(t / (1000 * 60 * 60 * 24));
+var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
+var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((t % (1000 * 60)) / 1000);
+
+document.getElementById(id).innerHTML = days + "d " 
++ hours + "h " + minutes + "m " + seconds + "s ";
+
+    if (t < 0) {
+        clearInterval(x);
+        document.getElementById(id).innerHTML = "EXPIRED";
+    }
+},1000);
+
+}
 
 </script>
 
