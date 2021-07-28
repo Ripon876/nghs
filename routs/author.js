@@ -5,27 +5,54 @@ var User           = require("../models/user");
 var Exam           = require("../models/exam");
 var Answer         = require("../models/answer");
 var Notice         = require("../models/notice");
-var formidable     = require('formidable');
+var Live_Class         = require("../models/live_class_schedule");
 var fileUpload     = require('express-fileupload');
 var fs             = require('fs');
 var path           = require('path');
 
 
  router.get("/author/hostLiveClass",isLoggedIn,function(req,res) {
+Live_Class.find({},function(err,clas){
+	if(err)console.log(err);
 
- 	 Notice.find({},function(err,notices){
+console.log(clas)
+ Notice.find({},function(err,notices){
   if(err)console.log(err);
-  res.render("host_class",{user: req.user,notices: notices})
+  res.render("host_class",{user: req.user,notices: notices,classes: clas})
  })
+
+
+})
+ 
 
  	
  })
 
  router.post("/author/hostLiveClass",isLoggedIn,function(req,res) {
+var live_class = {
+class_date: req.body.class_date,
+class_time: req.body.class_time,
+class: req.body.class,
+section:req.body.section,
+subject: req.body.subject,
+author: {
+	id: req.user._id,
+	name: req.user.name
+}
+}
 
- 	console.log(req.body);
- 	res.json({mes: req.body});
 
+
+
+Live_Class.create(live_class,function(err,clas){
+	if(err) console.log(err);
+
+	console.log(clas);
+ 	
+res.json({mes: clas})
+
+
+});
  	
  })
 
