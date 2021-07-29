@@ -30,10 +30,10 @@
 				<div class="col-md-12 stretch-card">
 					<div class="card">
 						<div class="card-body">
-							<p class="card-title">Host a zoom live class</p>
+							<p class="card-title">Host a zoom live class </p>
 							
 							
-<!-- <p id="demo"  class="card-title"></p> -->
+
 							<% if(notification && notification.length !== 0){ %>
 							<div class="alert alert-primary" role="alert" >
 								<%= notification  %>
@@ -105,13 +105,13 @@
 								<span  class="btn btn-danger btn-xm float-right" id="hide_class_create_form">Close</span>
 							</form>
 							<div class="table-responsive">
-								<table id="recent-purchases-listing" class="table">
+								<table  class="table">
 									<thead>
 										<tr>
 											<th>You can edit / delete Classes from the below list</th>
 										</tr>
 									</thead>
-									
+	          
 								</tbody>
 							</table>
 						</div>
@@ -191,11 +191,12 @@ $("#class_time").val("");
 	</script>
 
 
+
 <script>
 
 
 
-function mksdfasfsd(s,id){s
+function mksdfasfsd(s,id){
 
 var deadline = new Date(s).getTime();
 
@@ -222,8 +223,20 @@ document.getElementById(id).innerHTML = days + "d "
 
 </script>
 
-<script>
 
-</script>
+   <script>
+    var  classes = JSON.parse('<%- JSON.stringify(classes) %>');
+      classes.forEach( function(clas) {
 
+   var elemid = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5);
+
+  	
+var tempdate = moment(clas.class_date).format('MMM D, YYYY') + " " + moment(`${clas.class_date}T${clas.class_time}`).format("H:mm:ss");
+
+mksdfasfsd(tempdate,elemid)
+
+	$(".table").append(`<tr><td>${moment(clas.class_date).format('dddd Do MMMM')} At  ${moment(`${clas.class_date}T${clas.class_time}`).format("hh:mm a")}</td><td id="${elemid}"  class="card-title"></td><td><button class="btn btn-danger p-2">Cancel</button></td></tr>`)
+
+      });
+   </script>
 	<%- include("../partials/footer-user") -%>
