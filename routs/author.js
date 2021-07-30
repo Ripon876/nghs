@@ -5,8 +5,9 @@ var User           = require("../models/user");
 var Exam           = require("../models/exam");
 var Answer         = require("../models/answer");
 var Notice         = require("../models/notice");
-var Live_Class         = require("../models/live_class_schedule");
+var Live_Class     = require("../models/live_class_schedule");
 var fileUpload     = require('express-fileupload');
+var flash          = require('connect-flash');
 var fs             = require('fs');
 var path           = require('path');
 
@@ -25,7 +26,7 @@ Live_Class.find({author: sss},function(err,clas){
 
  Notice.find({},function(err,notices){
   if(err)console.log(err);
-  res.render("host_class",{user: req.user,notices: notices,classes: clas})
+  res.render("host_class",{user: req.user,notices: notices,classes: clas, success : req.flash("successfully_schedule_deleted"),error: req.flash("successfully_schedule_not_deleted")});
  });
 
 
@@ -48,13 +49,10 @@ author: {
 }
 }
 
-
-
-
 Live_Class.create(live_class,function(err,clas){
 	if(err) console.log(err);
 
-	console.log(clas);
+	
  	
 res.json({mes: clas})
 
@@ -63,6 +61,22 @@ res.json({mes: clas})
  	
  })
 
+
+router.get("/author/hostLiveClass/remove/:id",function(req,res){
+	var id  = req.params.id;
+	Live_Class.findByIdAndRemove(id,function(err,cls){
+		if(err){
+			console.log(err);
+	    req.flash("successfully_schedule_not_deleted","Schedule not deleted successfully");
+		res.redirect("/author/hostLiveClass");
+         }
+
+
+		
+		req.flash("successfully_schedule_deleted","Schedule deleted successfully");
+		res.redirect("/author/hostLiveClass");
+	})
+})
 
 
  module.exports = router;
