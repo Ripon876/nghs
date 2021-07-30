@@ -11,18 +11,25 @@ var fs             = require('fs');
 var path           = require('path');
 
 
+
  router.get("/author/hostLiveClass",isLoggedIn,function(req,res) {
-Live_Class.find({},function(err,clas){
+
+var sss = {
+	id: req.user._id,
+	name: req.user.name
+}
+
+Live_Class.find({author: sss},function(err,clas){
 	if(err)console.log(err);
 
-console.log(clas)
+
  Notice.find({},function(err,notices){
   if(err)console.log(err);
   res.render("host_class",{user: req.user,notices: notices,classes: clas})
- })
+ });
 
 
-})
+});
  
 
  	
