@@ -50,11 +50,28 @@ author: {
 }
 
 Live_Class.create(live_class,function(err,clas){
-	if(err) console.log(err);
+	if(err) console.log(err); 
 
-	
- 	
-res.json({mes: clas})
+
+  var notice = {
+    notice: `${req.body.subject} - Live class - Class ${req.body.class} - Section ${req.body.section}`,
+    user: {
+    	id: req.user._id,
+      name: req.user.name
+    },
+    notice_type: "class"
+  }
+  Notice.create(notice,function(err,notice){
+    if (err) {
+      console.log(err);
+    }else{
+    // console.log(notice);
+    // res.redirect("/admin/notice");
+        res.json({mes: clas})
+    };
+  });
+
+
 
 
 });
@@ -79,6 +96,10 @@ router.get("/author/hostLiveClass/remove/:id",function(req,res){
 })
 
 
+
+router.get("/user/notice/:id",isLoggedIn,function(req,res){
+	res.send(req.params.id);
+})
  module.exports = router;
 
 

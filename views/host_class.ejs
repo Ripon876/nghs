@@ -35,17 +35,17 @@
 							
 
 							<% if(notification && notification.length !== 0){ %>
-							<div class="alert alert-primary" role="alert" >
+							<div class="alert alert-primary mes" role="alert" >
 								<%= notification  %>
 							</div>
 							<% } %>
 							<% if(success && success.length !== 0){ %>
-							<div class="alert alert-success" role="alert" >
+							<div class="alert alert-success mes" role="alert" >
 								<%= success  %>
 							</div>
 							<% } %>
 							<% if(error && error.length !== 0){ %>
-							<div class="alert alert-danger" role="alert" >
+							<div class="alert alert-danger mes" role="alert" >
 								<%= error  %>
 							</div>
 							<% } %>
@@ -238,5 +238,15 @@ mksdfasfsd(tempdate,elemid)
 	$(".table").append(`<tr><td>${moment(clas.class_date).format('dddd Do MMMM')} At  ${moment(`${clas.class_date}T${clas.class_time}`).format("hh:mm a")}</td><td id="${elemid}"  class="card-title"></td><td><a  href="/author/hostLiveClass/remove/${clas._id}" class="btn btn-danger p-2">Cancel</a></td></tr>`)
 
       });
+   </script>
+
+
+
+   <script>
+   	if($(".mes").text() !== ""){
+   		setTimeout(function(){
+          $(".mes").hide(300);
+          }, 2000);
+   	}
    </script>
 	<%- include("../partials/footer-user") -%>

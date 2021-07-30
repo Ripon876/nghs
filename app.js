@@ -614,8 +614,10 @@ app.post("/admin/notice",function(req,res){
   var notice = {
     notice: req.body.notice,
     user: {
+      id: req.user._id,
       name: req.user.name
-    }
+    },
+    notice_type: "normal"
   }
   Notice.create(notice,function(err,notice){
     if (err) {

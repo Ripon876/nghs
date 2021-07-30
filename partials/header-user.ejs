@@ -98,7 +98,7 @@
                 <% if (notices) { %>
                   
                 <% notices.forEach( function(notice) { %>
-                  <a class="dropdown-item">
+                  <a href="/user/notice/<%= notice._id  %>" class="dropdown-item">
                     <div class="item-thumbnail">
                       <div class="item-icon bg-warning">
                         <i class="mdi mdi-settings mx-0"></i>
