@@ -176,14 +176,17 @@ document.getElementById(id).innerHTML = days + "d "
 
 
   <script>
-    var  classes = JSON.parse('<%- JSON.stringify(notices) %>');
-   classes.forEach( function(e) {
-   	if(e.notice_type === "class"){
-   		  var s = e.notice.split(/[\s,]+/)
-   	console.log(s[s.length - 1])
-   	}
+  //  var  classes = JSON.parse('<%- JSON.stringify(notices) %>');
+  // classes.forEach( function(e) {
+  // 	if(e.notice_type === "class"){
+  // 		  var s = e.notice.split(/[\s,]+/)
+  // 	console.log(s[s.length - 1])
+  // 	}
+//
+  // });
 
-   });
+
+  
 //       classes.forEach( function(clas) {
 
 //    var elemid = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5);
