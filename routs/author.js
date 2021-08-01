@@ -11,7 +11,25 @@ var flash          = require('connect-flash');
 var fs             = require('fs');
 var path           = require('path');
 
+router.use(function(req,res,next){
+// console.log(req.user);
+  res.locals.currenUser    = req.user;
+  res.locals.user          = req.user;
+  Notice.find({},function(err,notices){
+  	if(!err)console.log(err);
+res.locals.notices = notices;
 
+  })
+
+  res.locals.error         = req.flash("error");
+  res.locals.success       = req.flash("success");
+  res.locals.notification  = req.flash("notification");
+
+
+
+
+  next();
+});
 
  router.get("/author/hostLiveClass",isLoggedIn,function(req,res) {
 
@@ -43,6 +61,7 @@ class_time: req.body.class_time,
 class: req.body.class,
 section:req.body.section,
 subject: req.body.subject,
+meeting_link: req.body.meeting_link,
 author: {
 	id: req.user._id,
 	name: req.user.name
@@ -54,7 +73,7 @@ Live_Class.create(live_class,function(err,clas){
 
 
   var notice = {
-    notice: `${req.body.subject} - Live class - Class ${req.body.class} - Section ${req.body.section}`,
+    notice: `${req.body.subject} - Live class - Class ${req.body.class} - Section ${req.body.section} - ID: ${clas._id}`,
     user: {
     	id: req.user._id,
       name: req.user.name
@@ -98,7 +117,22 @@ router.get("/author/hostLiveClass/remove/:id",function(req,res){
 
 
 router.get("/user/notice/:id",isLoggedIn,function(req,res){
-	res.send(req.params.id);
+
+// res.send(req.params.id);
+
+Notice.findById(req.params.id,function(err,notice){
+	if(err){
+		console.log(err);
+	}
+
+ if(notice.notice_type === "normal"){
+ 	res.send("the given notice is normal");
+ }else {
+ 		res.render("show_notice_info")
+ }
+
+})
+
 })
  module.exports = router;
 

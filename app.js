@@ -74,7 +74,12 @@ app.use(flash());
 app.use(function(req,res,next){
 // console.log(req.user);
   res.locals.currenUser = req.user;
+  res.locals.user     = req.user;
+  Notice.find({},function(err,notices){
+    if(!err)console.log(err);
+res.locals.notices = notices;
 
+  });
   res.locals.error         = req.flash("error");
   res.locals.success       = req.flash("success");
   res.locals.notification  = req.flash("notification");
@@ -301,7 +306,7 @@ Answer.find(usreAnswers,function(err,answers){
   if(err){
     console.log(err);
   }
-   res.render("user_dashborad",{answers: answers,user: user,title: title,notices: notices,tests: tests,error: req.flash("submissionFailed"),success: req.flash("submissionDone"),notification: req.flash("notification")});
+   res.render("user_dashborad",{answers: answers,user: user,title: title,tests: tests,error: req.flash("submissionFailed"),success: req.flash("submissionDone"),notification: req.flash("notification")});
 })
 
 
@@ -333,7 +338,7 @@ app.get("/user/profile/edit",isLoggedIn,function(req,res){
         if (err){
           console.log(err);
         }else{
-         res.render("edit_profile",{title: title,user: user,notices: notices});          
+         res.render("edit_profile",{title: title,user: user});          
         };
       });
 
@@ -384,7 +389,7 @@ Exam.find(obj,function(err,tests){
     console.log(err)
   }
 
-  res.render("author_dashboard",{user: req.user,notices: notices,tests: tests,success: req.flash('info'),error: req.flash('wrong'),notification: req.flash("notification")});
+  res.render("author_dashboard",{user: req.user,tests: tests,success: req.flash('info'),error: req.flash('wrong'),notification: req.flash("notification")});
 })
 
         };
@@ -601,7 +606,7 @@ app.get("/admin/notice",isLoggedIn,function(req,res){
         if (err){
           console.log(err);
         }else{
-           res.render("notice",{notices: notices});
+           res.render("notice");
         };
       });
 });

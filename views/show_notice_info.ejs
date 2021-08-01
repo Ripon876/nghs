@@ -49,65 +49,6 @@
 								<%= error  %>
 							</div>
 							<% } %>
-							<button class="btn btn-primary" id="show_class_create_form">Create a class</button>
-							<form class="border p-5" id="create_class" >
-							          <div class="form-group">
-							            <label for="subject" >Class</label>
-							            <div class="input-group mb-3">
-							              <select class="custom-select class" name="class" id="dsfafds234214">
-							                <option selected>Choose...</option>
-							                <option value="6">Six</option>
-							                <option value="7">Seven</option>
-							                <option value="8">Eight</option>
-							                <option value="9">Nine</option>
-							                <option value="10">Ten</option>
-							              </select>
-							            </div>
-							          </div>
-								      <div class="form-group">
-							            <label for="subject">Section</label>
-							            <div class="input-group mb-3">
-							              <select class="custom-select section" name="section">
-							                <option selected>Choose...</option>
-							                <option value="A">A</option>
-							                <option value="B">B</option>
-							                <option value="C">C</option>
-							                <option value="D">D</option>
-							                <option value="ALL">ALL</option>
-							              </select>
-							            </div>
-							          </div>
-							          <div class="form-group">
-							            <label for="subject">Subject</label>
-							            <div class="input-group mb-3">
-							              <select class="custom-select subject" name="subject" id="inputGroupSelect01">
-							                <option selected>Choose...</option>
-							                <option value="1">Bangla</option>
-							                <option value="2">English</option>
-							                <option value="3">Math</option>
-							                <option value="4">Higher Math</option>
-							                <option value="5">Biology</option>
-							                <option value="6">Chemistry</option>
-							                <option value="7">Phisics</option>
-							                <option value="8">ICT</option>
-							              </select>
-							            </div>
-							          </div>
-								<div class="form-group">
-									<label for="result_number">Date</label>
-									<input type="date" max="100" id="class_date" class="form-control border border-bl">
-								</div>
-								<div class="form-group">
-									<label for="result_number">Time</label>
-									<input type="time" max="100" id="class_time" class="form-control border border-bl">
-								</div>
-								<div class="form-group">
-									<label for="result_number"  data-toggle="tooltip" data-placement="top" title="Past the invitaion link from your zoom scheduled meeting" >Meeting Link</label>
-									<input type="text"  id="meeting_link" class="form-control border border-bl">
-								</div>
-								<button class="btn btn-primary btn-xm" type="submit">Submit</button>
-								<span  class="btn btn-danger btn-xm float-right" id="hide_class_create_form">Close</span>
-							</form>
 							<div class="table-responsive">
 								<table  class="table">
 									<thead>
@@ -234,21 +175,28 @@ document.getElementById(id).innerHTML = days + "d "
 </script>
 
 
-   <script>
-    var  classes = JSON.parse('<%- JSON.stringify(classes) %>');
-      classes.forEach( function(clas) {
+  <script>
+    var  classes = JSON.parse('<%- JSON.stringify(notices) %>');
+   classes.forEach( function(e) {
+   	if(e.notice_type === "class"){
+   		  var s = e.notice.split(/[\s,]+/)
+   	console.log(s[s.length - 1])
+   	}
 
-   var elemid = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5);
+   });
+//       classes.forEach( function(clas) {
+
+//    var elemid = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5);
 
   	
-var tempdate = moment(clas.class_date).format('MMM D, YYYY') + " " + moment(`${clas.class_date}T${clas.class_time}`).format("H:mm:ss");
+// var tempdate = moment(clas.class_date).format('MMM D, YYYY') + " " + moment(`${clas.class_date}T${clas.class_time}`).format("H:mm:ss");
 
-mksdfasfsd(tempdate,elemid)
+// mksdfasfsd(tempdate,elemid)
 
-	$(".table").append(`<tr><td>${moment(clas.class_date).format('dddd Do MMMM')} At  ${moment(`${clas.class_date}T${clas.class_time}`).format("hh:mm a")}</td><td id="${elemid}"  class="card-title"></td><td><a  href="/author/hostLiveClass/remove/${clas._id}" class="btn btn-danger p-2">Cancel</a></td></tr>`)
+// 	$(".table").append(`<tr><td>${moment(clas.class_date).format('dddd Do MMMM')} At  ${moment(`${clas.class_date}T${clas.class_time}`).format("hh:mm a")}</td><td id="${elemid}"  class="card-title"></td><td><a  href="/author/hostLiveClass/remove/${clas._id}" class="btn btn-danger p-2">Cancel</a></td></tr>`)
 
-      });
-   </script>
+//       });
+//    </script>
 
 
 
