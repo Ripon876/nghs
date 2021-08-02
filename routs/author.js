@@ -12,11 +12,11 @@ var fs             = require('fs');
 var path           = require('path');
 
 router.use(function(req,res,next){
-// console.log(req.user);
+
   res.locals.currenUser    = req.user;
   res.locals.user          = req.user;
   Notice.find({},function(err,notices){
-  	if(!err)console.log(err);
+  	if(err)console.log(err);
 res.locals.notices = notices;
 
   })
@@ -116,11 +116,12 @@ router.get("/author/hostLiveClass/remove/:id",function(req,res){
 
 
 
-router.get("/user/notice/:id",isLoggedIn,function(req,res){
+router.get("/user/notice/:notice_id",isLoggedIn,function(req,res){
 
-// res.send(req.params.id);
 
-Notice.findById(req.params.id,function(err,notice){
+
+
+Notice.findById(req.params.notice_id,function(err,notice){
 	if(err){
 		console.log(err);
 	}
@@ -128,11 +129,25 @@ Notice.findById(req.params.id,function(err,notice){
  if(notice.notice_type === "normal"){
  	res.send("the given notice is normal");
  }else {
- 		res.render("show_notice_info")
+
+var s = notice.notice.split(/[\s,]+/);
+
+			
+ 
+Live_Class.findById(s[s.length - 1],function(err,cls){
+	
+
+if(err) console.log(err)
+	
+	res.render("show_notice_info",{cls: cls});
+	
+})
+			
+
  }
 
 })
-
+ 
 })
  module.exports = router;
 

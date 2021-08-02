@@ -72,11 +72,11 @@ app.get("/message",function(req,res){
 app.use(require('express-session')({ secret: "My name is MD Ripon Islam", resave: false, saveUninitialized: false }));
 app.use(flash());
 app.use(function(req,res,next){
-// console.log(req.user);
+
   res.locals.currenUser = req.user;
   res.locals.user     = req.user;
   Notice.find({},function(err,notices){
-    if(!err)console.log(err);
+    if(err)console.log(err);
 res.locals.notices = notices;
 
   });
@@ -92,8 +92,6 @@ res.locals.notices = notices;
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()));
-// // passport.serializeUser(User.serializeUser());
-// // passport.deserializeUser(User.deserializeUser());
 passport.serializeUser(function(user, cb) {
   cb(null, user);
 });
@@ -112,7 +110,7 @@ passport.use(new GoogleStrategy({
     passReqToCallback   : true
   },
   function(request, accessToken, refreshToken, profile, done) {
-    // console.log(profile);
+    
       
       User.findOne({googleId: profile.id},function(err,user){
            if(user){
