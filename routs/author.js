@@ -78,7 +78,9 @@ Live_Class.create(live_class,function(err,clas){
     	id: req.user._id,
       name: req.user.name
     },
-    notice_type: "class"
+    notice_type: "class",
+    class: req.body.class,
+    section: req.body.section
   }
   Notice.create(notice,function(err,notice){
     if (err) {
@@ -144,7 +146,7 @@ if(err) console.log(err)
 })
 			
 
- }
+ } 
 
 })
  

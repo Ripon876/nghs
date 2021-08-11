@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/css/vendor.bundle.base.css">
 
+
     <link rel="stylesheet" href="/css/dataTables.bootstrap4.css">
  
     <link rel="stylesheet" href="/css/style.css">
@@ -24,6 +25,7 @@
       border: 1px solid #e0e3e4 !important;
     }
     </style>
+      <script src="/js/jquery.min.js"></script> 
   </head>
   <body> 
     <div class="container-scroller">
@@ -98,23 +100,23 @@
                 <% if (notices) { %>
                   
                 <% notices.forEach( function(notice) { %>
-                  <a href="/user/notice/<%= notice._id  %>  " class="dropdown-item">
 
 
 
-
-
-
-
-                    <div class="item-thumbnail">
-                      <div class="item-icon bg-warning">
-                        <i class="mdi mdi-settings mx-0"></i>
-                      </div>
-                    </div>
-                    <div class="item-content">
-                      <h6 class="font-weight-normal"><%= notice.notice.substring(0,25); %>...</h6>
-                    </div>
-                  </a>
+             <% if (notice.class === user.class && notice.section === user.section) { %>
+              <a href="/user/notice/<%= notice._id %>  " class="dropdown-item">
+                <div class="item-thumbnail">
+                  <div class="item-icon bg-warning">
+                    <i class="mdi mdi-settings mx-0"></i>
+                  </div>
+                </div>
+                <div class="item-content">
+                  <h6 class="font-weight-normal"><%= notice.notice.substring(0,25); %>...</h6>
+                </div>
+              </a>
+              <% } %>
+                
+             
                 <% }); %>
                    <% } %>
                 </div>

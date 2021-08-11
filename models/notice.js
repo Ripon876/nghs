@@ -6,7 +6,9 @@ var noticeSchema = new mongoose.Schema({
 		id: String,
        name: String
 	},
-	notice_type: String
+	notice_type: String,
+	class: String,
+	section: String
 });
 
 var Notice = mongoose.model("Notice",noticeSchema);

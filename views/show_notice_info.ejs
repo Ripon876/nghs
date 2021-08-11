@@ -1,4 +1,5 @@
 <%- include("../partials/header-user") -%>
+
 <!-- partial -->
 <div class="container-fluid page-body-wrapper">
 	<nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -30,9 +31,9 @@
 			<div class="row">
 				<div class="col-md-12 stretch-card">
 					<div class="card">
-						<div class="card-body" >
-							<p class="card-title">Host a zoom live class </p>
-							<p class="card-title" id="card-body" style="color: #27367f;font-size: 50px;text-shadow: 1px 9px 10px #27367f;"></p>
+						<div class="card-body" style="text-align: center;">
+							<p class="card-title"  id="card-title" style="text-align: center;">Class will start after</p>
+							<p class="card-title mt-3" id="card-body" style="color: #27367f;font-size: 50px;text-shadow: 1px 9px 10px #27367f;text-align: center;"></p>
 							
 						
 
@@ -51,23 +52,32 @@
 								<%= error  %>
 							</div>
 							<% } %>
-							<div class="table-responsive">
-								<table  class="table">
-									<thead>
-										<tr>
-											<th>You can edit / delete Classes from the below list</th>
-										</tr>
-									</thead>
-	          
-								</tbody>
-							</table>
-						</div>
+
+							<a href="#" class="btn btn-primary mt-3" id="join_now_button">Join</a>
+						
 					</div>
+
+<hr>
+<div class="width-50 m-auto">
+	<h3 class="display-3 text-center">Class Info<hr></h3>
+	<p>Teacher: <strong><%= cls.author.name %></strong></p>
+	<p>For Class: <strong><%= cls.class %></strong></p>
+	<p>Section: <strong><%= cls.section %></strong></p>
+	<p>Subject: <strong><%= cls.subject %></strong></p>
+	<p>Class will taken: <strong>In <%= cls.class_date %> At 
+
+	<% if(cls.class_time.slice(0,2) > 12){ %>
+          <%-  cls.class_time.slice(0,2) - 12 %>:<%= cls.class_time.slice(3) %> PM
+	<% }else{ %>
+     <%= cls.class_time %> AM
+    <% } %></strong></p>
+	<hr>
+</div>
+
 				</div>
-			</div>
+			</div> 
 		</div>
 	</div>
-
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -105,7 +115,7 @@ $(function () {
 
 
 <script>
-
+$("#join_now_button").addClass("disabled");
 
 
 function mksdfasfsd(s){
@@ -126,9 +136,13 @@ var seconds = Math.floor((t % (1000 * 60)) / 1000);
 document.getElementById("card-body").innerHTML = days + "d " 
 + hours + "h " + minutes + "m " + seconds + "s ";
 
+
     if (t < 0) {
         clearInterval(x);
-        document.getElementById("card-body").innerHTML = "EXPIRED";
+        $("#card-title").remove();
+        $("#join_now_button").removeClass("disabled");
+        document.getElementById("card-body").innerHTML = "Class has been started.";
+        document.getElementById("join_now_button").setAttribute("href","<%= cls.meeting_link %>");
     }
 },1000);
 
@@ -140,19 +154,17 @@ document.getElementById("card-body").innerHTML = days + "d "
 
   <script>
 
-    var  cls = JSON.parse('<%- JSON.stringify(cls) %>');
-     console.log(cls)
-var m  = new Date(cls.class_date + "," + cls.class_time).getTime();
+   // var  cls = JSON.parse('<%- JSON.stringify(cls) %>');
+   //  console.log(cls)
+// var m  = new Date(cls.class_date + "," + cls.class_time).getTime();
 
 // var m  = new Date("2021-08-02 , 11:10 PM").getTime();
 
-console.log(m)
+// console.log(m)
 
- //  var elemid = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5);
+//     var  f = JSON.parse('<%- JSON.stringify(notices) %>');
+//      console.log(f)
 
-  	
-// var tempdate = moment(cls.class_date).format('MMM D, YYYY') + " " + moment(`${cls.class_date}T${cls.class_time}`).format("H:mm:ss");
-// console.log(tempdate)
 mksdfasfsd(m)
 
 	
