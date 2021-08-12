@@ -1,6 +1,5 @@
 <%- include("../partials/header-user") -%>
 <div class="container-fluid page-body-wrapper">
-	<!-- partial:partials/_sidebar.html -->
 	<nav class="sidebar sidebar-offcanvas" id="sidebar">
 		<ul class="nav">
 			<li class="nav-item">
@@ -18,9 +17,35 @@
 				<div class="col-md-12 stretch-card">
 					<div class="card">
 						<div class="card-body">
-							<p class="card-title text-center">ubmi Test</p>
-						
-						
+							<p class="card-title text-center">Result<hr></p>
+									<% if (answer) { %>
+				<% answer.forEach(function(ans){ %>
+					
+				  <% if(ans.marks == 0){  %>
+					<p class="lead">Result not published yet</p>
+				  <% }else if(ans.marks >= 33){ %>
+					<div class="card m-auto" style="width: 18rem;">
+						<img src="/img/passed.png" class="card-img-top" alt="...">
+						<div class="card-body">
+							<h4 class="card-title">Marks: <%= ans.marks %></h4>
+						</div>
+					</div>
+				  <% }else if (ans.marks  < 33 ){ %>
+					<div class="card m-auto" style="width: 18rem;">
+						<img src="/img/failed.png">
+							<h5 class="card-title">Marks: <%= ans.marks %></h5>
+						</div>
+					</div>
+				  <% } %>
+					
+				<% }) %>
+
+
+
+
+					<% } %>
+ 						
+<!--						
 							<div class="card" style="width: 18rem;">
 								<img src="https://static9.depositphotos.com/1074452/1122/i/950/depositphotos_11222511-stock-photo-passed-stamp-shows-quality-control.jpg" class="card-img-top" alt="...">
 								<div class="card-body">
@@ -37,7 +62,7 @@
 									<a href="#" class="btn btn-primary">Go somewhere</a>
 								</div>
 							</div>
-							
+							 -->
 
 
  
@@ -45,5 +70,10 @@
 					</div>
 				</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+	
 
+	 var  cls = JSON.parse('<%- JSON.stringify(answer) %>');
+ console.log(cls)
+</script>
 <%- include("../partials/footer-user") -%>

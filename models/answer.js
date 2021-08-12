@@ -8,7 +8,7 @@ var answerSchema = new mongoose.Schema({
     }, 
     test_id: String,
     answer: String,
-    marks: Number,
+    marks: {type: Number, default: 0},
     passed: { type: Boolean, default: false }
 }); 
 var Answer = mongoose.model("Answer",answerSchema);
