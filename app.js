@@ -645,6 +645,20 @@ app.get("/admin/notice/delete/:id",function(req,res){
 })
 
 
+
+app.get("/user/notices/all",function(req,res){
+  Notice.find({},function(err,notices){
+    if(err){
+      console.log(err);
+      res.json({error: "Something went wrong"})
+    }
+res.json(notices);
+
+  })
+})
+
+
+
 function isLoggedIn(req,res,next){ // 
 	if(req.isAuthenticated()){      //   this function used for preventing   
 		return next();               //   a logged out user to visite   
