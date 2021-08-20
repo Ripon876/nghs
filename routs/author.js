@@ -31,7 +31,7 @@ res.locals.notices = notices;
   next();
 });
 
- router.get("/author/hostLiveClass",isLoggedIn,function(req,res) {
+ router.get("/author/hostLiveClass",isLoggedInAndAuthor,function(req,res) {
 
 var sss = {
 	id: req.user._id,
@@ -54,7 +54,7 @@ Live_Class.find({author: sss},function(err,clas){
  	
  })
 
- router.post("/author/hostLiveClass",isLoggedIn,function(req,res) {
+ router.post("/author/hostLiveClass",isLoggedInAndAuthor,function(req,res) {
 var live_class = {
 class_date: req.body.class_date,
 class_time: req.body.class_time,
@@ -100,7 +100,7 @@ Live_Class.create(live_class,function(err,clas){
  })
 
 
-router.get("/author/hostLiveClass/remove/:id",function(req,res){
+router.get("/author/hostLiveClass/remove/:id",isLoggedInAndAuthor,function(req,res){
 	var id  = req.params.id;
 	Live_Class.findByIdAndRemove(id,function(err,cls){
 		if(err){
@@ -128,12 +128,14 @@ Notice.findById(req.params.notice_id,function(err,notice){
 		console.log(err);
 	}
 
+
  if(notice.notice_type === "normal"){
- 	res.send("the given notice is normal");
+ res.render("show_notice_info",{notice: notice});
+
  }else {
 
-var s = notice.notice.split(/[\s,]+/);
 
+var s = notice.notice.split(/[\s,]+/);
 			
  
 Live_Class.findById(s[s.length - 1],function(err,cls){
@@ -141,7 +143,7 @@ Live_Class.findById(s[s.length - 1],function(err,cls){
 
 if(err) console.log(err)
 	
-	res.render("show_notice_info",{cls: cls});
+	res.render("show_class_notice_info",{cls: cls});
 	
 })
 			
@@ -157,6 +159,16 @@ if(err) console.log(err)
 function isLoggedIn(req,res,next){ // 
   if(req.isAuthenticated()){      //   this function used for preventing   
     return next();               //   a logged out user to visite   
+  }else{  
+    req.flash('loginFirst', 'Please Login First');  
+    res.redirect("/login");             
+  }
+}
+
+
+function isLoggedInAndAuthor(req,res,next){             // 
+  if(req.isAuthenticated() && req.user.isAuthor){      //   this function used for preventing   
+    return next();                                    //   a logged out user to visite   
   }else{  
     req.flash('loginFirst', 'Please Login First');  
     res.redirect("/login");             

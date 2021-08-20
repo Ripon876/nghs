@@ -11,7 +11,7 @@ var fs             = require('fs');
 var path           = require('path');
 
 
-router.get("/author/exam/new",isLoggedIn,function(req,res){
+router.get("/author/exam/new",isLoggedInAndAuthor,function(req,res){
 
      if(req.user.isAuthor){
       Notice.find({},function(err,notices){
@@ -28,7 +28,7 @@ router.get("/author/exam/new",isLoggedIn,function(req,res){
 
 }); 
 
-router.post("/new-test",isLoggedIn,function(req,res){
+router.post("/new-test",isLoggedInAndAuthor,function(req,res){
 
 Exam.create({
   subject: req.body.subject,
@@ -53,7 +53,7 @@ res.redirect("/author/dashboard")
 
 });
 
-router.get("/edit/test/:id",isLoggedIn,function(req,res){
+router.get("/edit/test/:id",isLoggedInAndAuthor,function(req,res){
  Exam.findById(req.params.id,function(err,test){
   if(err){
     console.log(err);
@@ -74,7 +74,7 @@ router.get("/edit/test/:id",isLoggedIn,function(req,res){
  })
 })
 
-router.get("/delete_test/:test_id",function(req,res){
+router.get("/delete_test/:test_id",isLoggedInAndAuthor,function(req,res){
   Exam.findByIdAndRemove(req.params.test_id,function(err,test){
     if(err){
       console.log(err);
@@ -90,7 +90,7 @@ router.get("/delete_test/:test_id",function(req,res){
   });
 })
 
-router.post("/edit-test/:testId",isLoggedIn,function(req,res){
+router.post("/edit-test/:testId",isLoggedInAndAuthor,function(req,res){
    
    var newTest = {
   subject: req.body.subject,
@@ -119,7 +119,7 @@ router.post("/edit-test/:testId",isLoggedIn,function(req,res){
 
 });
 
-router.get("/test/status/:test_id",isLoggedIn,function(req,res){
+router.get("/test/status/:test_id",isLoggedInAndAuthor,function(req,res){
 var answersOfTheTest = {
   test_id: req.params.test_id
 }
@@ -144,7 +144,7 @@ Answer.find(answersOfTheTest,function(err,answers){
 });
 });
 
-router.get("/test/status/answer/:answer_id",function(req,res){
+router.get("/test/status/answer/:answer_id",isLoggedInAndAuthor,function(req,res){
 
   Answer.findById(req.params.answer_id,function(err,answer){
     if(err){
@@ -161,7 +161,7 @@ router.get("/test/status/answer/:answer_id",function(req,res){
   })
 });
 
-router.get("/test/result/answer/:answer_id/:number",isLoggedIn,function(req,res){
+router.get("/test/result/answer/:answer_id/:number",isLoggedInAndAuthor,function(req,res){
 var id = req.params.answer_id;
 var status = false;
 if(req.params.number >= 33){
@@ -217,7 +217,7 @@ function updateResult(id,result){
 
 })
 
-router.get("/test/:answer_id/:test_id/result",isLoggedIn,function(req,res){
+router.get("/test/:answer_id/:test_id/result",isLoggedInAndAuthor,function(req,res){
 
 var obj={
     _id: req.params.answer_id,
@@ -241,35 +241,16 @@ var obj={
 
 // 31/08/2021
 
-function isLoggedIn(req,res,next){ // 
-  if(req.isAuthenticated()){      //   this function used for preventing   
-    return next();               //   a logged out user to visite   
+
+
+
+function isLoggedInAndAuthor(req,res,next){             // 
+  if(req.isAuthenticated() && req.user.isAuthor){      //   this function used for preventing   
+    return next();                                    //   a logged out user to visite   
   }else{  
     req.flash('loginFirst', 'Please Login First');  
     res.redirect("/login");             
   }
-}
-
-
-function isLoggedOut(req,res,next){ //                       
-  if(!req.isAuthenticated()){      //  this function used for preventing       
-    return next();                //  a logged in user to visite       
-  }else{                         //  the login and registaion page
-    res.redirect("/");          //           
-  }
-}
-
-
-function moveFile(img,user,p){
-  // console.log(user);
-
-   img.mv(path.join('./public/uploads/' + user, p), function(err){
-
-        if (err){
-         console.log(err);
-        }        
-        // console.log('File uploaded!');
-    });
 }
 
 

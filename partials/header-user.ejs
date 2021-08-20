@@ -31,7 +31,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 
-$("#newNoticeCount").hide();
 
 var oldNoticeCount = 0;
 var newNoticeCount = 0;
@@ -54,18 +53,30 @@ cls.forEach( function(notice) {
   success : function(result){
 
 newNoticeCount = 0;
-
+$('.notifications').empty()
 
 result.forEach(function(notice) {
 if((notice.class === "<%= user.class %>" && notice.section ===  "<%=  user.section  %>" ) || notice.notice_type === "normal"){
 
     newNoticeCount++;
+
+var tempNotice  =  `<a href="/user/notice/${notice._id}" class="dropdown-item">
+                <div class="item-thumbnail">
+                  <div class="item-icon bg-warning">
+                    <i class="mdi mdi-settings mx-0"></i>
+                  </div>
+                </div>
+                <div class="item-content">
+                  <h6 class="font-weight-normal">${notice.notice.substring(0,25)}...</h6>
+                </div>
+              </a>`;
+
+
+$(".notifications").append(tempNotice)
    
  } 
 
 });
-console.log(newNoticeCount)
-console.log(oldNoticeCount)
  
 
 
@@ -83,14 +94,11 @@ console.log(oldNoticeCount)
 
 
 
-if(oldNoticeCount !== newNoticeCount){
+if(oldNoticeCount !== newNoticeCount &&  newNoticeCount > oldNoticeCount){
   oldNoticeCount = newNoticeCount;
-    console.log("count  not matched") 
+    $("#newNoticeCount").show()
 }
-else {
-  console.log("count match")
-}
-
+ 
 
   },5000)
 </script>
@@ -115,7 +123,7 @@ else {
             <li class="nav-item dropdown mr-1">
               <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
                 <i class="mdi mdi-message-text mx-0"></i>
-                <span class="count"></span>
+                <span class="count" style="display: none;"></span>
               </a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
                 <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
@@ -216,3 +224,6 @@ else {
         </div>
       </nav>
       
+      <script>
+        $("#newNoticeCount").hide()
+      </script>

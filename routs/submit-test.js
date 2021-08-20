@@ -86,3 +86,5 @@ function isLoggedOut(req,res,next){ //
     res.redirect("/");          //           
   }
 }
+
+
