@@ -355,6 +355,9 @@ app.put("/user/profile",isLoggedIn,function(req,res){
         if (req.user.isAdmin) {
            res.redirect("/admin");
         }else{
+
+        if (req.user.isAuthor) { res.redirect("/author/dashboard") }
+
           res.redirect("/user/dashboard");
         };
        
@@ -367,7 +370,7 @@ app.put("/user/profile",isLoggedIn,function(req,res){
 // author rout
 // ====================
 
-app.get("/author/dashboard",isLoggedIn,function(req,res){
+app.get("/author/dashboard",isLoggedInAndAuthor,function(req,res){
       
 var obj = {
   author: {
@@ -403,7 +406,8 @@ Exam.find(obj,function(err,tests){
   // ====================
  // admin rout
 // ====================
-app.get("/admin",isLoggedIn,function(req,res){
+app.get("/admin",isLoggedInAndAdmin,function(req,res){
+
 	if (req.user.isAdmin){
 
   User.find({},function(err,users){
@@ -418,11 +422,11 @@ app.get("/admin",isLoggedIn,function(req,res){
 	};
 });
 
-app.get("/admin/create_author",isLoggedIn,function(req,res){
+app.get("/admin/create_author",isLoggedInAndAdmin,function(req,res){
   res.render("create_author");
 })
 
-app.post("/admin",isLoggedIn,function(req,res){
+app.post("/admin",isLoggedInAndAdmin,function(req,res){
   var id = req.body.id;
 
 User.findById(id,function(err,user){
@@ -465,7 +469,7 @@ app.get("/user/edit/:id",isLoggedIn,function(req,res){
     };
    })
 });
-app.put("/admin/user/edit",isLoggedIn,function(req,res){
+app.put("/admin/user/edit",isLoggedInAndAdmin,function(req,res){
    var user = req.body.user;
    var id = req.body.id
    User.findByIdAndUpdate(id,user,{new: true},function(err,user){
@@ -483,7 +487,7 @@ app.put("/admin/user/edit",isLoggedIn,function(req,res){
    });
 });
 
-app.get("/delete_user/:id",isLoggedIn,function(req,res){
+app.get("/delete_user/:id",isLoggedInAndAdmin,function(req,res){
      
      if (req.user.isAdmin === true) {
 
@@ -511,7 +515,7 @@ else if(req.user.isUser == true){
 
 });
 
-app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
+app.delete("/admin/delete_user/:id",isLoggedInAndAdmin,function(req,res){
 
   User.findById(req.params.id,function(err,user){
     if(err){
@@ -560,7 +564,7 @@ app.delete("/admin/delete_user/:id",isLoggedIn,function(req,res){
 
 
 
-app.get("/admin/searchuser/:name",function(req,res){
+app.get("/admin/searchuser/:name",isLoggedInAndAdmin,function(req,res){
   var name = req.params.name;
   var userDatas = [];
   // console.log(name)
@@ -598,7 +602,7 @@ app.get("/admin/searchuser/:name",function(req,res){
 // =================
 
 
-app.get("/admin/notice",isLoggedIn,function(req,res){
+app.get("/admin/notice",isLoggedInAndAdmin,function(req,res){
       
       Notice.find({},function(err,notices){
         if (err){
@@ -609,11 +613,11 @@ app.get("/admin/notice",isLoggedIn,function(req,res){
       });
 });
 
-app.get("/admin/notice/new",function(req,res){
+app.get("/admin/notice/new",isLoggedInAndAdmin,function(req,res){
   res.render("new_notice");
 });
 
-app.post("/admin/notice",function(req,res){
+app.post("/admin/notice",isLoggedInAndAdmin,function(req,res){
   var notice = {
     notice: req.body.notice,
     user: {
@@ -633,7 +637,7 @@ app.post("/admin/notice",function(req,res){
 });;
 
 
-app.get("/admin/notice/delete/:id",function(req,res){
+app.get("/admin/notice/delete/:id",isLoggedInAndAdmin,function(req,res){
   var id = req.params.id;
   Notice.findByIdAndRemove(id,function(err,notice){
     if (err) {
@@ -646,7 +650,7 @@ app.get("/admin/notice/delete/:id",function(req,res){
 
 
 
-app.get("/user/notices/all",function(req,res){
+app.get("/user/notices/all",isLoggedIn,function(req,res){
   Notice.find({},function(err,notices){
     if(err){
       console.log(err);
@@ -656,7 +660,7 @@ res.json(notices);
 
   })
 })
-
+ 
 
 
 function isLoggedIn(req,res,next){ // 
@@ -678,9 +682,27 @@ function isLoggedOut(req,res,next){ //
 	}
 }
 
+function isLoggedInAndAdmin(req,res,next){             // 
+  if(req.isAuthenticated() && req.user.isAdmin){      //   this function used for preventing   
+    return next();                                    //   a logged out user to visite   
+  }else{  
+    req.flash('loginFirst', 'Please Login First');  
+    res.redirect("/login");             
+  }
+}
+function isLoggedInAndAuthor(req,res,next){             // 
+  if(req.isAuthenticated() && req.user.isAuthor){      //   this function used for preventing   
+    return next();                                    //   a logged out user to visite   
+  }else{  
+    req.flash('loginFirst', 'Please Login First');  
+    res.redirect("/login");             
+  }
+}
+
 app.listen(port,function(){
 	console.log("Server started at port ..." + port);
 });
+
 
 
 
