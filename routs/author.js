@@ -10,6 +10,7 @@ var fileUpload     = require('express-fileupload');
 var flash          = require('connect-flash');
 var fs             = require('fs');
 var path           = require('path');
+var middlewares    = require("../middlewares/middleware");
 
 router.use(function(req,res,next){
 
@@ -31,7 +32,44 @@ res.locals.notices = notices;
   next();
 });
 
- router.get("/author/hostLiveClass",isLoggedInAndAuthor,function(req,res) {
+
+
+
+router.get("/author/dashboard",middlewares.isLoggedInAndAuthor,function(req,res){
+      
+var obj = {
+  author: {
+    id: req.user._id,
+    username: req.user.username
+  }
+}
+
+      if(req.user.isAuthor){
+              Notice.find({},function(err,notices){
+        if (err){
+          console.log(err);
+        }else{
+
+Exam.find(obj,function(err,tests){
+  if(err){
+    console.log(err)
+  }
+
+  res.render("author_dashboard",{user: req.user,tests: tests,success: req.flash('info'),error: req.flash('wrong'),notification: req.flash("notification")});
+})
+
+        };
+      });
+          
+        }else{
+          res.redirect("/");
+        };
+
+
+});
+
+
+ router.get("/author/hostLiveClass",middlewares.isLoggedInAndAuthor,function(req,res) {
 
 var sss = {
 	id: req.user._id,
@@ -54,7 +92,7 @@ Live_Class.find({author: sss},function(err,clas){
  	
  })
 
- router.post("/author/hostLiveClass",isLoggedInAndAuthor,function(req,res) {
+ router.post("/author/hostLiveClass",middlewares.isLoggedInAndAuthor,function(req,res) {
 var live_class = {
 class_date: req.body.class_date,
 class_time: req.body.class_time,
@@ -97,10 +135,10 @@ Live_Class.create(live_class,function(err,clas){
 
 });
  	
- })
+ });
 
 
-router.get("/author/hostLiveClass/remove/:id",isLoggedInAndAuthor,function(req,res){
+router.get("/author/hostLiveClass/remove/:id",middlewares.isLoggedInAndAuthor,function(req,res){
 	var id  = req.params.id;
 	Live_Class.findByIdAndRemove(id,function(err,cls){
 		if(err){
@@ -118,7 +156,7 @@ router.get("/author/hostLiveClass/remove/:id",isLoggedInAndAuthor,function(req,r
 
 
 
-router.get("/user/notice/:notice_id",isLoggedIn,function(req,res){
+router.get("/user/notice/:notice_id",middlewares.isLoggedIn,function(req,res){
 
 
 
@@ -154,24 +192,3 @@ if(err) console.log(err)
  
 })
  module.exports = router;
-
-
-function isLoggedIn(req,res,next){ // 
-  if(req.isAuthenticated()){      //   this function used for preventing   
-    return next();               //   a logged out user to visite   
-  }else{  
-    req.flash('loginFirst', 'Please Login First');  
-    res.redirect("/login");             
-  }
-}
-
-
-function isLoggedInAndAuthor(req,res,next){             // 
-  if(req.isAuthenticated() && req.user.isAuthor){      //   this function used for preventing   
-    return next();                                    //   a logged out user to visite   
-  }else{  
-    req.flash('loginFirst', 'Please Login First');  
-    res.redirect("/login");             
-  }
-}
-

@@ -7,14 +7,14 @@ var localStrategy  = require("passport-local");
 var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 var fs             = require('fs');
 var path           = require('path');
-
+var middlewares    = require("../middlewares/middleware");
 
 
   // ====================
  // registration rout
 // ====================
 
-router.get("/register",isLoggedOut,function(req,res){
+router.get("/register",middlewares.isLoggedOut,function(req,res){
 	var Rtitle = "NGHS | Register"
 	res.render("register",{title: Rtitle});
 })
@@ -64,7 +64,7 @@ router.post("/register",function(req,res){
  // login rout
 // ====================
 
-router.get("/login",isLoggedOut,function(req,res){
+router.get("/login",middlewares.isLoggedOut,function(req,res){
   var Ltitle = "NGHS | Login"
 	res.render("login",{title: Ltitle,currenUser: req.user,error: req.flash('loginFirst')});
 });
@@ -84,25 +84,5 @@ router.get("/logout",function(req,res){
 
 
 
-
-function isLoggedIn(req,res,next){ // 
-	if(req.isAuthenticated()){      //   this function used for preventing   
-		return next();               //   a logged out user to visite   
-                                //   the secreat pages
-                               //  
-	}else{             
-    req.flash('loginFirst', 'Please Login First');                     
-		res.redirect("/login");          
-	}
-}
-
-
-function isLoggedOut(req,res,next){ //                       
-	if(!req.isAuthenticated()){      //  this function used for preventing       
-		return next();                //  a logged in user to visite       
-	}else{                         //  the login and registaion page
-		res.redirect("/");          //           
-	}
-}
 
 module.exports = router;

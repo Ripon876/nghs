@@ -1,2 +1,66 @@
 <%- include("../partials/header-user") -%>
-<%- include("../partials/footer-user") -%>
+<!-- partial -->
+<div class="container-fluid page-body-wrapper">
+  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/user/dashboard">
+          <i class="mdi mdi-home menu-icon"></i>
+          <span class="menu-title">Dashboard</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- partial -->
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-12 stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <p class="card-title">Profile</p>
+              <div class="container mt-3">
+                <% if(notification && notification.length !== 0){ %>
+                <div class="alert alert-primary" role="alert" >
+                  <%= notification  %>
+                </div>
+                <% } %>
+                <% if(error && error.length !== 0){ %>
+                <div class="alert alert-danger" role="alert" >
+                  <%= error  %>
+                </div>
+                <% } %>
+                <% if(success && success.length !== 0){ %>
+                <div class="alert alert-success" role="alert" >
+                  <%= success  %>
+                </div>
+                <% } %>
+              </div>
+              <div class="table-responsive">
+              
+
+
+
+<div class="width-50 m-auto text-center">
+	<h3 class="display-3">Profile Info<hr></h3>
+	
+     <p>Name: <strong><%= user.name %></strong></p>
+	<p>Class: <strong><%= user.class %></strong></p>
+	<p>Section: <strong><%= user.section %></strong></p>	
+
+	<a href="/user/profile/edit" class="btn btn-primary btn-sm" >Edit Profile</a>
+	<hr>
+</div>
+
+
+
+
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- content-wrapper ends -->
+    <%- include("../partials/footer-user") -%>

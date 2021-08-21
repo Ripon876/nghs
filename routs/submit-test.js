@@ -8,9 +8,9 @@ var Notice         = require("../models/notice");
 var fileUpload     = require('express-fileupload');
 var fs             = require('fs');
 var path           = require('path');
+var middlewares    = require("../middlewares/middleware");
 
-
-router.get("/test/submit/:testId",isLoggedIn,function(req,res) {
+router.get("/test/submit/:testId",middlewares.isLoggedIn,function(req,res) {
 	var title = "NGHS | Submit Test";
 
 	Exam.findById(req.params.testId,function(err,test){
@@ -35,7 +35,7 @@ router.get("/test/submit/:testId",isLoggedIn,function(req,res) {
 
 });
 
-router.post("/test/submit-test/:id",isLoggedIn,function(req,res){
+router.post("/test/submit-test/:id",middlewares.isLoggedIn,function(req,res){
 	var answer = req.body.answer;
 	var testAnswer = {
 	user: {
@@ -64,27 +64,3 @@ router.post("/test/submit-test/:id",isLoggedIn,function(req,res){
 
 
 module.exports = router;
-
-
-function isLoggedIn(req,res,next){ // 
-  if(req.isAuthenticated()){      //   this function used for preventing   
-    return next();               //   a logged out user to visite   
-  }else{                        //   the secreat pages 
- 							   //   
-
-    req.flash('loginFirst', 'Please Login First');      
-    res.redirect("/login");         
-
-  }
-}
-
-
-function isLoggedOut(req,res,next){ //                       
-  if(!req.isAuthenticated()){      //  this function used for preventing       
-    return next();                //  a logged in user to visite       
-  }else{                         //  the login and registaion page
-    res.redirect("/");          //           
-  }
-}
-
-

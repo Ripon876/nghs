@@ -7,6 +7,7 @@ var User           = require("./models/user");
 var Exam           = require("./models/exam");
 var Answer         = require("./models/answer");
 var Notice         = require("./models/notice");
+var middlewares    = require("./middlewares/middleware");
 var localStrategy  = require("passport-local");
 var methodOverride = require("method-override");
 var nodemailer     = require("nodemailer");
@@ -24,13 +25,17 @@ var mongoDbStr;
 var sl = require("./routs/signup-login");
 var ct = require("./routs/test");
 var submit_test = require("./routs/submit-test");
+var admin = require("./routs/admin");
 var author = require("./routs/author");
+var user_controler = require("./routs/user_controler");
+var send_mail = require("./routs/send_mail");
+
+
+
 
 
 // https://afternoon-citadel-20931.herokuapp.com/
 // mongoose configuration
-//mongoose.connect("mongodb://localhost:27017/nghs", {useUnifiedTopology: true, useNewUrlParser: true});
-
 if(port === 3000){
 mongoDbStr = "mongodb://localhost:27017/nghs";
 console.log(mongoDbStr)
@@ -53,20 +58,9 @@ app.use(fileUpload({
     tempFileDir : path.join(__dirname,'tmp'),
 })); 
 
-  // ===================
- // send massage
-// ===================
 
-
-
-app.get("/message",function(req,res){
-  res.render("send_massage");
-})
-
-
-
-// =====================
-// passport configuration
+  // =====================
+ // passport configuration
 // =====================
 
 app.use(require('express-session')({ secret: "My name is MD Ripon Islam", resave: false, saveUninitialized: false }));
@@ -133,6 +127,16 @@ passport.use(new GoogleStrategy({
   
   }
 ));
+
+
+app.use(sl);
+app.use(ct);
+app.use(submit_test);
+app.use(admin);
+app.use(author);
+app.use(user_controler);
+app.use(send_mail);
+
  
 app.get('/auth/google',
   passport.authenticate('google', { scope:
@@ -142,7 +146,6 @@ app.get('/auth/google',
 app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    // Successful authentication, redirect success.
     res.redirect('/');
   });
 
@@ -169,74 +172,19 @@ app.get('/auth/google/callback',
 app.get("/",function(req,res){
 	var title = "NGHS | Home"
 	res.render("index",{title: title,currenUser: req.user});
-  // console.log(req.ip);
-  // console.log(req.connection.remoteAddress);
-  // console.log(req.headers['x-forwarded-for']);
-  // console.log(req.socket?.remoteAddress);
 });
 
-app.use(sl);
-app.use(ct);
-app.use(submit_test);
-app.use(author);
+
+  // ====================
+ // file upload rout
 // ====================
-// email rout
-// ====================
-app.get("/sendmail",isLoggedIn,function(req,res){
-	    var Stitle = "NGHS | Send Email";
-        res.render("email",{title: Stitle,currenUser: req.user});
-});
-
-app.post("/mail",isLoggedIn,function(req,res){
-  
-var email = req.body.email;
-var sub = req.body.sub;
-var mes = req.body.mes;
-
-
-// node mailer
-
-var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GMAIL_ADDRESS,
-    pass: process.env.GMAIL_PASSWORD
-  }
-});
-// mdforhadhossain297@gmail.com
-var mailOptions = {
-  from: process.env.GMAIL_ADDRESS,
-  to: email,
-  subject: sub,
-  text: mes
-};
-
-transporter.sendMail(mailOptions, function(error, info){
-	var title = "NGHS | Something is wrong"
-  if (error) {
-    console.log(error);
-    res.render("404",{title: title,currenUser: req.user});
-  } else {
-    // console.log('Email sent: ' + info.response);
-    res.send("email successfully sent..");
-  }
-});
-
-
-
-
-});
-
-// ====================
-// file upload rout
-// ====================
-app.get("/upload",isLoggedIn,function(req,res){
+app.get("/upload", middlewares.isLoggedIn,function(req,res){
    var Utitle = "NGHS | Upload"
    res.render("upload",{title: Utitle,currenUser: req.user});
 
 });
 
-app.post("/upload", function(req, res){
+app.post("/upload",middlewares.isLoggedIn,function(req, res){
 
     
     if (!req.files || Object.keys(req.files).length === 0) {
@@ -253,404 +201,24 @@ app.post("/upload", function(req, res){
         return res.status(413).send("File is too Large");
     }
 
+var filename = req.user.name + ".png";
 
-
-    targetFile.mv(path.join(__dirname, 'public/uploads/' + req.user.username, targetFile.name), function(err){
+    targetFile.mv(path.join(__dirname, 'public/uploads/',filename), function(err){
       var title = "NGHS | Something is wrong"
         if (err){
           return res.render("404",{title: title,currenUser: req.user});
         }
-            
         res.send('File uploaded!');
     });
 });
-
+   
  
-  // ====================
- // users dashboard rout
-// ====================
-
-app.get("/user/dashboard",isLoggedIn,function(req,res){
-  var title = "NGHS | User Dashboard";
-  var obj = {
-  class: req.user.class,
-  section: req.user.section
-}
-var usreAnswers = {
-  user: {
-      id: req.user._id,
-      username: req.user.username,
-      name: req.user.name
-  }
-}
-
-
-    User.findById(req.user._id,function(err,user){
-      if (err) {
-        console.log(err)
-      }else{
-
-        Notice.find({},function(err,notices){
-          if (err) {
-            console.log(err);
-          }
-          else{
-Exam.find(obj,function(err,tests){
-  if(err){
-    console.log(err);
-  }
-
-Answer.find(usreAnswers,function(err,answers){
-  if(err){
-    console.log(err);
-  }
-   res.render("user_dashborad",{answers: answers,user: user,title: title,tests: tests,error: req.flash("submissionFailed"),success: req.flash("submissionDone"),notification: req.flash("notification")});
-})
-
-
-
-}) 
-          }
-        });
-      }
-    });
-});
-app.get("/user/profile",isLoggedIn,function(req,res){
-  var title = "NGHS | User Profile";
-  User.findById(req.user._id,function(err,user){
-    if (err) {
-      console.log(err)
-    }else{
-        res.render("user_profile",{title: title,user: user});
-    }
-  });
-
-});
-app.get("/user/profile/edit",isLoggedIn,function(req,res){
-  var title = "NGHS | Edit Profile";
-  User.findById(req.user._id,function(err,user){
-    if (err) {
-      console.log(err)
-    }else{
-            Notice.find({},function(err,notices){
-        if (err){
-          console.log(err);
-        }else{
-         res.render("edit_profile",{title: title,user: user});          
-        };
-      });
-
-    }
-  });
- 
-});
-app.put("/user/profile",isLoggedIn,function(req,res){
-
-   var user = req.body.user;
-   User.findByIdAndUpdate(req.user._id,user,{new: true},function(err,user){
-     if (err) {
-      console.log(err)
-     }else{
-        // console.log(user);
-        if (req.user.isAdmin) {
-           res.redirect("/admin");
-        }else{
-
-        if (req.user.isAuthor) { res.redirect("/author/dashboard") }
-
-          res.redirect("/user/dashboard");
-        };
-       
-     };
-   });
-
-});
-
-// ====================
-// author rout
-// ====================
-
-app.get("/author/dashboard",isLoggedInAndAuthor,function(req,res){
-      
-var obj = {
-  author: {
-    id: req.user._id,
-    username: req.user.username
-  }
-}
-
-      if(req.user.isAuthor){
-              Notice.find({},function(err,notices){
-        if (err){
-          console.log(err);
-        }else{
-
-Exam.find(obj,function(err,tests){
-  if(err){
-    console.log(err)
-  }
-
-  res.render("author_dashboard",{user: req.user,tests: tests,success: req.flash('info'),error: req.flash('wrong'),notification: req.flash("notification")});
-})
-
-        };
-      });
-          
-        }else{
-          res.redirect("/");
-        };
-
-
-});
-
-  // ====================
- // admin rout
-// ====================
-app.get("/admin",isLoggedInAndAdmin,function(req,res){
-
-	if (req.user.isAdmin){
-
-  User.find({},function(err,users){
-    if (err) {
-      console.log(err)
-    }else{
-      res.render("admin",{title: "NGHS | Admin",currenUser: req.user,users: users,notification: req.flash("notification")});
-    }
-  });	
-	}else{
-		res.redirect("/");
-	};
-});
-
-app.get("/admin/create_author",isLoggedInAndAdmin,function(req,res){
-  res.render("create_author");
-})
-
-app.post("/admin",isLoggedInAndAdmin,function(req,res){
-  var id = req.body.id;
-
-User.findById(id,function(err,user){
-  if (user.isAuthor) {
-  var doAuthor = {isAuthor: false};
-
-   User.findByIdAndUpdate(id,doAuthor,{new: true},function(err,user){
-        if (err) {
-         console.log(err)
-        }else{
-           // console.log(user);
-              res.redirect("/admin");
-        };
-      });
-
-  }else{
-    
-      var doAuthor = {isAuthor: true};
-User.findByIdAndUpdate(id,doAuthor,{new: true},function(err,user){
-     if (err) {
-      console.log(err)
-     }else{
-        // console.log(user);
-        res.redirect("/admin");
-     };
-   });
-
-
-  }
-})
-
-});
-
-app.get("/user/edit/:id",isLoggedIn,function(req,res){
-   User.findById(req.params.id,function(err,user){
-    if (err) {
-      console.log(err)
-    }else{
-      res.render("edit",{user: user});
-    };
-   })
-});
-app.put("/admin/user/edit",isLoggedInAndAdmin,function(req,res){
-   var user = req.body.user;
-   var id = req.body.id
-   User.findByIdAndUpdate(id,user,{new: true},function(err,user){
-     if (err) {
-      console.log(err)
-     }else{
-        // console.log(user);
-        if (req.user.isAdmin) {
-           res.redirect("/admin");
-        }else{
-          res.redirect("/user/dashboard");
-        };
-       
-     };
-   });
-});
-
-app.get("/delete_user/:id",isLoggedInAndAdmin,function(req,res){
-     
-     if (req.user.isAdmin === true) {
-
-
-
-    User.findById(req.params.id,function(err,user){
-    if (err) {
-      console.log(err)
-      res.redirect("/admin")
-    }else{
-      res.render("delete_user",{user: user});
-    };
-  }); 
-
-  }
-else if (req.user.isAuthor == true) {
-  req.flash('notification', 'You Do Not Have The Permission To Do That');  
-  res.redirect("/author/dashboard");             
-}
-else if(req.user.isUser == true){
-  req.flash('notification', 'You Do Not Have The Permission To Do That');  
-  res.redirect("/user/dashboard");             
-}
-
-
-});
-
-app.delete("/admin/delete_user/:id",isLoggedInAndAdmin,function(req,res){
-
-  User.findById(req.params.id,function(err,user){
-    if(err){
-      console.log(err);
-    }
-
-         if(!user.isAdmin){
-
-   if(!user.isAuthor){
-
-
-    var ans = {
-  user: {
-    id: String(user._id),
-    username: String(user.username),
-    name: String(user.name)
-  }
-}
-
- Answer.deleteMany(ans,function(err,done){
-  if(err)console.log(err);
-// console.log(done)
-       
-})
-
-   }
-
-  User.findByIdAndRemove(user._id,function(err,user){
-              if (err) {
-                    console.log(err);
-              }else{
-                    console.log("successfully Deleted");
-                    req.flash('notification', 'User Deleted Successfully'); 
-                    res.redirect("/admin");
-              };
-        });
-
-            }else {
-              req.flash('notification', 'Admin Cannot be deleted'); 
-                  res.redirect("/admin");
-            }
-        
-  });
-
-});
-
-
-
-app.get("/admin/searchuser/:name",isLoggedInAndAdmin,function(req,res){
-  var name = req.params.name;
-  var userDatas = [];
-  // console.log(name)
-
-
-  User.find({},function(err,users){
-    if(err)
-    {
-      console.log(err)
-    }
-
-   users.forEach( function(user) {
-
-        if(user.name.includes(name) || user.username.includes(name)){
-          userDatas.push(user)
-        }else {
-          // console.log("not found")
-        }
-
-   });
-
-  
-  function r(){
-    res.json(userDatas)
-  }
-  r();
-
-  })
-})
-
-
 
   // =================
  // notice route 
 // =================
 
-
-app.get("/admin/notice",isLoggedInAndAdmin,function(req,res){
-      
-      Notice.find({},function(err,notices){
-        if (err){
-          console.log(err);
-        }else{
-           res.render("notice");
-        };
-      });
-});
-
-app.get("/admin/notice/new",isLoggedInAndAdmin,function(req,res){
-  res.render("new_notice");
-});
-
-app.post("/admin/notice",isLoggedInAndAdmin,function(req,res){
-  var notice = {
-    notice: req.body.notice,
-    user: {
-      id: req.user._id,
-      name: req.user.name
-    },
-    notice_type: "normal"
-  }
-  Notice.create(notice,function(err,notice){
-    if (err) {
-      console.log(err);
-    }else{
-    // console.log(notice);
-    res.redirect("/admin/notice");
-    };
-  });
-});;
-
-
-app.get("/admin/notice/delete/:id",isLoggedInAndAdmin,function(req,res){
-  var id = req.params.id;
-  Notice.findByIdAndRemove(id,function(err,notice){
-    if (err) {
-      console.log(err);
-    }else {
-      res.redirect("/admin/notice");
-    }
-  })
-})
-
-
-
-app.get("/user/notices/all",isLoggedIn,function(req,res){
+app.get("/user/notices/all",middlewares.isLoggedIn,function(req,res){
   Notice.find({},function(err,notices){
     if(err){
       console.log(err);
@@ -663,41 +231,6 @@ res.json(notices);
  
 
 
-function isLoggedIn(req,res,next){ // 
-	if(req.isAuthenticated()){      //   this function used for preventing   
-		return next();               //   a logged out user to visite   
-	}else{                        //   the secreat pages
-                               //
-    req.flash('loginFirst', 'Please Login First');        
-		res.redirect("/login");             
-	}
-}
-
-
-function isLoggedOut(req,res,next){ //                       
-	if(!req.isAuthenticated()){      //  this function used for preventing       
-		return next();                //  a logged in user to visite       
-	}else{                         //  the login and registaion page
-		res.redirect("/");          //           
-	}
-}
-
-function isLoggedInAndAdmin(req,res,next){             // 
-  if(req.isAuthenticated() && req.user.isAdmin){      //   this function used for preventing   
-    return next();                                    //   a logged out user to visite   
-  }else{  
-    req.flash('loginFirst', 'Please Login First');  
-    res.redirect("/login");             
-  }
-}
-function isLoggedInAndAuthor(req,res,next){             // 
-  if(req.isAuthenticated() && req.user.isAuthor){      //   this function used for preventing   
-    return next();                                    //   a logged out user to visite   
-  }else{  
-    req.flash('loginFirst', 'Please Login First');  
-    res.redirect("/login");             
-  }
-}
 
 app.listen(port,function(){
 	console.log("Server started at port ..." + port);
