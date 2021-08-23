@@ -69,19 +69,19 @@ app.use(function(req,res,next){
 
   res.locals.currenUser = req.user;
   res.locals.user     = req.user;
-  Notice.find({},function(err,notices){
-    if(err)console.log(err);
-res.locals.notices = notices;
-
-  });
+ 
   res.locals.error         = req.flash("error");
   res.locals.success       = req.flash("success");
   res.locals.notification  = req.flash("notification");
 
 
+ Notice.find({},function(err,notices){
+    if(err)console.log(err);
+res.locals.notices = notices;
+next();
+  });
 
 
-  next();
 });
 app.use(passport.initialize());
 app.use(passport.session());
@@ -218,15 +218,45 @@ var filename = req.user.name + ".png";
  // notice route 
 // =================
 
-app.get("/user/notices/all",middlewares.isLoggedIn,function(req,res){
-  Notice.find({},function(err,notices){
-    if(err){
-      console.log(err);
-      res.json({error: "Something went wrong"})
-    }
-res.json(notices);
 
-  })
+
+app.get("/user/notices/all",middlewares.isLoggedIn,function(req,res){
+
+
+var notices = [];
+var tempUser = req.user;
+Notice.find({},function(err,ns){
+    if(err)console.log(err);
+
+    if (tempUser.isAuthor) {
+
+      ns.forEach( function(notice) {
+         if( notice.notice_type === "normal"){
+         notices.push(notice);
+       }
+      });
+
+       res.json(notices);
+
+    }else{
+
+      ns.forEach( function(notice) {
+         if(notice.class === tempUser.class && notice.section === tempUser.section  || notice.notice_type === "normal"){
+            notices.push(notice);
+         }
+
+      });
+
+       res.json(notices);
+    
+    }
+
+
+
+});
+
+
+
 })
  
 

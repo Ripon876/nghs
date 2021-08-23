@@ -44,37 +44,14 @@
                 <% } %>
               </div>
               <div class="table-responsive">
-                <table id="recent-purchases-listing" class="table">
+                 <table id="recent-purchases-listing" class="table">
                   <thead>
                     <tr>
                       <th>You can take part to this tests</th>
                     </tr>
                   </thead>
                   <tbody>
-                    
-                    <% tests.forEach(function(test){ %>
-                    <tr>
-                      <td><%= test.question_title %></td>
-                      <td><a href="/test/submit/<%= test._id %>"  class="btn btn-primary
-                        <% answers.forEach(function(answer){ %>
-                        <% if (answer.test_id == test._id) { %>
-                        disabled
-                        <% } %>
-                        
-                        <%  }) %>
-                      btn-sm">Take Test</a>
-
-   <% answers.forEach(function(answer){ %>
-                        <% if (answer.test_id == test._id) { %>
-                          <a href="/test/<%= answer._id %>/<%= test._id %>/result" class="btn btn-danger btn-sm">See Result</a>
-                        <% } %>
-                       
-                        <%  }) %>
-
-                     </td>
-                    </tr>
-                    <%  }) %>
-                  </tbody>
+     
                 </table>
               </div>
             </div>
@@ -83,4 +60,57 @@
       </div>
     </div>
     <!-- content-wrapper ends -->
+<script>
+   
+// var  sdfsdfdsfggf = JSON.parse('<%- JSON.stringify(classes) %>');
+// console.log(sdfsdfdsfggf)
+
+
+</script>
+
+  <script src="../js/moment.js"></script>
+   <script>
+    var  classes = JSON.parse('<%- JSON.stringify(classes) %>');
+      classes.forEach( function(clas) {
+
+   var elemid = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 5);
+
+    
+var tempdate = moment(clas.class_date).format('MMM D, YYYY') + " " + moment(`${clas.class_date}T${clas.class_time}`).format("H:mm:ss");
+
+mksdfasfsd(tempdate,elemid)
+
+  $(".table").append(`<tr><td>${moment(clas.class_date).format('dddd Do MMMM')} At  ${moment(`${clas.class_date}T${clas.class_time}`).format("hh:mm a")}</td><td id="${elemid}"  class="card-title"></td><td><a  href="/author/hostLiveClass/remove/${clas._id}" class="btn btn-danger p-2">Cancel</a></td></tr>`)
+
+      });
+  
+
+
+function mksdfasfsd(s,id){
+
+var deadline = new Date(s).getTime();
+
+
+var x = setInterval(function() {
+var now = new Date().getTime();
+var t = deadline - now;
+
+var days = Math.floor(t / (1000 * 60 * 60 * 24));
+var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
+var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((t % (1000 * 60)) / 1000);
+
+document.getElementById(id).innerHTML = days + "d " 
++ hours + "h " + minutes + "m " + seconds + "s ";
+
+    if (t < 0) {
+        clearInterval(x);
+        document.getElementById(id).innerHTML = "EXPIRED";
+    }
+},1000);
+
+}
+
+</script>
+
     <%- include("../partials/footer-user") -%>

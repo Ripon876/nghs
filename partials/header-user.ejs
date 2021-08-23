@@ -37,11 +37,7 @@ var newNoticeCount = 0;
  
 var  cls = JSON.parse('<%- JSON.stringify(notices) %>');
 cls.forEach( function(notice) {
-
-   if(notice.class === "<%= user.class %>" && notice.section === "<%=  user.section  %>"  || notice.notice_type === "normal"){
    oldNoticeCount++;
-   }
-
 });
 
 
@@ -56,10 +52,8 @@ newNoticeCount = 0;
 $('.notifications').empty()
 
 result.forEach(function(notice) {
-if((notice.class === "<%= user.class %>" && notice.section ===  "<%=  user.section  %>" ) || notice.notice_type === "normal"){
 
     newNoticeCount++;
-
 var tempNotice  =  `<a href="/user/notice/${notice._id}" class="dropdown-item">
                 <div class="item-thumbnail">
                   <div class="item-icon bg-warning">
@@ -70,12 +64,8 @@ var tempNotice  =  `<a href="/user/notice/${notice._id}" class="dropdown-item">
                   <h6 class="font-weight-normal">${notice.notice.substring(0,25)}...</h6>
                 </div>
               </a>`;
-
-
 $(".notifications").append(tempNotice)
-   
- } 
-
+ 
 });
  
 

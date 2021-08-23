@@ -1,0 +1,39 @@
+[
+
+{"user":{"id":"60e7240b21bb881644a7e8b9","name":"MD Ripon Islam"},"_id":"6106d362f49786092c0caed6","notice":"this is the first notice","notice_type":"normal","__v":0},
+
+{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"6106d3d7f49786092c0caed8","notice":"2 - Live class - Class 10 - Section B - ID: 6106d3d7f49786092c0caed7","notice_type":"class","__v":0},
+
+{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"61129e1ad53b7e1c6cc181c1","notice":"4 - Live class - Class 10 - Section B - ID: 61129e1ad53b7e1c6cc181c0","notice_type":"class","__v":0},
+
+{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"611feec910f97717bc5dc1be","notice":"Phisics - Live class - Class 10 - Section B - ID: 611feec910f97717bc5dc1bd","notice_type":"class","class":"10","section":"B","__v":0},
+
+{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"611feef910f97717bc5dc1c0","notice":"Math - Live class - Class 10 - Section B - ID: 611feef910f97717bc5dc1bf","notice_type":"class","class":"10","section":"B","__v":0},
+
+{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"6121336b132f440ba0770498","notice":"Chemistry - Live class - Class 10 - Section B - ID: 6121336b132f440ba0770497","notice_type":"class","class":"10","section":"B","__v":0},
+
+{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"61227f3d5862cd1bec3f4557","notice":"English - Live class - Class 10 - Section B - ID: 61227f3d5862cd1bec3f4556","notice_type":"class","class":"10","section":"B","__v":0},
+
+{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"61227f7d5862cd1bec3f4559","notice":"Phisics - Live class - Class 10 - Section B - ID: 61227f7d5862cd1bec3f4558","notice_type":"class","class":"10","section":"B","__v":0},
+
+{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"61227fc25862cd1bec3f455b","notice":"English - Live class - Class 8 - Section A - ID: 61227fc25862cd1bec3f455a","notice_type":"class","class":"8","section":"A","__v":0}
+
+]
+
+<!-- // var  cls = JSON.parse('<%- JSON.stringify(notices) %>');
+// cls.forEach( function(notice) {
+
+//    if(notice.class === "<%= user.class %>" && notice.section === "<%=  user.section  %>"  || notice.notice_type === "normal"){
+//    oldNoticeCount++;
+//    }
+
+// }); -->
+
+
+
+
+
+
+
+
+[{"user":{"id":"60e7240b21bb881644a7e8b9","name":"MD Ripon Islam"},"_id":"6106d362f49786092c0caed6","notice":"this is the first notice","notice_type":"normal","__v":0},{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"611feec910f97717bc5dc1be","notice":"Phisics - Live class - Class 10 - Section B - ID: 611feec910f97717bc5dc1bd","notice_type":"class","class":"10","section":"B","__v":0},{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"611feef910f97717bc5dc1c0","notice":"Math - Live class - Class 10 - Section B - ID: 611feef910f97717bc5dc1bf","notice_type":"class","class":"10","section":"B","__v":0},{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"6121336b132f440ba0770498","notice":"Chemistry - Live class - Class 10 - Section B - ID: 6121336b132f440ba0770497","notice_type":"class","class":"10","section":"B","__v":0},{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"61227f3d5862cd1bec3f4557","notice":"English - Live class - Class 10 - Section B - ID: 61227f3d5862cd1bec3f4556","notice_type":"class","class":"10","section":"B","__v":0},{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"61227f7d5862cd1bec3f4559","notice":"Phisics - Live class - Class 10 - Section B - ID: 61227f7d5862cd1bec3f4558","notice_type":"class","class":"10","section":"B","__v":0},{"user":{"id":"60fd8dcef53cdc0bd8a38400","name":"MD Rakib Hassan"},"_id":"612288235862cd1bec3f455d","notice":"Math - Live class - Class 10 - Section B - ID: 612288235862cd1bec3f455c","notice_type":"class","class":"10","section":"B","__v":0}]

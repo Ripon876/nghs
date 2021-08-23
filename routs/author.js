@@ -16,20 +16,40 @@ router.use(function(req,res,next){
 
   res.locals.currenUser    = req.user;
   res.locals.user          = req.user;
-  Notice.find({},function(err,notices){
-  	if(err)console.log(err);
-res.locals.notices = notices;
-
-  })
-
   res.locals.error         = req.flash("error");
   res.locals.success       = req.flash("success");
   res.locals.notification  = req.flash("notification");
 
 
 
+  // Notice.find({},function(err,notices){
+  //   if(err)console.log(err);
+  //     res.locals.notices = notices;
+  //     next();
+  // })
 
-  next();
+Notice.find({},function(err,ns){
+    if(err)console.log(err);
+
+    if (req.user) {
+var notices = [];
+ns.forEach( function(notice) {
+ if( notice.notice_type === "normal"){
+   notices.push(notice);
+   }
+});
+  res.locals.notices = notices;
+  next();    
+    }else{
+     res.locals.notices = [];
+     next(); 
+    }
+
+
+});
+
+
+  
 });
 
 

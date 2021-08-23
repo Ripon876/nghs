@@ -13,6 +13,39 @@ var path           = require('path');
 var middlewares    = require("../middlewares/middleware");
 
 
+router.use(function(req,res,next){
+
+  res.locals.currenUser    = req.user;
+  res.locals.user          = req.user;
+  res.locals.error         = req.flash("error");
+  res.locals.success       = req.flash("success");
+  res.locals.notification  = req.flash("notification");
+
+Notice.find({},function(err,ns){
+    if(err)console.log(err);
+
+    if (req.user) {
+var notices = [];
+ns.forEach( function(notice) {
+ if(notice.class === req.user.class && notice.section === req.user.section  || notice.notice_type === "normal"){
+   notices.push(notice);
+   }
+});
+  res.locals.notices = notices;
+  next();    
+    }else{
+     res.locals.notices = [];
+     next(); 
+    }
+
+
+});
+
+
+
+});
+
+
 
 
 
@@ -50,7 +83,7 @@ var usreAnswers = {
                 if(err){
                   console.log(err);
                 }
-                 res.render("user_dashborad",{answers: answers,user: user,title: title,tests: tests,error: req.flash("submissionFailed"),success: req.flash("submissionDone"),notification: req.flash("notification")});
+                 res.render("user_dashborad",{answers: answers,user: user,title: title,tests: tests,success: req.flash("submissionDone"),error: req.flash("submissionFailed"),notification: req.flash("notification")});
               })
 
 
@@ -117,5 +150,23 @@ router.put("/user/profile",middlewares.isLoggedIn,function(req,res){
 
 });
 
+
+router.get("/user/liveclasses",middlewares.isLoggedIn,function(req,res){
+
+var findObj = {
+  class: req.user.class,
+  section: req.user.section,
+}
+
+Live_Class.find(findObj,function(err,classes){
+  if(err){
+    req.flash("submissionFailed", 'Something went wrong');  
+    res.redirect("/user/dashboard");  
+  }else{
+    res.render("live_classes",{classes : classes});
+  }
+})
+
+})
 
 module.exports = router;
