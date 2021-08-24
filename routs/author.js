@@ -211,4 +211,59 @@ if(err) console.log(err)
 })
  
 })
+
+
+
+
+router.get("/author/searchuser/:clas/:section/:roll",middlewares.isLoggedInAndAuthor,function(req,res){
+  // var name = req.params.name;
+  var userDatas = [];
+  // console.log(name)
+
+var tempUser = {
+  class: req.params.clas,
+  section: req.params.section,
+  roll: req.params.roll
+}
+  // User.find({},function(err,users){
+  //   if(err)
+  //   {
+  //     console.log(err)
+  //   }
+
+  //  users.forEach( function(user) {
+
+  //       if(user.name.includes(name) || user.username.includes(name)){
+  //         userDatas.push(user)
+  //       }else {
+  //         // console.log("not found")
+  //       }
+
+  //  });
+
+  
+  // function r(){
+  //   res.json(userDatas)
+  // }
+  // r();
+
+  // })
+User.find(tempUser,function(err,user){
+  if(err){
+    res.json([])
+  }else{
+  res.json(user)  
+  }
+
+
+
+})
+
+
+})
+
+
+
+
+
  module.exports = router;

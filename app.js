@@ -29,6 +29,7 @@ var admin = require("./routs/admin");
 var author = require("./routs/author");
 var user_controler = require("./routs/user_controler");
 var send_mail = require("./routs/send_mail");
+var send_message = require("./routs/send_message");
 
 
 
@@ -136,6 +137,7 @@ app.use(admin);
 app.use(author);
 app.use(user_controler);
 app.use(send_mail);
+app.use(send_message);
 
  
 app.get('/auth/google',

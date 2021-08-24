@@ -41,7 +41,14 @@
 							</div>
 							<% } %>
 
-							<a href="/user/dashboard" class="btn btn-primary mt-3" id="join_now_button"><i class="fa fa-arrow-left"></i> Back to dashboard</a>
+
+							<a  <% if (user.isAuthor) { %>
+							href="/author/dashboard"
+							<% }else{ %>
+							href="/user/dashboard"
+							<% } %>
+
+							 class="btn btn-primary mt-3" id="join_now_button"><i class="fa fa-arrow-left"></i> Back to dashboard</a>
 						
 					</div>
 				</div>
