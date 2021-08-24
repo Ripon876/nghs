@@ -129,7 +129,7 @@ $(".searchResult").hide();
 $("#userInformation").on("change",function(){
  
 var url = "/author/searchuser/" +  $(".class").val() + "/" + $(".section").val() + "/" + $(".roll").val() ;
-console.log(url)
+
     const xhr = new XMLHttpRequest();
     xhr.open('GET',url, true);
     xhr.getResponseHeader('Content-type', 'application/json');
@@ -147,7 +147,7 @@ console.log(url)
             });
 
         }else{
-            console.log("Some error occured");
+             $("#name").val("Some thing went wrong");
         }
     }
   
