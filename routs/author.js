@@ -176,41 +176,7 @@ router.get("/author/hostLiveClass/remove/:id",middlewares.isLoggedInAndAuthor,fu
 
 
 
-router.get("/user/notice/:notice_id",middlewares.isLoggedIn,function(req,res){
 
-
-
-
-Notice.findById(req.params.notice_id,function(err,notice){
-	if(err){
-		console.log(err);
-	}
-
-
- if(notice.notice_type === "normal"){
- res.render("show_notice_info",{notice: notice});
-
- }else {
-
-
-var s = notice.notice.split(/[\s,]+/);
-			
- 
-Live_Class.findById(s[s.length - 1],function(err,cls){
-	
-
-if(err) console.log(err)
-	
-	res.render("show_class_notice_info",{cls: cls});
-	
-})
-			
-
- } 
-
-})
- 
-})
 
 
 
@@ -225,29 +191,7 @@ var tempUser = {
   section: req.params.section,
   roll: req.params.roll
 }
-  // User.find({},function(err,users){
-  //   if(err)
-  //   {
-  //     console.log(err)
-  //   }
-
-  //  users.forEach( function(user) {
-
-  //       if(user.name.includes(name) || user.username.includes(name)){
-  //         userDatas.push(user)
-  //       }else {
-  //         // console.log("not found")
-  //       }
-
-  //  });
-
-  
-  // function r(){
-  //   res.json(userDatas)
-  // }
-  // r();
-
-  // })
+ 
 User.find(tempUser,function(err,user){
   if(err){
     res.json([])

@@ -127,7 +127,9 @@
 $(".searchResult").hide();
  
 $("#userInformation").on("change",function(){
- 
+
+if($(".roll").val() !== "" ){
+
 var url = "/author/searchuser/" +  $(".class").val() + "/" + $(".section").val() + "/" + $(".roll").val() ;
 
     const xhr = new XMLHttpRequest();
@@ -152,6 +154,11 @@ var url = "/author/searchuser/" +  $(".class").val() + "/" + $(".section").val()
     }
   
  xhr.send();
+
+
+}
+ 
+
  });
 
 

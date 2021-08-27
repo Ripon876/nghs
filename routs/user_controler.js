@@ -23,11 +23,11 @@ router.use(function(req,res,next){
 
 Notice.find({},function(err,ns){
     if(err)console.log(err);
-
-    if (req.user) {
 var notices = [];
+    if (req.user) {
+
 ns.forEach( function(notice) {
- if(notice.class === req.user.class && notice.section === req.user.section  || notice.notice_type === "normal"){
+ if((notice.class === req.user.class && notice.section === req.user.section ) || notice.notice_type === "normal"){
    notices.push(notice);
    }
 });
@@ -168,5 +168,43 @@ Live_Class.find(findObj,function(err,classes){
 })
 
 })
+
+
+router.get("/user/notice/:notice_id",middlewares.isLoggedIn,function(req,res){
+
+
+
+
+Notice.findById(req.params.notice_id,function(err,notice){
+  if(err){
+    console.log(err);
+  }
+
+
+ if(notice.notice_type === "normal"){
+ res.render("show_notice_info",{notice: notice});
+
+ }else {
+
+
+var s = notice.notice.split(/[\s,]+/);
+      
+ 
+Live_Class.findById(s[s.length - 1],function(err,cls){
+  
+
+if(err) console.log(err)
+  
+  res.render("show_class_notice_info",{cls: cls});
+  
+})
+      
+
+ } 
+
+})
+ 
+})
+
 
 module.exports = router;

@@ -48,6 +48,7 @@
                   <thead>
                     <tr>
                       <th>You can take part to this tests</th>
+                      <th>Time left</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -62,8 +63,6 @@
     <!-- content-wrapper ends -->
 <script>
    
-// var  sdfsdfdsfggf = JSON.parse('<%- JSON.stringify(classes) %>');
-// console.log(sdfsdfdsfggf)
 
 
 </script>
@@ -80,7 +79,7 @@ var tempdate = moment(clas.class_date).format('MMM D, YYYY') + " " + moment(`${c
 
 mksdfasfsd(tempdate,elemid)
 
-  $(".table").append(`<tr><td>${moment(clas.class_date).format('dddd Do MMMM')} At  ${moment(`${clas.class_date}T${clas.class_time}`).format("hh:mm a")}</td><td id="${elemid}"  class="card-title"></td><td><a  href="/author/hostLiveClass/remove/${clas._id}" class="btn btn-danger p-2">Cancel</a></td></tr>`)
+  $(".table").append(`<tr><td>${moment(clas.class_date).format('dddd Do MMMM')} At  ${moment(`${clas.class_date}T${clas.class_time}`).format("hh:mm a")}</td><td id="${elemid}"  class="card-title"></td></tr>`)
 
       });
   
