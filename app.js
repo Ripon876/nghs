@@ -15,12 +15,13 @@ var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 var fileUpload     = require('express-fileupload');
 var flash          = require('connect-flash');
 var cron           = require("node-cron");
+var socket         = require("socket.io"); 
 var fs             = require('fs');
 var path           = require('path'); 
 var app            = express();
 var port           = process.env.PORT || 3000; 
 var mongoDbStr;
-// var socket = require("socket.io"); 
+
 
 var sl = require("./routs/signup-login");
 var ct = require("./routs/test");

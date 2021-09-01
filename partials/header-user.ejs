@@ -5,98 +5,71 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>User Dashborad</title>
-
     <link rel="stylesheet" href="/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/css/vendor.bundle.base.css">
-
-
     <link rel="stylesheet" href="/css/dataTables.bootstrap4.css">
- 
+    
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/main.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
     <link rel="shortcut icon" href="images/favicon.png" />
     <style type="text/css">
     .page-body-wrapper{
     padding-top: 0;
     }
     .border-bl{
-      border: 1px solid #e0e3e4 !important;
+    border: 1px solid #e0e3e4 !important;
     }
     </style>
-      <script src="/js/jquery.min.js"></script>
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-
-
-var oldNoticeCount = 0;
-var newNoticeCount = 0;
- 
-var  cls = JSON.parse('<%- JSON.stringify(notices) %>');
-cls.forEach( function(notice) {
-   oldNoticeCount++;
-});
-
-
-  setInterval(async function(){
+    <script src="/js/jquery.min.js"></script>
+    <script>
+    var oldNoticeCount = 0;
+    var newNoticeCount = 0;
     
-     var sdsdfds = await   $.ajax({
-  url : '/user/notices/all',
-  type : 'GET',
-  success : function(result){
-
-newNoticeCount = 0;
-$('.notifications').empty()
-
-result.forEach(function(notice) {
-
-    newNoticeCount++;
-var tempNotice  =  `<a href="/user/notice/${notice._id}" class="dropdown-item">
-                <div class="item-thumbnail">
-                  <div class="item-icon bg-warning">
-                    <i class="mdi mdi-settings mx-0"></i>
-                  </div>
-                </div>
-                <div class="item-content">
-                  <h6 class="font-weight-normal">${notice.notice.substring(0,25)}...</h6>
-                </div>
-              </a>`;
-$(".notifications").append(tempNotice)
- 
-});
- 
-
-
-
-  },
-  error : function(result, status, error){
-  console.log("something went wrong");
-  }
+    var  cls = JSON.parse('<%- JSON.stringify(notices) %>');
+    cls.forEach( function(notice) {
+    oldNoticeCount++;
     });
-
-// snack love athlete world result awkward forward plunge scorpion grape near door box doll vanish adapt gun result more riot witness play leisure flush
-
-
- 
-
-
-
-if(newNoticeCount !== oldNoticeCount &&  newNoticeCount > oldNoticeCount){
-  oldNoticeCount = newNoticeCount;
+    setInterval(async function(){
+    
+    var sdsdfds = await   $.ajax({
+    url : '/user/notices/all',
+    type : 'GET',
+    success : function(result){
+    newNoticeCount = 0;
+    $('.notifications').empty()
+    result.forEach(function(notice) {
+    newNoticeCount++;
+    var tempNotice  =  `<a href="/user/notice/${notice._id}" class="dropdown-item">
+      <div class="item-thumbnail">
+        <div class="item-icon bg-warning">
+          <i class="mdi mdi-settings mx-0"></i>
+        </div>
+      </div>
+      <div class="item-content">
+        <h6 class="font-weight-normal">${notice.notice.substring(0,25)}...</h6>
+      </div>
+    </a>`;
+    $(".notifications").append(tempNotice)
+    
+    });
+    
+    },
+    error : function(result, status, error){
+    console.log("something went wrong");
+    }
+    });
+    // snack love athlete world result awkward forward plunge scorpion grape near door box doll vanish adapt gun result more riot witness play leisure flush
+    
+    if(newNoticeCount !== oldNoticeCount &&  newNoticeCount > oldNoticeCount){
+    oldNoticeCount = newNoticeCount;
     $("#newNoticeCount").show()
-}
- 
-
-  },5000)
-</script>
-
-
-
+    }
+    
+    },5000)
+    </script>
   </head>
-  <body> 
+  <body>
     <div class="container-scroller">
       <!-- partial:partials/_navbar.html -->
       <nav class="navbar col-lg-12 col-12 p-0 d-flex flex-row">
@@ -162,32 +135,27 @@ if(newNoticeCount !== oldNoticeCount &&  newNoticeCount > oldNoticeCount){
               </a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown notification-container" aria-labelledby="notificationDropdown">
                 <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-
                 <div class="notifications">
-                
-
-                <% if (notices) { %>
                   
-                <% notices.forEach( function(notice) { %>
-
-
-
-             <% if (  notice.class === user.class && notice.section === user.section  || notice.notice_type === "normal") { %>
-              <a href="/user/notice/<%= notice._id %>  " class="dropdown-item">
-                <div class="item-thumbnail">
-                  <div class="item-icon bg-warning">
-                    <i class="mdi mdi-settings mx-0"></i>
-                  </div>
-                </div>
-                <div class="item-content">
-                  <h6 class="font-weight-normal"><%= notice.notice.substring(0,25); %>...</h6>
-                </div>
-              </a>
-              <% } %>
-                
-             
-                <% }); %>
-                   <% } %>
+                  <% if (notices) { %>
+                  
+                  <% notices.forEach( function(notice) { %>
+                  <% if (  notice.class === user.class && notice.section === user.section  || notice.notice_type === "normal") { %>
+                  <a href="/user/notice/<%= notice._id %>  " class="dropdown-item">
+                    <div class="item-thumbnail">
+                      <div class="item-icon bg-warning">
+                        <i class="mdi mdi-settings mx-0"></i>
+                      </div>
+                    </div>
+                    <div class="item-content">
+                      <h6 class="font-weight-normal"><%= notice.notice.substring(0,25); %>...</h6>
+                    </div>
+                  </a>
+                  <% } %>
+                  
+                  
+                  <% }); %>
+                  <% } %>
                 </div>
               </div>
             </li>
@@ -215,5 +183,5 @@ if(newNoticeCount !== oldNoticeCount &&  newNoticeCount > oldNoticeCount){
       </nav>
       
       <script>
-        $("#newNoticeCount").hide()
+      $("#newNoticeCount").hide()
       </script>
