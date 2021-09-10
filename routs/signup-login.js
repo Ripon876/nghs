@@ -27,7 +27,7 @@ router.post("/register",function(req,res){
       		console.log(err);
       		res.render("index",{title: Rtitle})
       	}else{
-      		// console.log(user);
+     
 
 
            if (req.body.username === process.env.ADMIN_USER_NAME) {

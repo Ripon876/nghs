@@ -181,7 +181,9 @@ Notice.findById(req.params.notice_id,function(err,notice){
   }
 
 
- if(notice.notice_type === "normal"){
+if(notice === null){
+res.render("show_class_notice_info",{error: "Invalid Request",cls: ''});
+}else if(notice.notice_type === "normal"){
  res.render("show_notice_info",{notice: notice});
 
  }else {
@@ -191,12 +193,25 @@ var s = notice.notice.split(/[\s,]+/);
       
  
 Live_Class.findById(s[s.length - 1],function(err,cls){
+ 
+
+if(err) console.log(err);
+
+if(cls === null){
+
+Notice.findByIdAndRemove(notice._id,function(err,done) {
+ if (err) {console.log(err)};
+  res.render("show_class_notice_info",{error: "This class has been removed",cls: ''});
+
+})
+
+}else{
+    res.render("show_class_notice_info",{cls: cls});
+}
+   
+
   
 
-if(err) console.log(err)
-  
-  res.render("show_class_notice_info",{cls: cls});
-  
 })
       
 

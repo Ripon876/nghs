@@ -1,5 +1,4 @@
 <%- include("../partials/header-user") -%>
-
 <!-- partial -->
 <div class="container-fluid page-body-wrapper">
 	<nav class="sidebar sidebar-offcanvas" id="sidebar">
@@ -12,7 +11,6 @@
 			</li>
 		</ul>
 	</nav>
-
 	<!-- partial -->
 	<div class="main-panel">
 		<div class="content-wrapper">
@@ -20,11 +18,11 @@
 				<div class="col-md-12 stretch-card">
 					<div class="card">
 						<div class="card-body" style="text-align: center;">
+							<% if(cls !== ''){ %>
 							<p class="card-title"  id="card-title" style="text-align: center;">Class will start after</p>
 							<p class="card-title mt-3" id="card-body" style="color: #27367f;font-size: 50px;text-shadow: 1px 9px 10px #27367f;text-align: center;"></p>
 							
-						
-
+							<% } %>
 							<% if(notification && notification.length !== 0){ %>
 							<div class="alert alert-primary mes" role="alert" >
 								<%= notification  %>
@@ -41,131 +39,91 @@
 							</div>
 							<% } %>
 
+
+							<% if(cls  !== ''){ %>
 							<a href="#" class="btn btn-primary mt-3" id="join_now_button">Join</a>
-						
+							<% } %>
+							
+						</div>
+						<% if(cls !== ''){ %>
+						<hr>
+						<div class="width-50 m-auto">
+							<h3 class="display-3 text-center">Class Info<hr></h3>
+							<p>Teacher: <strong><%= cls.author.name %></strong></p>
+							<p>For Class: <strong><%= cls.class %></strong></p>
+							<p>Section: <strong><%= cls.section %></strong></p>
+							<p>Subject: <strong><%= cls.subject %></strong></p>
+							<p>Class will taken: <strong>In <%= cls.class_date %> At
+								<% if(cls.class_time.slice(0,2) > 12){ %>
+								<%-  cls.class_time.slice(0,2) - 12 %>:<%= cls.class_time.slice(3) %> PM
+								<% }else{ %>
+								<%= cls.class_time %> AM
+							<% } %></strong></p>
+							<hr>
+						</div>
+						<% } %>
 					</div>
-
-<hr>
-<div class="width-50 m-auto">
-	<h3 class="display-3 text-center">Class Info<hr></h3>
-	<p>Teacher: <strong><%= cls.author.name %></strong></p>
-	<p>For Class: <strong><%= cls.class %></strong></p>
-	<p>Section: <strong><%= cls.section %></strong></p>
-	<p>Subject: <strong><%= cls.subject %></strong></p>
-	<p>Class will taken: <strong>In <%= cls.class_date %> At 
-
-	<% if(cls.class_time.slice(0,2) > 12){ %>
-          <%-  cls.class_time.slice(0,2) - 12 %>:<%= cls.class_time.slice(3) %> PM
-	<% }else{ %>
-     <%= cls.class_time %> AM
-    <% } %></strong></p>
-	<hr>
-</div>
-
 				</div>
-			</div> 
+			</div>
 		</div>
-	</div>
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script>
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-});
-
-	$("#create_class").hide();
-
-
-
-	$("#show_class_create_form").click(function(){
-		$("#create_class").show(400);
-		$("#show_class_create_form").hide()
-
-
-	})
-	$("#hide_class_create_form").click(function(){
-		$("#create_class").hide(400);
-		$("#show_class_create_form").show(400);
-	});
-
-
-
-	$("#create_class").submit(function(e){
-	e.preventDefault();
-
-
-
-
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		
+		<% if(cls){ %>
+		<script>
+		$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
 		});
-	</script>
-
-
-
-<script>
-$("#join_now_button").addClass("disabled");
-
-
-function mksdfasfsd(s){
-
-// var deadline = new Date(s).getTime();
-var deadline = s;
-
-
-var x = setInterval(function() {
-var now = new Date().getTime();
-var t = deadline - now;
-
-var days = Math.floor(t / (1000 * 60 * 60 * 24));
-var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
-var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-var seconds = Math.floor((t % (1000 * 60)) / 1000);
-
-document.getElementById("card-body").innerHTML = days + "d " 
-+ hours + "h " + minutes + "m " + seconds + "s ";
-
-
-    if (t < 0) {
-        clearInterval(x);
-        $("#card-title").remove();
-        $("#join_now_button").removeClass("disabled");
-        document.getElementById("card-body").innerHTML = "Class has been started.";
-        document.getElementById("join_now_button").setAttribute("href","<%= cls.meeting_link %>");
-    }
-},1000);
-
-}
-
-</script>
-
-
-
-  <script>
-
- var  cls = JSON.parse('<%- JSON.stringify(cls) %>');
- console.log(cls)
- var m  = new Date(cls.class_date + "," + cls.class_time).getTime();
-
-// var m  = new Date("2021-08-02 , 11:10 PM").getTime();
-
-// console.log(m)
-
- //     var  f = JSON.parse('<%- JSON.stringify(notices) %>');
-//      console.log(f)
-
-mksdfasfsd(m)
-
-	 
-   
-  </script>
-
-
-
-   <script>
-   	if($(".mes").text() !== ""){
-   		setTimeout(function(){
-          $(".mes").hide(300);
-          }, 2000);
-   	}
-   </script>
-	<%- include("../partials/footer-user") -%>
+		$("#create_class").hide();
+		$("#show_class_create_form").click(function(){
+			$("#create_class").show(400);
+			$("#show_class_create_form").hide()
+		})
+		$("#hide_class_create_form").click(function(){
+			$("#create_class").hide(400);
+			$("#show_class_create_form").show(400);
+		});
+		$("#create_class").submit(function(e){
+		e.preventDefault();
+			});
+		</script>
+		<script>
+		$("#join_now_button").addClass("disabled");
+		function mksdfasfsd(s){
+		var deadline = s;
+		var x = setInterval(function() {
+		var now = new Date().getTime();
+		var t = deadline - now;
+		var days = Math.floor(t / (1000 * 60 * 60 * 24));
+		var hours = Math.floor((t%(1000 * 60 * 60 * 24))/(1000 * 60 * 60));
+		var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+		var seconds = Math.floor((t % (1000 * 60)) / 1000);
+		document.getElementById("card-body").innerHTML = days + "d "
+		+ hours + "h " + minutes + "m " + seconds + "s ";
+		if (t < 0) {
+		clearInterval(x);
+		$("#card-title").remove();
+		$("#join_now_button").removeClass("disabled");
+		document.getElementById("card-body").innerHTML = "Class has been started.";
+		document.getElementById("join_now_button").setAttribute("href","<%= cls.meeting_link %>");
+		}
+		},1000);
+		}
+		</script>
+		<script>
+		var  cls = JSON.parse('<%- JSON.stringify(cls) %>');
+		console.log(cls)
+		var m  = new Date(cls.class_date + "," + cls.class_time).getTime();
+		mksdfasfsd(m)
+			
+		
+		</script>
+		<script>
+			if($(".mes").text() !== ""){
+				setTimeout(function(){
+		$(".mes").hide(300);
+		}, 2000);
+			}
+		</script>
+		<% } %>
+		<%- include("../partials/footer-user") -%>
