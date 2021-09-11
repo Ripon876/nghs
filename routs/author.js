@@ -234,19 +234,19 @@ router.post("/author/message", middlewares.isLoggedInAndAuthor, function(req, re
 
   Message.create(tempMsg, function(err, msg) {
     if (err) {
-      // res.json({
-      //   error: "message not send"
-      // });
+
+        res.json({
+         error: "message not send"
+      });
+
     } else {
-/*      res.json({
-        success: "message send successfully"
-      });*/
-      console.log(msg)
+
+    res.json({
+      success: "message send successfully"
+      });
+     
       
-/*      req.flash("success","Message successfully sent");
-      res.redirect("/author/dashboard");*/
-    req.flash("successfully_schedule_deleted", "Schedule deleted successfully");
-    res.redirect("/author/hostLiveClass");
+   
 
     }
   })

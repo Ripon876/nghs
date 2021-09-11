@@ -1,5 +1,8 @@
 var tempUser;
 $(".searchResult").hide();
+$(".notification").hide();
+$(".success").hide();
+$(".error").hide();
 
 $("#userInformation").on("change", function() {
 
@@ -55,16 +58,26 @@ $(".sent-message").on("submit", function() {
     success: function(result) {
 
 
+      if (result.success) {
+        $(".success").show(300);
 
-      //   $("tr.odd").remove();
+        clearInputs();
+        setTimeout(function() {
+          $(".success").hide(400);
+
+        }, 4000)
 
 
-      // var s = moment(result.mes.class_date).format('MMM D, YYYY') + " " + moment(`${result.mes.class_date}T${result.mes.class_time}`).format("H:mm:ss");
+      } else if (result.error) {
 
-      // mksdfasfsd(s,elem_id)
+        $(".error").show(300);
+        clearInputs();
+        setTimeout(function() {
+          $(".error").hide(400);
 
-      //   $(".table").append(`<tr><td>${moment(result.mes.class_date).format('dddd Do MMMM')} At  ${moment(`${result.mes.class_date}T${result.mes.class_time}`).format("hh:mm a")}</td><td id="${elem_id}"  class="card-title"></td><td><a href="/author/hostLiveClass/remove/${result.mes._id}" class="btn btn-danger p-2">Cancel</a></td></tr>`)
+        }, 4000)
 
+      }
 
 
     },
@@ -74,3 +87,16 @@ $(".sent-message").on("submit", function() {
   });
 
 })
+
+
+function clearInputs() {
+  $("#name").val("");
+  $("#message").val("");
+  $(".roll").val("");
+  $(".class").prop('selectedIndex', 0)
+  $(".section").prop('selectedIndex', 0)
+  $("html, body").animate({
+    scrollTop: 0
+  }, "slow");
+
+}

@@ -39,21 +39,13 @@
             <div class="card-body">
               <p class="card-title">Fill the form correctly in order to send message to your desire student</p>
               
-              <% if(notification && notification.length !== 0){ %>
-              <div class="alert alert-primary notification" role="alert" >
-                <%= notification  %>
+             
+              <div class="alert alert-success success" role="alert" >Message sucessfully sent
               </div>
-              <% } %>
-              <% if(success && success.length !== 0){ %>
-              <div class="alert alert-success success" role="alert" >
-                <%= success  %>
+             
+              <div class="alert alert-danger error" role="alert" >Message not sent
               </div>
-              <% } %>
-              <% if(error && error.length !== 0){ %>
-              <div class="alert alert-danger error" role="alert" >
-                <%= error  %>
-              </div>
-              <% } %>
+             
               
               <div class="table-responsive">
                 <div class="container width-50">
