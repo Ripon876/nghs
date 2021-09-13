@@ -49,7 +49,7 @@ ns.forEach( function(notice) {
 
 
 
-router.get("/user/dashboard",middlewares.isLoggedIn,function(req,res){
+router.get("/user/dashboard",middlewares.isLoggedInAndOnlyUser,function(req,res){
   var title = "NGHS | User Dashboard";
   var obj = {
   class: req.user.class,
@@ -151,7 +151,7 @@ router.put("/user/profile",middlewares.isLoggedIn,function(req,res){
 });
 
 
-router.get("/user/liveclasses",middlewares.isLoggedIn,function(req,res){
+router.get("/user/liveclasses",middlewares.isLoggedInAndOnlyUser,function(req,res){
 
 var findObj = {
   class: req.user.class,

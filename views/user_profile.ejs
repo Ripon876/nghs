@@ -4,11 +4,44 @@
   <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
       <li class="nav-item">
-        <a class="nav-link" href="/user/dashboard">
+        <a class="nav-link" <% if (user.isAuthor) { %>
+                href="/author/dashboard"
+                <% }else{ %>
+                href="/user/dashboard"
+                <% } %> >
           <i class="mdi mdi-home menu-icon"></i>
           <span class="menu-title">Dashboard</span>
         </a>
       </li>
+      <% if (user.isAuthor) { %>
+      
+      <li class="nav-item">
+        <a class="nav-link" href="/author/exam/new">
+          <i class="mdi mdi-home menu-icon"></i>
+          <span class="menu-title">Create new Test</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/author/hostLiveClass">
+          <i class="mdi mdi-calendar-blank menu-icon"></i>
+          <span class="menu-title">Host a live class</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/author/send-message">
+          <i class="mdi mdi-message menu-icon"></i>
+          <span class="menu-title">Sent Message</span>
+        </a>
+      </li>
+      
+      <% }else{ %>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/liveclasses">
+              <i class="mdi mdi-home menu-icon"></i>
+              <span class="menu-title">Live Classes</span>
+            </a>
+          </li>
+      <% } %>
     </ul>
   </nav>
   <!-- partial -->

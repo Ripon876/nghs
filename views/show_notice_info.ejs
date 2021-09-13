@@ -1,18 +1,50 @@
 <%- include("../partials/header-user") -%>
-
 <!-- partial -->
 <div class="container-fluid page-body-wrapper">
 	<nav class="sidebar sidebar-offcanvas" id="sidebar">
 		<ul class="nav">
 			<li class="nav-item">
-				<a class="nav-link" href="/user/dashboard">
+				<a class="nav-link" <% if (user.isAuthor) { %>
+								href="/author/dashboard"
+								<% }else{ %>
+								href="/user/dashboard"
+								<% } %> >
 					<i class="mdi mdi-home menu-icon"></i>
 					<span class="menu-title">Dashboard</span>
 				</a>
 			</li>
+			<% if (user.isAuthor) { %>
+			
+			<li class="nav-item">
+				<a class="nav-link" href="/author/exam/new">
+					<i class="mdi mdi-home menu-icon"></i>
+					<span class="menu-title">Create new Test</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/author/hostLiveClass">
+					<i class="mdi mdi-calendar-blank menu-icon"></i>
+					<span class="menu-title">Host a live class</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/author/send-message">
+					<i class="mdi mdi-message menu-icon"></i>
+					<span class="menu-title">Sent Message</span>
+				</a>
+			</li>
+			
+			<% }else{ %>
+		      <li class="nav-item">
+		        <a class="nav-link" href="/user/liveclasses">
+		          <i class="mdi mdi-home menu-icon"></i>
+		          <span class="menu-title">Live Classes</span>
+		        </a>
+		      </li>
+			<% } %>
+			
 		</ul>
 	</nav>
-
 	<!-- partial -->
 	<div class="main-panel">
 		<div class="content-wrapper">
@@ -23,8 +55,7 @@
 							<p class="card-title"  id="card-title" style="text-align: center;"><%= notice.notice %></p>
 							<p class="card-title mt-3" id="card-body" style="color: #27367f;font-size: 50px;text-shadow: 1px 9px 10px #27367f;text-align: center;"> </p>
 							
-						
-
+							
 							<% if(notification && notification.length !== 0){ %>
 							<div class="alert alert-primary mes" role="alert" >
 								<%= notification  %>
@@ -40,23 +71,18 @@
 								<%= error  %>
 							</div>
 							<% } %>
-
-
 							<a  <% if (user.isAuthor) { %>
-							href="/author/dashboard"
-							<% }else{ %>
-							href="/user/dashboard"
-							<% } %>
-
-							 class="btn btn-primary mt-3" id="join_now_button"><i class="fa fa-arrow-left"></i> Back to dashboard</a>
-						
+								href="/author/dashboard"
+								<% }else{ %>
+								href="/user/dashboard"
+								<% } %>
+							class="btn btn-primary mt-3" id="join_now_button"><i class="fa fa-arrow-left"></i> Back to dashboard</a>
+							
+						</div>
 					</div>
 				</div>
-			</div> 
+			</div>
 		</div>
-	</div>
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-	<%- include("../partials/footer-user") -%>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<%- include("../partials/footer-user") -%>

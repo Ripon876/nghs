@@ -1,3 +1,7 @@
+$(".oneTimeNotification").html('<div class="alert alert-success success" role="alert" >Message sucessfully sent</div><div class="alert alert-danger error" role="alert" >Message not sent</div>')
+
+
+
 var tempUser;
 $(".searchResult").hide();
 $(".notification").hide();
