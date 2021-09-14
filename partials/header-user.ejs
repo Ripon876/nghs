@@ -4,7 +4,12 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>User Dashborad</title>
+   <% if(user.isAuthor){ %>
+        <title>Author Dashborad</title>
+   <% }else{ %>
+       <title>User Dashborad</title>
+   <% } %>
+   
     <link rel="stylesheet" href="/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="/css/dataTables.bootstrap4.css">
@@ -22,6 +27,16 @@
     }
     </style>
     <script src="/js/jquery.min.js"></script>
+
+<script type="text/javascript">
+  
+
+// window.localStorage.getItem('name');
+// window.localStorage.removeItem('name');
+
+
+</script>
+
     <script>
     var oldNoticeCount = 0;
     var newNoticeCount = 0;
@@ -63,11 +78,17 @@
     
     if(newNoticeCount !== oldNoticeCount &&  newNoticeCount > oldNoticeCount){
     oldNoticeCount = newNoticeCount;
-    $("#newNoticeCount").show()
+    window.localStorage.setItem('notice', 'fdgtwet43erffesffsdFE334');
+    $("#newNoticeCount").show();
     }
     
     },5000)
     </script>
+
+<!-- var msg = new SpeechSynthesisUtterance();
+msg.text = "Hello World";
+window.speechSynthesis.speak(msg);
+ -->
   </head>
   <body>
     <div class="container-scroller">
@@ -182,6 +203,17 @@
         </div>
       </nav>
       
-      <script>
-      $("#newNoticeCount").hide()
-      </script>
+<script type="text/javascript">
+  if(window.localStorage.getItem('notice')){
+   $("#newNoticeCount").show();
+}else{
+     $("#newNoticeCount").hide()
+}
+ 
+$("#notificationDropdown").click(function() {
+   
+   window.localStorage.removeItem('notice');
+   $("#newNoticeCount").hide()
+})
+
+</script>
