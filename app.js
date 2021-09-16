@@ -7,6 +7,7 @@ var User           = require("./models/user");
 var Exam           = require("./models/exam");
 var Answer         = require("./models/answer");
 var Notice         = require("./models/notice");
+var Message        = require("./models/message");
 var middlewares    = require("./middlewares/middleware");
 var localStrategy  = require("passport-local");
 var methodOverride = require("method-override");
@@ -262,7 +263,36 @@ Notice.find({},function(err,ns){
 
 })
  
+app.get("/user/message/all",middlewares.isLoggedIn,function(req,res){
 
+
+var messages = [];
+var tempUser = req.user;
+Message.find({},function(err,ns){
+    if(err)console.log(err);
+
+
+
+      ns.forEach( function(msg) {
+         if(msg.to.user.id === tempUser._id && msg.to.user.class === tempUser.class && msg.to.user.section === tempUser.section ){
+            messages.push(msg);
+            
+         }
+
+      });
+
+       res.json(messages);
+    
+ 
+
+
+
+});
+
+
+
+})
+ 
 
 
 app.listen(port,function(){

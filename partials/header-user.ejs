@@ -30,13 +30,15 @@
     <script src="/js/update-notice.js"></script>
 
 
-<% if(notices){ %>
+<% if(notices && messages){ %>
 
 <script type="text/javascript">
-  
-  var sdfsdfsda = JSON.parse('<%- JSON.stringify(notices) %>');
 
- updateNotice(sdfsdfsda)
+var sdfsdfsda = JSON.parse('<%- JSON.stringify(notices) %>');
+var sdf44awr4 = JSON.parse('<%- JSON.stringify(messages) %>');
+
+ updateNotice(sdfsdfsda);
+ updateMessage(sdf44awr4)
 
 </script>
 
@@ -60,46 +62,40 @@
             <li class="nav-item dropdown mr-1">
               <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
                 <i class="mdi mdi-message-text mx-0"></i>
-                <span class="count" style="display: none;"></span>
+                <span class="count" style="display: none;" id="newMessageCount" ></span>
               </a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
                 <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
-                <a class="dropdown-item">
-                  <div class="item-thumbnail">
-                    <img src="https://image.flaticon.com/icons/png/512/1077/1077114.png" alt="image" class="profile-pic">
-                  </div>
-                  <div class="item-content flex-grow">
-                    <h6 class="ellipsis font-weight-normal">David Grey
-                    </h6>
-                    <p class="font-weight-light small-text text-muted mb-0">
-                      The meeting is cancelled
-                    </p>
-                  </div>
-                </a>
-                <a class="dropdown-item">
-                  <div class="item-thumbnail">
-                    <img src="https://image.flaticon.com/icons/png/512/1077/1077114.png" alt="image" class="profile-pic">
-                  </div>
-                  <div class="item-content flex-grow">
-                    <h6 class="ellipsis font-weight-normal">Tim Cook
-                    </h6>
-                    <p class="font-weight-light small-text text-muted mb-0">
-                      New product launch
-                    </p>
-                  </div>
-                </a>
-                <a class="dropdown-item">
-                  <div class="item-thumbnail">
-                    <img src="https://image.flaticon.com/icons/png/512/1077/1077114.png" alt="image" class="profile-pic">
-                  </div>
-                  <div class="item-content flex-grow">
-                    <h6 class="ellipsis font-weight-normal"> Johnson
-                    </h6>
-                    <p class="font-weight-light small-text text-muted mb-0">
-                      Upcoming board meeting
-                    </p>
-                  </div>
-                </a>
+
+<div class="messages">
+  
+  <% if (messages) { %>
+  
+  <% messages.forEach( function(msg) { %>
+
+  
+  
+  <a class="dropdown-item">
+    <div class="item-thumbnail">
+      <img src="https://image.flaticon.com/icons/png/512/1077/1077114.png" alt="image" class="profile-pic">
+    </div>
+    <div class="item-content flex-grow">
+      <h6 class="ellipsis font-weight-normal"><%= msg.from.author.name %></h6>
+      <p class="font-weight-light small-text text-muted mb-0">
+        <%= msg.message.substring(0,25); %>...
+      </p>
+    </div>
+  </a>
+  
+
+  
+  <% }) %>
+  <% } %>
+</div>
+
+
+
+                
               </div>
             </li>
             <li class="nav-item dropdown mr-4">
@@ -163,11 +159,26 @@
 }else{
      $("#newNoticeCount").hide()
 }
- 
-$("#notificationDropdown").click(function() {
+  $("#notificationDropdown").click(function() {
    
    window.localStorage.removeItem('notice');
    $("#newNoticeCount").hide()
 })
+
+
+
+
+ if(window.localStorage.getItem('messages')){
+   $("#newMessageCount").show();
+}else{
+     $("#newMessageCount").hide()
+}
+ 
+  $("#messageDropdown").click(function() {
+   
+   window.localStorage.removeItem('messages');
+   $("#newMessageCount").hide()
+})
+
 
 </script>

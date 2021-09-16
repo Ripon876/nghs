@@ -1,10 +1,8 @@
    
 function updateNotice(notices){
-   var oldNoticeCount = 0;
-    var newNoticeCount = 0;
-
-    // var cls = JSON.parse('<%- JSON.stringify(notices) %>');
-    var cls = notices;
+  var oldNoticeCount = 0;
+  var newNoticeCount = 0;
+  var cls = notices;
    
     cls.forEach(function(notice) {
       oldNoticeCount++;
@@ -51,6 +49,67 @@ function updateNotice(notices){
 
 }
    
+
+
+   function updateMessage(msg) {
+     var oldNoticeCount = 0;
+     var newNoticeCount = 0;
+     var cls = msg;
+
+     cls.forEach(function(notice) {
+       oldNoticeCount++;
+     });
+     setInterval(async function() {
+
+       var sdsdfds = await $.ajax({
+         url: '/user/message/all',
+         type: 'GET',
+         success: function(result) {
+
+           newNoticeCount = 0;
+           $('.messages').empty()
+           result.forEach(function(msg) {
+            console.log(msg);
+             newNoticeCount++;
+             var tempMsg = `<a class="dropdown-item">
+    <div class="item-thumbnail">
+      <img src="https://image.flaticon.com/icons/png/512/1077/1077114.png" alt="image" class="profile-pic">
+    </div>
+    <div class="item-content flex-grow">
+      <h6 class="ellipsis font-weight-normal">${ msg.from.author.name }</h6>
+      <p class="font-weight-light small-text text-muted mb-0">
+        ${ msg.message.substring(0,25)}...
+      </p>
+    </div>
+  </a>`;
+             $(".messages").append(tempMsg)
+
+           });
+
+         },
+         error: function(result, status, error) {
+           console.log("something went wrong");
+         }
+       });
+       // snack love athlete world result awkward forward plunge scorpion grape near door box doll vanish adapt gun result more riot witness play leisure flush
+
+       if (newNoticeCount !== oldNoticeCount && newNoticeCount > oldNoticeCount) {
+         oldNoticeCount = newNoticeCount;
+         window.localStorage.setItem('messages', 'fdgtwet43erffesffsdFE334');
+         $("#newMessageCount").show();
+       }
+
+     }, 5000);
+
+
+   }
+
+
+
+
+
+
+
 
 /*    var msg = new SpeechSynthesisUtterance();
     msg.text = "Hello Wordsf dsfdld";

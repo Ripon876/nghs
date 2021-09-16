@@ -6,7 +6,7 @@ var Exam = require("../models/exam");
 var Answer = require("../models/answer");
 var Notice = require("../models/notice");
 var Live_Class = require("../models/live_class_schedule");
-var Message = require("../models/Message");
+var Message = require("../models/message");
 var fileUpload = require('express-fileupload');
 var flash = require('connect-flash');
 var fs = require('fs');
@@ -20,6 +20,7 @@ router.use(function(req, res, next) {
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success");
   res.locals.notification = req.flash("notification");
+  res.locals.messages          = [];
 
 
 

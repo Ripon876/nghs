@@ -5,6 +5,7 @@ var User           = require("../models/user");
 var Exam           = require("../models/exam");
 var Answer         = require("../models/answer");
 var Notice         = require("../models/notice");
+var Message        = require("../models/message");
 var Live_Class     = require("../models/live_class_schedule");
 var fileUpload     = require('express-fileupload');
 var flash          = require('connect-flash');
@@ -32,7 +33,35 @@ ns.forEach( function(notice) {
    }
 });
   res.locals.notices = notices;
-  next();    
+   
+
+
+
+
+Message.find({},function(err,ns){
+    if(err)console.log(err);
+var messages = [];
+    if (req.user) {
+
+ns.forEach( function(msg) {
+ if(msg.to.user.class === req.user.class && msg.to.user.section === req.user.section && msg.to.user.id === req.user._id){
+   messages.push(msg);
+   }
+});
+
+  res.locals.messages = messages;
+  next();  
+
+    }else{
+     res.locals.messages = [];
+     next(); 
+    }
+
+
+});
+
+
+     
     }else{
      res.locals.notices = [];
      next(); 
@@ -40,6 +69,9 @@ ns.forEach( function(notice) {
 
 
 });
+
+
+
 
 
 
