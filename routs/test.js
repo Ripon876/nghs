@@ -5,11 +5,62 @@ var User           = require("../models/user");
 var Exam           = require("../models/exam");
 var Answer         = require("../models/answer");
 var Notice         = require("../models/notice");
+var Message        = require("../models/message");
 var formidable     = require('formidable');
 var fileUpload     = require('express-fileupload');
 var fs             = require('fs');
 var path           = require('path');
 var middlewares    = require("../middlewares/middleware");
+
+
+/*
+router.use(function(req,res,next){
+    res.locals.messages          = [];
+    next();
+})
+*/
+
+router.use(function(req,res,next){
+
+if (!req.user) {
+    res.locals.messages          = [];
+    next();
+}else{
+
+  if(req.user.isAuthor && !req.user.isAdmin){
+   res.locals.messages          = [];
+    next();
+  }else{
+
+    Message.find({},function(err,ns){
+    if(err)console.log(err);
+var messages = [];
+    if (req.user) {
+
+ns.forEach( function(msg) {
+ if(msg.to.user.class === req.user.class && msg.to.user.section === req.user.section && msg.to.user.id === req.user._id){
+   messages.push(msg);
+   }
+});
+
+  res.locals.messages = messages;
+  next();  
+
+    }else{
+     res.locals.messages = [];
+     next(); 
+    }
+
+
+});
+  }
+
+}
+
+
+
+
+})
 
 router.get("/author/exam/new",middlewares.isLoggedInAndAuthor,function(req,res){
 
