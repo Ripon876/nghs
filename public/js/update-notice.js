@@ -69,9 +69,9 @@ function updateNotice(notices){
            newNoticeCount = 0;
            $('.messages').empty()
            result.forEach(function(msg) {
-            console.log(msg);
+            
              newNoticeCount++;
-             var tempMsg = `<a class="dropdown-item">
+             var tempMsg = `<a class="dropdown-item" href="/user/messages/${ msg._id }">
     <div class="item-thumbnail">
       <img src="https://image.flaticon.com/icons/png/512/1077/1077114.png" alt="image" class="profile-pic">
     </div>

@@ -20,6 +20,10 @@ var socket         = require("socket.io");
 var fs             = require('fs');
 var path           = require('path'); 
 var app            = express();
+var http           = require('http');
+var server         = http.createServer(app);
+var { Server }     = require("socket.io");
+var io             = new Server(server);
 var port           = process.env.PORT || 3000; 
 var mongoDbStr;
 
@@ -35,6 +39,39 @@ var send_message = require("./routs/send_message");
 
 
 
+
+
+
+
+
+
+var onlineCount = 0;
+var currentOnline = [];
+io.on('connection', function (socket) {
+  var $liveIpAddress = socket.handshake.address;
+  // console.log(socket)
+
+  socket.on('id', (msg) => {
+    console.log('message: ' + msg);
+  }); 
+
+
+
+  socket.on('close', (msg) => {
+    console.log('close: '+  msg);
+  }); 
+
+ 
+   console.log("Good Luck, client is connected");
+
+
+
+  socket.on('disconnect', function() {
+   
+      console.log("user disconnected")
+  
+});  
+});
 
 
 // https://afternoon-citadel-20931.herokuapp.com/
@@ -174,8 +211,23 @@ app.get('/auth/google/callback',
 // ====================
 
 app.get("/",function(req,res){
-	var title = "NGHS | Home"
-	res.render("index",{title: title,currenUser: req.user});
+	var title = "NGHS | Home";
+
+  if (req.user) {
+    if (req.user.isAdmin) {
+      res.redirect("/admin");
+    } else if (req.user.isAuthor) {
+      res.redirect("/author/dashboard");
+    } else {
+      res.redirect("/user/dashboard");
+    }
+
+  }else{
+      res.render("index",{title: title,currenUser: req.user});
+  }
+
+
+
 });
 
 
@@ -295,12 +347,14 @@ Message.find({},function(err,ns){
  
 
 
-app.listen(port,function(){
-	console.log("Server started at port ..." + port);
+// app.listen(port,function(){
+// 	console.log("Server started at port ..." + port);
+// });
+
+
+
+server.listen(3000, () => {
+    console.log("Server started at port ..." + port);
 });
-
-
-
-
 
 

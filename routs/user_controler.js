@@ -251,7 +251,36 @@ Notice.findByIdAndRemove(notice._id,function(err,done) {
 
 })
  
+});
+
+
+
+router.get("/user/messages/:messagesID",middlewares.isLoggedInAndOnlyUser,function(req,res) {
+  
+Message.findById(req.params.messagesID,function(err,message){
+  if(err){
+    console.log(err);
+    res.render("404");
+  }
+
+
+if(message === null){
+res.render("see_message",{error: "Message not found",message: ''});
+}else{
+    res.render("see_message",{message: message});
+}
+   
+
+  
+
 })
+})
+      
+
+
+
+
+
 
 
 module.exports = router;

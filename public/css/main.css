@@ -16,9 +16,19 @@ li.show .notifications .show{
     flex-direction: column;
 
 }
+
+.dropdown-menu.message-container.show {
+    overflow-y: scroll;
+    height:300px;
+     display: flex;
+    flex-direction: column;
+
+}
 .notifications {
-  /*overflow: scroll;*/
-  /*overflow-x: hidden;*/
+  display: flex !important;
+  flex-direction: column-reverse !important;
+}
+.messages {
   display: flex !important;
   flex-direction: column-reverse !important;
 }

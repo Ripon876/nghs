@@ -30,6 +30,30 @@
     <script src="/js/update-notice.js"></script>
 
 
+<% if (user) { %>
+
+<script src="/socket.io/socket.io.js"></script>
+
+  <script>
+   window.localStorage.setItem('user_id','<%= user._id %>')
+
+window.sessionStorage.setItem("status","online");
+
+
+var socket = io("http://localhost:3000");
+  function sdfsfafdsfefaerds() {
+   socket.emit('id', "<%= user._id %>");
+  }
+  sdfsfafdsfefaerds();
+
+
+  </script>
+
+ <% } %>
+
+
+
+
 <% if(notices && messages){ %>
 
 <script type="text/javascript">
@@ -46,8 +70,13 @@ var sdf44awr4 = JSON.parse('<%- JSON.stringify(messages) %>');
 
   </head>
   <body>
+
+<div class="alert alert-success" id="logOutNotification" style="display: none;" role="alert">
+  Logging you out in <span id="logOutCounter"></span>
+</div>
+
+
     <div class="container-scroller">
-      <!-- partial:partials/_navbar.html -->
       <nav class="navbar col-lg-12 col-12 p-0 d-flex flex-row">
         <div class="navbar-brand-wrapper d-flex justify-content-center">
           <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
@@ -64,7 +93,7 @@ var sdf44awr4 = JSON.parse('<%- JSON.stringify(messages) %>');
                 <i class="mdi mdi-message-text mx-0"></i>
                 <span class="count" style="display: none;" id="newMessageCount" ></span>
               </a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
+              <div class="dropdown-menu dropdown-menu-right message-container navbar-dropdown" aria-labelledby="messageDropdown">
                 <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
 
 <div class="messages">
@@ -75,7 +104,7 @@ var sdf44awr4 = JSON.parse('<%- JSON.stringify(messages) %>');
 
   
   
-  <a class="dropdown-item">
+  <a class="dropdown-item" href="/user/messages/<%= msg._id  %>">
     <div class="item-thumbnail">
       <img src="https://image.flaticon.com/icons/png/512/1077/1077114.png" alt="image" class="profile-pic">
     </div>
@@ -139,7 +168,7 @@ var sdf44awr4 = JSON.parse('<%- JSON.stringify(messages) %>');
                   <i class="mdi mdi-settings text-primary"></i>
                   Profile
                 </a>
-                <a class="dropdown-item" href="/logout">
+                <a class="dropdown-item"  id="logoutBtn">
                   <i class="mdi mdi-logout text-primary"></i>
                   Logout
                 </a>
@@ -152,7 +181,7 @@ var sdf44awr4 = JSON.parse('<%- JSON.stringify(messages) %>');
           </button>
         </div>
       </nav>
-      
+<script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
   if(window.localStorage.getItem('notice')){
    $("#newNoticeCount").show();
@@ -163,6 +192,10 @@ var sdf44awr4 = JSON.parse('<%- JSON.stringify(messages) %>');
    
    window.localStorage.removeItem('notice');
    $("#newNoticeCount").hide()
+
+     
+
+
 })
 
 
@@ -181,4 +214,43 @@ var sdf44awr4 = JSON.parse('<%- JSON.stringify(messages) %>');
 })
 
 
+
+
+$("#logoutBtn").click(function(e) {
+
+  $("#logOutNotification").show(400)
+  e.preventDefault();
+  console.log("clicked");
+
+var count = 3;
+var counter = setInterval(function() {
+
+
+  if(count == 0){
+    window.clearInterval(counter)
+  }
+  $("#logOutCounter").text(count);
+  console.log(count)
+  count--;
+},1000)
+
+     let redirect_Page = () => {
+
+  socket.emit('close', "<%= user._id %>");
+  socket.disconnect();
+  
+
+      let tID = setTimeout(function () {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/logout";
+            window.clearTimeout(tID);   // clear time out.
+        }, 3000);
+    }
+ redirect_Page();
+
+});
+
+
 </script>
+
+
+

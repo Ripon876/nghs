@@ -1,0 +1,78 @@
+<%- include("../partials/header-user") -%>
+<!-- partial -->
+<%- include("../partials/user-nav") -%>
+  <!-- partial -->
+  <div class="main-panel">
+    <div class="content-wrapper">
+      
+      <div class="row">
+        <div class="col-md-12 stretch-card">
+          <div class="card">
+            <div class="card-body">
+
+
+<% if(error && error.length !== 0){ %>
+              <div class="alert alert-danger mes" role="alert" >
+                <%= error  %>
+              </div>
+              <% } %>
+            
+           <p class="card-title"  id="card-title" style="text-align: center;">
+<% if (message) { %>
+  
+  <%= message.message %>
+<% } %>
+
+  </p>
+             
+              <a  <% if (user.isAuthor) { %>
+                href="/author/dashboard"
+                <% }else{ %>
+                href="/user/dashboard"
+                <% } %>
+              class="btn btn-primary mt-3" id="join_now_button"><i class="fa fa-arrow-left"></i> Back to dashboard</a>
+              
+
+
+
+
+<!--               <div class="container mt-3">
+               
+
+
+                <% if(notification && notification.length !== 0){ %>
+                <div class="alert alert-primary" role="alert" >
+                  <%= notification  %>
+                </div>
+                <% } %>
+                <% if(error && error.length !== 0){ %>
+                <div class="alert alert-danger" role="alert" >
+                  <%= error  %>
+                </div>
+                <% } %>
+                <% if(success && success.length !== 0){ %>
+                <div class="alert alert-success" role="alert" >
+                  <%= success  %>
+                </div>
+                <% } %>
+              </div> -->
+<!--               <div class="table-responsive">
+                <table id="recent-purchases-listing" class="table">
+                  <thead>
+                    <tr>
+                      <th>You can take part to this tests</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                   
+                  </tbody>
+                </table>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- content-wrapper ends -->
+    <%- include("../partials/footer-user") -%>
