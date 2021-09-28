@@ -59,5 +59,5 @@
    - User can't login to any author account.
 
 
-> Right Now this are the core featuers of this web application. More cool features and functionalities are comming in future. Besic exmaple of this application : [NGHS]().
+> Right Now this are the core featuers of this web application. More cool features and functionalities are comming in future. Besic exmaple of this application : [NGHS](https://afternoon-citadel-20931.herokuapp.com).
 
