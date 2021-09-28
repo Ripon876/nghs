@@ -366,6 +366,6 @@ app.get("/user/message/all", middlewares.isLoggedIn, function(req, res) {
 
 
 
-server.listen(3000, () => {
+server.listen(port, () => {
   console.log("Server started at port ..." + port);
 });
