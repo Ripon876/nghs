@@ -1,3 +1,5 @@
+
+
 var middlewares = {
 	isLoggedIn : function(req,res,next){     // 
 		if(req.isAuthenticated()){          //   this function used for preventing   

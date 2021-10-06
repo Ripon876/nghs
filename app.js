@@ -43,35 +43,35 @@ var send_message = require("./routs/send_message");
 
 var onlineCount = 0;
 var currentOnline = [];
+setInterval(function(){
+currentOnline = [];
+
+},10000);
+
 io.on('connection', function(socket) {
-  var $liveIpAddress = socket.handshake.address;
-  // console.log(socket)
 
   socket.on('id', (msg) => {
-    console.log('message: ' + msg);
+    if (!currentOnline.includes(msg)) {
+         currentOnline.push(msg);
+    }
   });
-
-
-
   socket.on('close', (msg) => {
     console.log('close: ' + msg);
+    currentOnline.splice(currentOnline.indexOf(msg), 1);
   });
+  socket.on('disconnect', function() {});
 
-
-  console.log("Good Luck, client is connected");
-
-
-
-  socket.on('disconnect', function() {
-
-    console.log("user disconnected")
-
-  });
 });
 
 
+
+
 // https://afternoon-citadel-20931.herokuapp.com/
-// mongoose configuration
+
+  //=======================
+ // mongoose configuration
+//=========================
+
 if (port === 3000) {
   mongoDbStr = "mongodb://localhost:27017/nghs";
   console.log(mongoDbStr)
@@ -100,9 +100,9 @@ app.use(fileUpload({
 }));
 
 
-  // =====================
+  // ======================
  // passport configuration
-// =====================
+// ========================
 
 app.use(require('express-session')({
   secret: "My name is MD Ripon Islam",
@@ -140,7 +140,9 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 
-// passport-google-oauth2 setup
+  //=============================
+ // passport-google-oauth2 setup
+//===============================
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -201,23 +203,35 @@ app.get('/auth/google/callback',
 
 
 
-// =================================
-// cleaning database after restating |
+  // =================================
+ // cleaning database after restating |
 //====================================
 
+/*
+Answer.deleteMany({}, function(){
+  console.log("done")
+});
 
-// Answer.deleteMany({}, function(){
-//   console.log("done")
-// });
+Exam.deleteMany({}, function(){
+  console.log("done")
+});
 
-// Exam.deleteMany({}, function(){
-//   console.log("done")
-// });
+User.deleteMany({}, function(){
+  console.log("done")
+});
+
+Notice.deleteMany({}, function(){
+  console.log("done")
+});
+
+Message.deleteMany({}, function(){
+  console.log("done")
+});*/
 
 
-// ====================
-// home rout
-// ====================
+  // =========
+ // home rout
+// ===========
 
 app.get("/", function(req, res) {
   var title = "NGHS | Home";
@@ -243,9 +257,10 @@ app.get("/", function(req, res) {
 });
 
 
-// ====================
-// file upload rout
-// ====================
+  // ================
+ // file upload rout
+// ==================
+
 app.get("/upload", middlewares.isLoggedIn, function(req, res) {
   var Utitle = "NGHS | Upload"
   res.render("upload", {
@@ -288,11 +303,9 @@ app.post("/upload", middlewares.isLoggedIn, function(req, res) {
 
 
 
+  // =============
+ // notice route 
 // =================
-// notice route 
-// =================
-
-
 
 app.get("/user/notices/all", middlewares.isLoggedIn, function(req, res) {
 
@@ -325,14 +338,13 @@ app.get("/user/notices/all", middlewares.isLoggedIn, function(req, res) {
 
     }
 
-
-
   });
-
-
 
 })
 
+  //=============
+ // message rout
+//===============
 app.get("/user/message/all", middlewares.isLoggedIn, function(req, res) {
 
 
@@ -352,11 +364,73 @@ app.get("/user/message/all", middlewares.isLoggedIn, function(req, res) {
     });
 
     res.json(messages);
-
-
   });
-
 })
+
+
+
+  //=============
+ // online users
+//===============
+
+app.get("/author/onlineusers",middlewares.isLoggedInAndAuthor,function(req,res) {
+ 
+var users = [];
+var count = 0;
+var onlineUsers = currentOnline;
+      onlineUsers.forEach(function(e) {
+        User.findById(e, function(err, user) {
+          if (err) {
+            console.log(err);
+            res.json({
+              error: "something went wrong"
+            })
+          } else {
+            users.push(user);
+            count++;
+          }
+        })
+  
+      })
+
+  var s = setInterval(function() {
+    if (count == onlineUsers.length) {
+      clearInterval(s);
+      res.render("online_users", {
+        onlineUsers: users
+      });
+    }
+  }, 100)
+});
+
+
+
+app.get("/author/onlineusers/api/v3",middlewares.isLoggedInAndAuthor,function(req,res) {
+  
+var users = [];
+var count = 0;
+var onlineUsers = currentOnline;
+      onlineUsers.forEach(function(e) {
+        User.findById(e, function(err, user) {
+          if (err) {
+            console.log(err);
+            res.json({
+              error: "something went wrong"
+            })
+          } else {
+            users.push(user);
+            count++;
+          }
+        })
+      })
+
+  var s = setInterval(function() {
+    if (count == onlineUsers.length) {
+      clearInterval(s);
+      res.json(users);
+    }
+  }, 100)
+});
 
 
 
@@ -364,8 +438,7 @@ app.get("/user/message/all", middlewares.isLoggedIn, function(req, res) {
 //  console.log("Server started at port ..." + port);
 // });
 
-
-
 server.listen(port, () => {
   console.log("Server started at port ..." + port);
 });
+

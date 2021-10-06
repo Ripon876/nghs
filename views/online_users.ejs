@@ -1,0 +1,114 @@
+<%- include("../partials/header-user") -%>
+<!-- partial -->
+<div class="container-fluid page-body-wrapper">
+  <!-- partial:partials/_sidebar.html -->
+  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/author/dashboard">
+          <i class="mdi mdi-home menu-icon"></i>
+          <span class="menu-title">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/author/exam/new">
+          <i class="mdi mdi-home menu-icon"></i>
+          <span class="menu-title">Create new Test</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/author/hostLiveClass">
+          <i class="mdi mdi-calendar-blank menu-icon"></i>
+          <span class="menu-title">Host a live class</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/author/send-message">
+          <i class="mdi mdi-message menu-icon"></i>
+          <span class="menu-title">Sent Message</span>
+        </a>
+      </li>
+    </ul> 
+  </nav> 
+  <!-- partial -->
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-12 stretch-card">
+          <div class="card">
+          <div class="card-body">
+              <p class="card-title">Currenly online user</p>
+              
+            <% if(notification && notification.length !== 0){ %>
+                <div class="alert alert-primary" role="alert" >
+                  <%= notification  %>
+                </div>
+              <% } %>
+              <% if(success && success.length !== 0){ %>
+                <div class="alert alert-success" role="alert" >
+                  <%= success  %>
+                </div>
+              <% } %>  
+               <% if(error && error.length !== 0){ %>
+                <div class="alert alert-danger" role="alert" >
+                  <%= error  %>
+                </div>
+              <% } %>
+               
+              <div class="table-responsive">
+                <table id="recent-purchases-listing" class="table">
+                  <thead>
+                    <tr>
+                      <th>You can edit / delete tests from the below list</th>
+                    </tr>
+                  </thead>
+                  <tbody class="online-users">
+                    <% onlineUsers.forEach(function(onlineUser){ %>
+                        <% if (user._id == onlineUser._id){ %>
+                          <tr>
+                            <td><%= onlineUser.name %> (You)</td>
+                          </tr>
+                        <% }else{ %>
+                          <tr>
+                            <td><%= onlineUser.name %></td>
+                          </tr>
+                        <% } %>
+                    <%  }) %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+<script>
+  setInterval(function() {
+    $.ajax({
+  url : '/author/onlineusers/api/v3',
+  type : 'GET',
+  success : function(result){
+$(".online-users").empty();
+result.forEach(function(onlineUser){
+
+if("<%= user._id %>" == onlineUser._id){
+  $(".online-users").append(`<tr><td>${onlineUser.name} (You)</td></tr>`)
+}else{
+  $(".online-users").append(`<tr><td>${onlineUser.name}</td></tr>`)
+}
+
+  
+})
+
+
+  },
+  error : function(result, status, error){
+  console.log("something went wrong");
+  }
+    });
+  },5000)
+      
+</script>
+    <!-- content-wrapper ends -->
+    <%- include("../partials/footer-user") -%>
